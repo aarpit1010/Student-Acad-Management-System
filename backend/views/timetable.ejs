@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<div class="jumbotron text-center">
+
+    <div class="container">
+
+        <i class="fas fa-university fa-6x"></i>
+        <h1 class="display-3">Timetable</h1>
+        <hr>
+        <a class="btn btn-light btn-lg" href="/" role="button">Log Out</a>
+        <a class="fas fa-backward" href="/dashboard" role="button">Go Back</a>
+    </div>
+
+<br><br><br>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Semester</th>
+      <th>Section</th>
+      <th>Days</th>
+    </tr>
+  </thead>
+  <% data.forEach(function(row) { %>
+  <tr>
+    <td> <%= row.semester %> </td>
+    <td> <%= row.section %> </td>
+    <td> <%= row.day %> </td>
+  </tr>
+  <% })  %>
+</table>
+
+<%- include('partials/footer') %>
