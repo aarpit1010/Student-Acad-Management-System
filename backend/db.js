@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
-const encrypt=require("mongoose-encryption");
+const encrypt = require("mongoose-encryption");
+const dotenv = require("dotenv");
 
-mongoose.connect("mongodb://localhost:27017/userDB",{
-    useNewUrlParser:true,
-    useUnifiedTopology: true
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
 let db = mongoose.connection;
