@@ -1,81 +1,88 @@
-const Student = require("../models/Student.js")
-const Admin = require("../models/Admin.js")
-const Timetable = require("../content/timetable.js")
-const mongoose = require('mongoose');
-const encrypt=require("mongoose-encryption");
+const router = require("express").Router();
+const Student = require("../model/Student");
+const Timetable = require("../utils/timetable.js")
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+const {studentRegisterValid, studentLoginValid} = require('./validation');
 
 
+const studentRegister = async (req, res) => {
+    const student = new Student(req.body);
+    let givenEmail = req.body.email;
+    let givenPassword = req.body.password;
 
-const studentRegister = function (req, res)  {
-    const newUser=new Student({
-        name:req.body.name,
-        username:req.body.username,
-        email:req.body.email,
-        password:req.body.password,
-        contact:req.body.contact,
-        section:req.body.section,
-        semester:req.body.semester,
-        branch:req.body.branch,
-        enrollment:req.body.enrollment
+    // validation
+    const {error} = studentRegisterValid(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
     
-    });
-    newUser.save(function(err)
-    {
-        if(err){
-            console.log(err);
-        }
-        else
-        {
-            res.render("student");
-        }
-    });
+    // check whether user already in database or not
+    const emailExist = await Student.findOne({ email: givenEmail});
+    // const contactExist = await Student.findOne{( contact: req.body.contact)};
+    if(emailExist) return res.status(400).json('Email already exists');
+
+    // hash password
+    const salt = await bcrypt.genSalt(10);
+    student.password = await bcrypt.hash(givenPassword, salt);
+
+    try {
+        const savedStudent = await student.save();
+        res.status(201).json(savedStudent);
+    } catch(err) {
+        res.status(400).json(err);
+    }
 };
 
 
-var currUser;
+const studentLogin = async (req, res) => {
+    const { email, password } = req.body;
 
-const studentLogin = function (req, res)  {
-    const username=req.body.username;
-    const password=req.body.password;
-    Student.findOne({username:username},  function(err,foundUser){
-        if(err){
-            console.log(err);
-        }
-        else
-        {
-            if(foundUser)
-            {
-                //  console.log(foundUser);
-                if(foundUser.password==password){
-                    currUser=foundUser;
-                    res.render("dashboard");
-                    //  console.log(currUser);
-                }
-            }
-            else
-            {
-                console.log("error");
-            }
-        }
-    });
+    // validation
+    const {error} = studentLoginValid(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
+    // check whether email exists 
+    const student = await Student.findOne({ email });
+    if(!student) return res.status(400).json("Email doesn't exists!");
+
+    // check password
+    const validPass = await bcrypt.compare(password, student.password);
+    if(!validPass) return res.status(403).json("Invalid Password!");
+
+    const token = await jwt.sign({
+        email: student.email,
+        _id: student._id,
+      },
+      process.env.TOKEN_SECRET
+    );
+    let authDisplay = {};
+    authDisplay.authKey = token;
+    authDisplay.data = student;
+    res.json(authDisplay);
+
 };
 
+const studentTimetable = async (req, res) => {
+    const { email, password } = req.body;
+    const student = await Student.findOne({ email });
+    if(!student) return res.status(400).json("Email doesn't exists!");
 
-const studentTimetable = function (req, res)  {
     Timetable.finder("timetable",
 					{
-						semester: currUser.semester,
-						section:currUser.section
+						semester: student.semester,
+						section:student.section
 					}, 
 						function(err,docs) {
-					res.render("timetable", {
-					user: req.semester,
-					data: docs
+                    // res.render("timetable",
+                    res.json(
+                    {user: student._id,
+                    data: docs}
+                    );
 				});
-				});
-	// res.render("timetable", {semester: currUser.semester,
-	// 	section:currUser.section});
+
 };
 
-
-module.exports = {studentRegister, studentLogin, studentTimetable};
+module.exports = {
+    studentRegister,
+    studentLogin,
+    studentTimetable
+  };

@@ -1,21 +1,21 @@
-const Student = require("../models/Student.js")
-const Admin = require("../models/Admin.js")
-const Timetable = require("../content/timetable.js")
-const mongoose = require('mongoose');
-const encrypt=require("mongoose-encryption");
-
+const router = require("express").Router();
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
 
 const adminLogin = function (req, res) {
     const username=req.body.username;
     const password=req.body.password;
     if(username=="admin"&&password=="1234")
     {
-        res.render("dashboard");
+        // res.render("dashboard");
+        res.json({message:"admin login successful"});
     }
     else
     {
-        console.log("error");
+        res.status(400).json("Invalid Credentials!");
     }
 };
 
-module.exports = adminLogin;
+module.exports = {
+    adminLogin
+  };

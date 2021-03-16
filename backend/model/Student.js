@@ -1,23 +1,32 @@
 const mongoose = require("mongoose");
-const encrypt=require("mongoose-encryption");
 
 const studentSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+        min: 5,
+        max: 255
+    },
     username: {
-        type: String
+        type: String,
+        min: 6
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      max: 255,
+      min: 6
     },
     password: {
       type: String,
       required: true,
+      min: 6,
+      max: 1024
     },
     contact:{ 
       type: Number,
-      required: true,
+      required: true
     },
     section: {
       type: String,
@@ -33,8 +42,6 @@ const studentSchema = new mongoose.Schema({
     },
   });
   
-const secret="itisasecret";
-studentSchema.plugin(encrypt,{secret:secret,encryptedFields:["password"]});
   
 const Student = mongoose.model("Student", studentSchema);
 module.exports = Student;

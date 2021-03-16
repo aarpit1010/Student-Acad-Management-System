@@ -1,24 +1,15 @@
-const express = require("express");
-const studentRouter = express.Router();
-
-const {studentRegister, 
-    studentLogin, 
-    studentTimetable} = 
-    require("../controllers/studentController");
-
-studentRouter.post(
-    "/register",
-    studentRegister
-);
-
-studentRouter.post(
-    "/login",
-    studentLogin
-);
-
-studentRouter.get(
-    "/timetable",
+const router = require("express").Router();
+const {
+    studentRegister,
+    studentLogin,
     studentTimetable
-);
+  } = require("../controllers/studentController");
 
-module.exports = studentRouter;
+
+router.post('/register', studentRegister);
+
+router.post('/login', studentLogin);
+
+router.post('/timetable', studentTimetable);
+
+module.exports = router;
