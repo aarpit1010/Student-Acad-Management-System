@@ -54,10 +54,11 @@ const studentLogin = async (req, res) => {
       },
       process.env.TOKEN_SECRET
     );
-    let authDisplay = {};
-    authDisplay.authKey = token;
-    authDisplay.data = student;
-    res.json(authDisplay);
+
+    res.header('auth-token', token).json({
+        success: true,
+          message: 'Authentication successful!',
+          token});
 
 };
 

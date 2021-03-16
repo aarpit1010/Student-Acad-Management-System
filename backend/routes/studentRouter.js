@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const  verify = require('../controllers/verifyToken');
+
 const {
     studentRegister,
     studentLogin,
@@ -10,6 +12,7 @@ router.post('/register', studentRegister);
 
 router.post('/login', studentLogin);
 
-router.post('/timetable', studentTimetable);
+// router.post('/timetable', studentTimetable);
+router.get('/timetable', verify, studentTimetable);
 
 module.exports = router;
