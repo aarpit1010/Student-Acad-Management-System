@@ -48,17 +48,13 @@ const studentLogin = async (req, res) => {
     const validPass = await bcrypt.compare(password, student.password);
     if(!validPass) return res.status(403).json("Invalid Password!");
 
-    const token = await jwt.sign({
-        email: student.email,
+    const token = jwt.sign({
         _id: student._id,
       },
       process.env.TOKEN_SECRET
     );
-
-    res.header('auth-token', token).json({
-        success: true,
-          message: 'Authentication successful!',
-          token});
+    res.header('auth-token', token).send(token);
+ 
 
 };
 
@@ -73,7 +69,6 @@ const studentTimetable = async (req, res) => {
 						section:student.section
 					}, 
 						function(err,docs) {
-                    // res.render("timetable",
                     res.json(
                     {user: student._id,
                     data: docs}
@@ -81,9 +76,21 @@ const studentTimetable = async (req, res) => {
 				});
 
 };
+const profile= async (req,res) =>{
 
+   try{
+       const id=req.student._id;
+       const student= await Student.findOne({_id:id});
+       if(!student)
+       res.status(404).send("Not Found");
+       res.status(200).json(student);
+   } 
+   catch(err)
+   {
+       res.status(404).send("Not found");
+   }
+};
 module.exports = {
     studentRegister,
     studentLogin,
-    studentTimetable
-  };
+studentTimetable,profile };
