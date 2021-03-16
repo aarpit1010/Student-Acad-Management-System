@@ -5,7 +5,7 @@ const {
     studentRegister,
     studentLogin,
     studentTimetable,
-    profile
+    studentProfile
   } = require("../controllers/studentController");
 
 
@@ -15,5 +15,6 @@ router.post('/login', studentLogin);
 
 router.get('/timetable', verify, studentTimetable);
 
-router.get('/profile',verify,profile);
+router.get('/profile',verify, studentProfile);
+
 module.exports = router;

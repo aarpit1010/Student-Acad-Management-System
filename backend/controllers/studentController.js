@@ -53,7 +53,7 @@ const studentLogin = async (req, res) => {
       },
       process.env.TOKEN_SECRET
     );
-    res.header('auth-token', token).send(token);
+    res.header('auth-token', token).json(token);
  
 
 };
@@ -68,7 +68,7 @@ const studentTimetable = async (req, res) => {
 						semester: student.semester,
 						section:student.section
 					}, 
-						function(err,docs) {
+					function(err,docs) {
                     res.json(
                     {user: student._id,
                     data: docs}
@@ -76,21 +76,26 @@ const studentTimetable = async (req, res) => {
 				});
 
 };
-const profile= async (req,res) =>{
+
+const studentProfile= async (req,res) =>{
 
    try{
        const id=req.student._id;
        const student= await Student.findOne({_id:id});
        if(!student)
-       res.status(404).send("Not Found");
+       res.status(400).json("Student doesn't exist in Database");
        res.status(200).json(student);
    } 
    catch(err)
    {
-       res.status(404).send("Not found");
+       res.status(404).send("Invalid Request!");
    }
 };
+
+
 module.exports = {
     studentRegister,
     studentLogin,
-studentTimetable,profile };
+    studentTimetable,
+    studentProfile 
+};
