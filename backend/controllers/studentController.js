@@ -84,7 +84,15 @@ const studentProfile= async (req,res) =>{
        const student= await Student.findOne({_id:id});
        if(!student)
        res.status(400).json("Student doesn't exist in Database");
-       res.status(200).json(student);
+       res.status(200).json({
+        name:student.name,
+        enrollment_no:student.username,
+        email:student.email,
+        contact:student.contact,
+        branch:student.branch,
+        semester:student.semester,
+        section:student.section
+       });
    } 
    catch(err)
    {
