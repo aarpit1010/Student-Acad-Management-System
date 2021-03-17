@@ -1,12 +1,39 @@
 import React from "react";
 import "./leftpane.css";
 import { Nav, Row, Col, Container, Navbar, Image } from "react-bootstrap";
-import studentImg from "../../images/student.png";
+import studentImg from "../../images/student-img.jpg";
 
 function Leftpane() {
   return (
     <div className="leftpane">
-      <Container className="container">
+      <Nav defaultActiveKey="/" className="flex-column">
+        <Image className="student-img" src={studentImg} fluid roundedCircle />
+        <span href="/" className="profile-name">
+          Margaret Silvette
+          <br />
+          IIT2019501
+          <br />
+          2019-2023
+        </span>
+        <br />
+        <div className="links">
+          <Nav.Link href="/academic-registration">
+            Academic Registration
+          </Nav.Link>
+          <Nav.Link href="/course-summary">Course Summary</Nav.Link>
+          <Nav.Link href="/faculty">Faculty</Nav.Link>
+          <Nav.Link href="/certificates">Certificates</Nav.Link>
+          <Nav.Link href="/semwise-courses">Semwise Courses</Nav.Link>
+        </div>
+      </Nav>
+    </div>
+  );
+}
+
+export default Leftpane;
+
+{
+  /* <Container className="container">
         <Row>
           <Col sm-6>
             <Navbar bg="dark" variant="dark">
@@ -34,9 +61,5 @@ function Leftpane() {
             </Navbar>
           </Col>
         </Row>
-      </Container>
-    </div>
-  );
+      </Container> */
 }
-
-export default Leftpane;

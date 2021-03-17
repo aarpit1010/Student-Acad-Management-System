@@ -1,4 +1,4 @@
-.container {
+/* .container {
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -7,14 +7,37 @@
   height: 150vh;
   padding: 0 20px 0 20px !important;
   max-width: fit-content !important;
+  background-color: rgb(4, 10, 44);
+}
+ */
+
+.leftpane {
+  background-color: #141b41;
+  min-height: 100vh;
+  /* min-width: 135px; */
+  margin: 0;
+  padding: 0;
 }
 
 .student-img {
-  width: fit-content;
-  height: fit-content;
-  padding: 10px 20px !important;
+  align-self: center;
+  max-width: fit-content;
+  width: 150px;
+  height: 150px;
+  padding: 20px 0 !important;
+  border-radius:1%;
+}
+
+.Nav {
+  min-width: col-sm-4;
 }
 
 .profile-name {
   text-align: center;
+  color: aliceblue;
+}
+
+a.nav-link {
+  color: aliceblue;
+  padding: 20px 20px;
 }

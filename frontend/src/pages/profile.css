@@ -1,0 +1,20 @@
+.card-img-top {
+    height: 40% !important;
+    width: 40% !important ;
+}
+
+.card-text, .card-title {
+    text-align: center;
+    font-size: 25px;
+}
+
+.card {
+    margin: 0 auto !important;
+    height: 100%;
+}
+
+.profile {
+    margin: auto 0 !important;
+    height: 95%;
+background-image: radial-gradient(circle, rgb(185, 211, 218) 0%, rgb(147, 122, 207) 100%);
+}

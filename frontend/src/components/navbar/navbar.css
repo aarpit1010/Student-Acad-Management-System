@@ -1,6 +1,8 @@
 .navbar {
   width: 100% !important;
   padding: 0 !important;
+  background-color: #ffffff !important;
+  height: 8vh !important;
 }
 
 .items {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Tabs, Tab, Table } from "react-bootstrap";
+import "./course-summary.css";
 
 const DetailsTable = ({ data }) => {
   return (
@@ -89,7 +90,6 @@ const CourseSummary = () => {
       variant="tabs"
       style={{
         color: "white",
-        backgroundColor: "orange",
         fontWeight: "bold",
         padding: "10px",
       }}
