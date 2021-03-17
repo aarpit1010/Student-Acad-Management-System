@@ -27,7 +27,7 @@ export default class Demo extends React.PureComponent {
 
     return (
       <Container fluid="md">
-        <Row className="chart-row">
+        <Row className="chart-row vh-100">
           <Col md={4}>
             <Chart data={chartData} className="chart">
               <PieSeries
@@ -42,14 +42,7 @@ export default class Demo extends React.PureComponent {
           </Col>
           <Col>
             <Sgpigraph />
-            <span>Hiiiiii im extra space</span>
           </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <Image className="timetable" src={TimeTable} fluid />
-          </Col>
-          <Col>hello</Col>
         </Row>
       </Container>
     );

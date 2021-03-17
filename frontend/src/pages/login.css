@@ -1,0 +1,12 @@
+.Login {
+    background-image: url(../images/2558.jpg);
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+.card {
+    margin: 20vh auto;
+    max-width: 400px;
+    padding: 30px 20px;
+  }
