@@ -1,0 +1,15 @@
+body {
+    height: 100%;
+    /* display: flexbox; */
+}
+
+.card {
+    max-width: 65vw !important;
+    margin: 50px auto !important;
+    padding: 0 !important;
+}
+
+.card-img {
+    height: 100%;
+    width: 100%;
+}
