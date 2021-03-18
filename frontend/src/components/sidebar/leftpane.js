@@ -1,65 +1,53 @@
 import React from "react";
 import "./leftpane.css";
-import { Nav, Row, Col, Container, Navbar, Image } from "react-bootstrap";
+import { Nav, Image } from "react-bootstrap";
 import studentImg from "../../images/student-img.jpg";
+import { Link } from "react-router-dom";
 
 function Leftpane() {
-  return (
-    <div className="leftpane">
-      <Nav defaultActiveKey="/" className="flex-column">
-        <Image className="student-img" src={studentImg} fluid roundedCircle />
-        <span href="/" className="profile-name">
-          Margaret Silvette
-          <br />
-          IIT2019501
-          <br />
-          2019-2023
-        </span>
-        <br />
-        <div className="links">
-          <Nav.Link href="/academic-registration">
-            Academic Registration
-          </Nav.Link>
-          <Nav.Link href="/course-summary">Course Summary</Nav.Link>
-          <Nav.Link href="/faculty">Faculty</Nav.Link>
-          <Nav.Link href="/certificates">Certificates</Nav.Link>
-          <Nav.Link href="/semwise-courses">Semwise Courses</Nav.Link>
-        </div>
-      </Nav>
-    </div>
-  );
+    return (
+        <React.Fragment>
+            <div className="leftpane">
+                <Nav defaultActiveKey="/login" className="flex-column">
+                    <Image
+                        className="student-img"
+                        src={studentImg}
+                        fluid
+                        roundedCircle
+                    />
+                    <Link to="/" className="profile-name">
+                        <span>
+                            Margaret Silvette
+                            <br />
+                            IIT2019501
+                            <br />
+                            2019-2023
+                        </span>
+                    </Link>
+                    <br />
+                    <div className="links">
+                        <Nav.Link>
+                            <Link to="/academic-registration">
+                                Academic Registration
+                            </Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Link to="/course-summary">Course Summary</Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Link to="/faculty">Faculty</Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Link to="/certificates">Certificates</Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Link to="/semwise-courses">Semwise Courses</Link>
+                        </Nav.Link>
+                    </div>
+                </Nav>
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default Leftpane;
-
-{
-  /* <Container className="container">
-        <Row>
-          <Col sm-6>
-            <Navbar bg="dark" variant="dark">
-              <Nav className="flex-column">
-                <Image
-                  className="student-img"
-                  src={studentImg}
-                  fluid
-                  roundedCircle
-                />
-                <Navbar.Brand href="/" className="profile-name">
-                  Aniket Jain, IIT2019501
-                  <br />
-                  2019-2023
-                </Navbar.Brand>
-                <br />
-                <Nav.Link href="/academic-registration">
-                  Academic Registration
-                </Nav.Link>
-                <Nav.Link href="/course-summary">Course Summary</Nav.Link>
-                <Nav.Link href="/faculty">Faculty</Nav.Link>
-                <Nav.Link href="/certificates">Certificates</Nav.Link>
-                <Nav.Link href="/semwise-courses">Semwise Courses</Nav.Link>
-              </Nav>
-            </Navbar>
-          </Col>
-        </Row>
-      </Container> */
-}

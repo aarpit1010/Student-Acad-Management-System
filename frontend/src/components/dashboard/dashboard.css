@@ -1,3 +1,7 @@
-/* .chart-row {
-  height: 200px;
-} */
+.chart {
+  height: 400px !important;
+}
+
+.graph {
+  height: 500px !important;
+}
