@@ -13,7 +13,7 @@
 
 .leftpane {
   background-color: #141b41;
-  min-height: 100vh;
+  min-height: 116vh;
   /* min-width: 135px; */
   margin: 0;
   padding: 0;
@@ -25,7 +25,7 @@
   width: 150px;
   height: 150px;
   padding: 20px 0 !important;
-  border-radius:1%;
+  border-radius: 1%;
 }
 
 .Nav {

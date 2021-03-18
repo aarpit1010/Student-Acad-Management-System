@@ -1,12 +1,18 @@
 .Login {
-    background-image: url(../images/2558.jpg);
-    height: 100%;
-    width: 100%;
-    background-size: cover;
+  background-image: url(../images/2558.jpg);
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  padding: 200px;
+  /* margin: 0 0 !important; */
 }
 
 .card {
-    margin: 20vh auto;
-    max-width: 400px;
-    padding: 30px 20px;
-  }
+  width: 400px !important;
+  padding: 60px 20px;
+  max-height: 500px;
+}
+
+/* .form {
+  margin: 20vh auto !important;
+} */

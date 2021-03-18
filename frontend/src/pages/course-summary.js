@@ -43,8 +43,8 @@ const CourseSummary = () => {
       c1: 97.69,
       c2: 98.69,
       c3: 100,
-      total: 699.69,
-      gpa: 10.69,
+      total: 274.5,
+      gpa: 8.7,
     },
     {
       courseID: "DBS",
@@ -52,8 +52,8 @@ const CourseSummary = () => {
       c1: 97.69,
       c2: 98.69,
       c3: 100,
-      total: 699.69,
-      gpa: 10.69,
+      total: 274.5,
+      gpa: 8.7,
     },
     {
       courseID: "DBS",
@@ -61,8 +61,8 @@ const CourseSummary = () => {
       c1: 97.69,
       c2: 98.69,
       c3: 100,
-      total: 699.69,
-      gpa: 10.69,
+      total: 274.5,
+      gpa: 8.7,
     },
     {
       courseID: "DBS",
@@ -70,8 +70,8 @@ const CourseSummary = () => {
       c1: 97.69,
       c2: 98.69,
       c3: 100,
-      total: 699.69,
-      gpa: 10.69,
+      total: 274.5,
+      gpa: 8.7,
     },
     {
       courseID: "DBS",
@@ -79,8 +79,8 @@ const CourseSummary = () => {
       c1: 97.69,
       c2: 98.69,
       c3: 100,
-      total: 699.69,
-      gpa: 10.69,
+      total: 274.5,
+      gpa: 8.7,
     },
   ];
   return (

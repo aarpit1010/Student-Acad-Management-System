@@ -1,9 +1,12 @@
 import React from "react";
-import { Tabs, Tab, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import "./timetable.css";
 
-const tableDetails = ({ data }) => {
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+const DetailsTable = ({ data }) => {
   return (
-    <Table striped bordered hover variant="dark">
+    <Table responsive striped bordered hover variant="dark">
       <thead>
         <tr>
           <th>Day</th>
@@ -14,15 +17,13 @@ const tableDetails = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((item, key) => (
+        {data.day.map((item, key) => (
           <tr>
-            <td>{item.courseID}</td>
-            <td>{item.courseName}</td>
-            <td>{item.c1}</td>
-            <td>{item.c2}</td>
-            <td>{item.c3}</td>
-            <td>{item.total}</td>
-            <td>{item.gpa}</td>
+            <td>{days[key]}</td>
+            <td>{item[0]}</td>
+            <td>{item[1]}</td>
+            <td>{item[2]}</td>
+            <td>{item[3]}</td>
           </tr>
         ))}
       </tbody>
@@ -31,7 +32,17 @@ const tableDetails = ({ data }) => {
 };
 
 export default function Timetable() {
-  const data = fetch("http://localhost:3001/student/timetable")
-    .then((response) => response.json())
-    .then((json) => console.log(json));
+  const data = {
+    _id: "604d095acc41b23b8c4495a6",
+    semester: 4,
+    section: "A",
+    day: [
+      ["DAA", "PPL", "DAA", "NULL"],
+      ["DBMS", "SE", "PPL", "PPL"],
+      ["SE", "CN", "DBMS", "PPL"],
+      ["CN", "NULL", "DAA", "NULL"],
+      ["NULL", "NULL", "DAA", "NULL"],
+    ],
+  };
+  return <DetailsTable data={data} />;
 }

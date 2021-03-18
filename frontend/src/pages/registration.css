@@ -1,15 +1,22 @@
-body {
-    height: 100%;
-    /* display: flexbox; */
+.register {
+  height: 100%;
+  /* display: flexbox; */
+  background-image: radial-gradient(
+    circle,
+    rgb(185, 211, 218) 0%,
+    rgb(147, 122, 207) 100%
+  );
 }
 
-.card {
-    max-width: 65vw !important;
-    margin: 50px auto !important;
-    padding: 0 !important;
+.registration-card {
+  min-width: 65vw !important;
+  max-width: 65vw !important;
+  min-height: 130vh !important;
+  margin: 50px auto !important;
+  padding: 0 !important;
 }
 
-.card-img {
-    height: 100%;
-    width: 100%;
+.card-img-register {
+  height: 100%;
+  width: 100%;
 }

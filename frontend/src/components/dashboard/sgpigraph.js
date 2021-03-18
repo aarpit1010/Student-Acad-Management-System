@@ -32,7 +32,7 @@ export default class Sgpigraph extends React.PureComponent {
     const { data: chartData } = this.state;
 
     return (
-      <div className="card">
+      <div className="card p-0">
         <Chart data={chartData}>
           <ArgumentAxis />
           <ValueAxis max={7} />

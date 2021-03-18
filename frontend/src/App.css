@@ -1,5 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
 .App {
   margin: 0;
+  font-family: "Open Sans", sans-serif;
 }
 
 .main-col {
@@ -9,11 +12,12 @@
 body {
   width: 100%;
   height: 100%;
-  background-color:  #e7ecef;
+  background-color: #e7ecef;
 }
 
-.col-sm-2 {
+.sidebar {
   padding: 0 0 !important;
+  min-height: 100vh !important;
 }
 
 .col {
@@ -22,7 +26,7 @@ body {
 
 .components {
   background-color: #e7ecef;
-  height: 92vh;
+  min-height: 100vh !important;
   width: 100vw;
   padding: 0 !important;
 }
