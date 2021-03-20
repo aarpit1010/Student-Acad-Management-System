@@ -9,8 +9,12 @@ const adminLogin = function (req, res) {
     const password=req.body.password;
     if(username=="admin"&&password=="1234")
     {
-        // res.render("dashboard");
-        res.json({message:"admin login successful"});
+        const admintoken = jwt.sign({
+            _id: password
+          },
+          process.env.TOKEN_SECRET
+        );
+        res.header('admin-auth-token', admintoken).json(admintoken);
     }
     else
     {
@@ -20,10 +24,14 @@ const adminLogin = function (req, res) {
 
 const studentCoursesummary = async (req,res) => {
     const coursesummary = new course_summary(req.body);
-    console.log("chkhere");
+    
+    const enrollmentExist = await course_summary.findOne({ enrollment : req.body.enrollment});
+    if(enrollmentExist) return res.status(400).json('Enrollment already exists');
+    
     const savedStudentmarks = await coursesummary.save();
-    console.log("checknow");
-        res.status(200).json(savedStudentmarks);
+    // console.log("checknow");
+    // res.status(200).json(savedStudentmarks.semester_marks[0].c1);
+    res.status(200).json(savedStudentmarks);
 };
 
 
