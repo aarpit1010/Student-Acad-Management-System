@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
+const course_summary = require("../model/marks");
+
 
 const adminLogin = function (req, res) {
     const username=req.body.username;
@@ -16,6 +18,17 @@ const adminLogin = function (req, res) {
     }
 };
 
+const studentCoursesummary = async (req,res) => {
+    const coursesummary = new course_summary(req.body);
+    console.log("chkhere");
+    const savedStudentmarks = await coursesummary.save();
+    console.log("checknow");
+        res.status(200).json(savedStudentmarks);
+};
+
+
+
+
 module.exports = {
-    adminLogin
+    adminLogin, studentCoursesummary
   };
