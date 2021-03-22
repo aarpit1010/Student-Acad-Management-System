@@ -27,7 +27,69 @@ function App() {
         <Route exact path="/register" component={Register} />
         <Route path="/">
           <div className="App">
-            <Navbar hasAuth={Auth.isAuthenticated()} />
+            <div className="container-fluid h-100">
+              <div className="row h-100">
+                <div className="col-sm-2 p-0">
+                  <Sidebar />
+                </div>
+                <div className="col-sm-10 p-0">
+                  <div className="row m-0">
+                    <div className="col p-0">
+                      <Navbar hasAuth={Auth.isAuthenticated()} />
+                    </div>
+                  </div>
+                  <div className="row m-0">
+                    <div className="col main-col">
+                      <ProtectedRoute exact path="/" component={Dashboard} />
+                      <ProtectedRoute
+                        exact
+                        path="/academic-registration"
+                        component={AcademicRegistration}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/certificates"
+                        component={Certificates}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/course-summary"
+                        component={CourseSummary}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/faculty"
+                        component={Faculty}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/semwise-courses"
+                        component={SemwiseCourses}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/profile"
+                        component={Profile}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          ;
+        </Route>
+        <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
+      </Switch>
+    </React.Fragment>
+  );
+}
+
+export default App;
+
+{
+  /* 
+      <Navbar hasAuth={Auth.isAuthenticated()} />
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-2 sidebar">
@@ -72,12 +134,5 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-        </Route>
-        <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
-      </Switch>
-    </React.Fragment>
-  );
+*/
 }
-
-export default App;

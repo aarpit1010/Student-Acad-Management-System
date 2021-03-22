@@ -1,12 +1,13 @@
 .navbar {
   width: 100% !important;
   padding: 0 !important;
-  background-color: #ffffff !important;
+  background-color: #fca311 !important;
   height: 8vh !important;
 }
 
 .items {
   padding: 10px;
+  color: black !important;
 }
 
 .portal-name {

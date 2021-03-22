@@ -11,12 +11,8 @@
 }
  */
 
-.leftpane {
-  background-color: #141b41;
-  min-height: 116vh;
-  /* min-width: 135px; */
-  margin: 0;
-  padding: 0;
+.sidebar-component {
+  background-color: #14213d;
 }
 
 .student-img {
@@ -24,11 +20,11 @@
   max-width: fit-content;
   width: 150px;
   height: 150px;
-  padding: 20px 0 !important;
+  padding: 20px auto !important;
   border-radius: 1%;
 }
 
-.Nav {
+/* .Nav {
   min-width: col-sm-4;
 }
 
@@ -40,4 +36,15 @@
 a.nav-link {
   color: aliceblue;
   padding: 20px 20px;
+} */
+
+.sidebar-link {
+  color: #e5e5e5 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.tech-company {
+  font-size: 1.5em;
+  color: #109cf1 !important;
 }

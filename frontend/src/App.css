@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-.App {
+/* .App {
   margin: 0;
   font-family: "Open Sans", sans-serif;
 }
@@ -29,4 +30,15 @@ body {
   min-height: 100vh !important;
   width: 100vw;
   padding: 0 !important;
+} */
+
+.App {
+  /* text-align: center; */
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+.main-col {
+  background-color: #ecebeb;
+  height: 91vh;
 }
