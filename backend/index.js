@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 // import routes
 const studentAuth = require('./routes/studentRouter');
 const adminAuth = require('./routes/adminRouter');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ mongoose.connect(process.env.DB_CONNECT,
 
 // Middleware
 app.use(express.json());
-
+app.use(cors());
 app.use('/admin', adminAuth);
 app.use('/student', studentAuth);
 
