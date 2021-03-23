@@ -6,6 +6,9 @@ const dotenv = require("dotenv");
 const studentAuth = require('./routes/studentRouter');
 const adminAuth = require('./routes/adminRouter');
 const cors = require('cors');
+const addAcadCal = require('./routes/acadCalRoutes')
+fs = require('fs-extra')
+
 
 dotenv.config();
 
@@ -20,5 +23,9 @@ app.use(express.json());
 app.use(cors());
 app.use('/admin', adminAuth);
 app.use('/student', studentAuth);
+
+app.use('/public', express.static('public'));
+
+app.use('/cal', addAcadCal)
 
 app.listen(3001, () => console.log("Server Up and Running"));

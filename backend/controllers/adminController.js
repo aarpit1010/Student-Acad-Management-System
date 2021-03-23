@@ -72,11 +72,13 @@ const facultyList = async (req, res) => {
 
     res.status(200).json(facultyDB);
        
-}
+};
+
 
 module.exports = {
     adminLogin, 
     studentCoursesummary,
     studentdroppedcourses,
     facultyList
+    // acadcal
   };

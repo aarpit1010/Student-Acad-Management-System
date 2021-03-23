@@ -12,6 +12,8 @@ import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
 import SelectUser from "./pages/user-selection";
+// import FilesUploadComponent from './components/files-upload-component';
+
 
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
