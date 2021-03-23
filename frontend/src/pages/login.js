@@ -4,6 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import Auth from "../auth/Auth";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -58,7 +59,7 @@ const Login = () => {
               Login
             </button>
             <p className="forgot-password text-right">
-              <a href="#forgot-password">Forgot password?</a>
+              <Link to="#forgot-password">Forgot password?</Link>
             </p>
           </div>
         </div>

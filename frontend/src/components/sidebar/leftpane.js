@@ -29,28 +29,29 @@ function Leftpane() {
             className="nav-link sidebar-link active"
             to="/academic-registration"
           >
-            <i class="bi bi-person-lines-fill p-2"></i> Academic Registration
+            <i className="bi bi-person-lines-fill p-2"></i> Academic
+            Registration
           </Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link sidebar-link" to="/course-summary">
-            <i class="bi bi-clipboard-check p-2"></i> Course Summary
+            <i className="bi bi-clipboard-check p-2"></i> Course Summary
           </Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link sidebar-link" to="/faculty">
-            <i class="bi bi-people p-2"></i> Faculty
+            <i className="bi bi-people p-2"></i> Faculty
           </Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link sidebar-link" to="/certificates">
-            <i class="bi bi-file-earmark-text p-2"></i> Certificates
+            <i className="bi bi-file-earmark-text p-2"></i> Certificates
           </Link>
         </li>
 
         <li className="nav-item">
           <Link className="nav-link sidebar-link" to="/semwise-courses">
-            <i class="bi bi-list-ul p-2"></i> Semwise Courses
+            <i className="bi bi-list-ul p-2"></i> Semwise Courses
           </Link>
         </li>
       </ul>

@@ -15,11 +15,22 @@ function Timetable() {
     })
     .then((response) => {
       setData(response.data.data[0]);
-      // console.log("DATA FETCHED", response.data);
+      console.log("DATA FETCHED", response.data);
     })
     .catch((error) => console.log(error));
 
-  //   console.log("THIS IS MY RESPONSE:: ", data.day);
+  console.log("THIS IS MY RESPONSE:: ", data.day);
+
+  const daysArray = [];
+
+  for (const key in data.day) {
+    const innerArray = [];
+    innerArray.push(key);
+    data.day[key].map((item) => {
+      innerArray.push(item);
+    });
+    daysArray.push(innerArray);
+  }
 
   return (
     <Table responsive striped bordered hover variant="dark">
@@ -32,17 +43,18 @@ function Timetable() {
           <th>1710 - 1910 hrs</th>
         </tr>
       </thead>
-      {/* <tbody>
-        {data.day.map((item, key) => (
-          <tr>
-            <td>{}</td>
-            <td>{item[0]}</td>
-            <td>{item[1]}</td>
-            <td>{item[2]}</td>
-            <td>{item[3]}</td>
-          </tr>
-        ))}
-      </tbody> */}
+      <tbody>
+        {daysArray.map((outer, keyOuter) => {
+          console.log("DAYS ARRAY:", daysArray);
+          return (
+            <tr id={keyOuter}>
+              {outer.map((inner, keyInner) => {
+                return <td id={keyInner}>{inner}</td>;
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
     </Table>
   );
 }
