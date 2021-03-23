@@ -6,7 +6,9 @@ const {
     studentLogin,
     studentTimetable,
     studentProfile,
-    studentMarks
+    studentMarks,
+    droppedCourses,
+    viewFaculty
   } = require("../controllers/studentController");
 
 
@@ -19,5 +21,9 @@ router.get('/timetable', verify, studentTimetable);
 router.get('/profile',verify, studentProfile);
 
 router.get('/marks', verify, studentMarks);
+
+router.get('/droppedcourses', verify, droppedCourses);
+
+router.get('/viewFacultyList', verify, viewFaculty);
 
 module.exports = router;

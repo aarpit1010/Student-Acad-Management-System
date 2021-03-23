@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const Student = require("../model/Student");
-const course_summary = require("../model/marks");
-const Timetable = require("../utils/timetable.js");
-const Courses = require("../utils/courses.js");
+const {course_summary,droppedcourses} = require("../model/marks");
+const viewprof = require("../model/facultyList");
+const Timetable = require("../utils/timetable");
+const Courses = require("../utils/courses");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const {studentRegisterValid, studentLoginValid} = require('./validation');
@@ -111,8 +112,7 @@ const studentProfile= async (req,res) =>{
             branch:student.branch,
             semester:student.semester,
             section:student.section,
-            enrolled_course_id:docs[0].course_id,
-            enrolled_course_name:docs[0].course_name
+            enrolled_course:docs[0].course_list.sort(),
        });
         });
     }
@@ -132,25 +132,79 @@ const studentMarks = async (req,res) => {
         if (err) {
             return res.status(404).json("NOT FOUND");
         }
-        var enrolled_course_id;
-        var enrolled_course_name;
+        var enrolled_course;
         Courses.findCourse("courses",
             {
                 semester: student.semester,
                 branch: student.branch
             }, 
             function(err,docs2) {
-                    enrolled_course_id=docs2[0].course_id;
-                    enrolled_course_name=docs2[0].course_name;
+                    enrolled_course=docs2[0].course_list.sort();
                 res.status(200).json({
-                    course_id:enrolled_course_id,
-                    course_name:enrolled_course_name,
-                    marks_c1:docs[0].semester_marks[0].c1,
-                    marks_c2:docs[0].semester_marks[0].c2,
-                    marks_c3:docs[0].semester_marks[0].c3
+                    course:enrolled_course,
+                    marks:docs[0].semester_marks,
+                    // marks_c2:docs[0].semester_marks.c2,
+                    // marks_c3:docs[0].semester_marks.c3,
+                    // marks_total:docs[0].semester_marks.total,
+                    // gpi:docs[0].semester_marks.gpa
                 });
         });
     });
+};
+
+const droppedCourses = async (req,res) =>{
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
+    
+    const studentdroppedcourses= await droppedcourses.findOne({enrollment:student.username});
+  
+        if (!studentdroppedcourses) {
+            
+            res.json({dropped_courses:[]});
+        }
+        else
+        {
+            res.json({dropped_courses:studentdroppedcourses.dropped_courses});
+        }  
+};
+
+const viewFaculty = async (req,res) => {
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+        res.status(400).json("Student doesn't exist in Database");
+
+    viewprof.find({branch: student.branch,
+                semester: student.semester,
+                section : student.section
+            },
+            function(err,docs) {
+                if (err) {
+                    return res.status(404).json("NOT FOUND");
+                }
+                var verify_course;
+                // var verify_course_name = [];
+                Courses.findCourse("courses",
+                    {
+                        semester: student.semester,
+                        branch: student.branch
+                    }, 
+                    function(err,docs2) {
+                            verify_course=docs2[0].course_list.sort();
+                            // verify_course_name=docs2[0].course_name.sort();
+
+                        res.status(200).json({
+                            // course_id: verify_course_id,
+                            // course_name: verify_course_name,
+                            faculty: docs[0].faculty.sort()
+                        });
+                });
+
+            }
+    );
+    
 };
 
 module.exports = {
@@ -158,5 +212,7 @@ module.exports = {
     studentLogin,
     studentTimetable,
     studentProfile,
-    studentMarks
+    studentMarks,
+    droppedCourses,
+    viewFaculty
 };

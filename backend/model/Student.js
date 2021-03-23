@@ -40,6 +40,10 @@ const studentSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
+    enrollment: {
+      type: String,
+      required: true,
+    },
   });
   
   
