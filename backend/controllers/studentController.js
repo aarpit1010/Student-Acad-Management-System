@@ -143,6 +143,7 @@ const studentMarks = async (req,res) => {
                 res.status(200).json({
                     course:enrolled_course,
                     marks:docs[0].semester_marks,
+                    attendance:docs[0].attendance
                     // marks_c2:docs[0].semester_marks.c2,
                     // marks_c3:docs[0].semester_marks.c3,
                     // marks_total:docs[0].semester_marks.total,
