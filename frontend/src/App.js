@@ -11,6 +11,7 @@ import SemwiseCourses from "./pages/semwise-courses";
 import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
+import SelectUser from "./pages/user-selection";
 
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
@@ -23,6 +24,7 @@ function App() {
   return (
     <React.Fragment>
       <Switch>
+        <Route exact path="/selectUser" component={SelectUser} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route path="/">

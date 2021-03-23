@@ -15,11 +15,11 @@ function Timetable() {
     })
     .then((response) => {
       setData(response.data.data[0]);
-      console.log("DATA FETCHED", response.data);
+      // console.log("DATA FETCHED", response.data);
     })
     .catch((error) => console.log(error));
 
-  console.log("THIS IS MY RESPONSE:: ", data.day);
+  //   console.log("THIS IS MY RESPONSE:: ", data.day);
 
   const daysArray = [];
 
