@@ -16,7 +16,7 @@ function Navigation() {
   };
 
   return (
-    <div className="navbar">
+    <div className="navbar-student">
       <Navbar>
         {/* <Navbar.Brand className="portal-name">Student Portal</Navbar.Brand> */}
         <Nav className="ml-auto items">

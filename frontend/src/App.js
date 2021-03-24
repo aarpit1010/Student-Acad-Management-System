@@ -14,26 +14,28 @@ import Profile from "./pages/profile";
 import SelectUser from "./pages/user-selection";
 // import FilesUploadComponent from './components/files-upload-component';
 
-
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
 
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 import { Route, Switch } from "react-router-dom";
+import AdminDashboard from "./admin-pages/admin-dashboard";
 
 function App() {
   return (
     <React.Fragment>
       <Switch>
         <Route exact path="/selectUser" component={SelectUser} />
+        <Route exact path="/adminDashboard" component={AdminDashboard} />
+
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route path="/">
           <div className="App">
             <div className="container-fluid h-100">
               <div className="row h-100">
-                <div className="col-sm-2 p-0">
+                <div className="col-sm-2 sidebar p-0">
                   <Sidebar />
                 </div>
                 <div className="col-sm-10 p-0">

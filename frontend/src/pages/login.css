@@ -1,5 +1,11 @@
 .Login {
-  background-image: url(../images/2558.jpg);
+  background-image: linear-gradient(
+    #355c7d,
+    #6c5b7b,
+    #c06c84,
+    #f67280,
+    #f8b195
+  );
   height: 100vh;
   width: 100vw;
   background-size: cover;

@@ -1,10 +1,34 @@
-import React from "react";
 import "./leftpane.css";
 import { Nav, Image } from "react-bootstrap";
-import studentImg from "../../images/student-img.jpg";
+import studentImg from "../../images/student.png";
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function Leftpane() {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/student/profile", {
+        headers: {
+          "auth-token": localStorage.token,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (isLoading) {
+    return <div className="Course-Summary">Loading...</div>;
+  }
+
   return (
     <div className="sidebar-component shadow h-100">
       <ul className="nav flex-column">
@@ -17,9 +41,9 @@ function Leftpane() {
         />
         <br />
         <Link to="/" className="profile-name mx-auto">
-          Margaret Silvette
+          {data.name}
           <br />
-          IIT2019501
+          {data.enrollment_no}
           <br />
           2019-2023
         </Link>

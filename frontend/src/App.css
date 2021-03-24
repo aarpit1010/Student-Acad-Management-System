@@ -16,11 +16,6 @@ body {
   background-color: #e7ecef;
 }
 
-.sidebar {
-  padding: 0 0 !important;
-  min-height: 100vh !important;
-}
-
 .col {
   min-width: 540px;
 }
@@ -39,6 +34,11 @@ body {
 }
 
 .main-col {
-  background-color: #ecebeb;
-  height: 91vh;
+  /* background-color: #ecebeb; */
+  height: 130vh;
+}
+
+.sidebar {
+  padding: 0 0 !important;
+  min-height: 130vh !important;
 }

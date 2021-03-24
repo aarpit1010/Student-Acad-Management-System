@@ -1,14 +1,11 @@
 import React from "react";
-// import "./login.css";
+import adminLogin from "../images/admin.jpg";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Auth from "../auth/Auth";
 import { useHistory } from "react-router";
-import studentLogin from "../images/student-login.jpg";
 
-import { Link } from "react-router-dom";
-
-const Login = () => {
+const AdminLogin = () => {
   const { register, handleSubmit } = useForm();
   const history = useHistory();
 
@@ -29,11 +26,10 @@ const Login = () => {
   };
 
   return (
-    <div className="Login">
-      <div class="card pt-1">
-        <a className="p-3 ml-auto">Haven't Registered? Get started</a>
-        <img src={studentLogin} class="card-img-top m-0" alt="..." />
-        <div class="card-body">
+    <div className="AdminLogin">
+      <div className="card pt-1 shadow rounded">
+        <img src={adminLogin} className="card-img-top m-0" alt="..." />
+        <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <input
@@ -57,7 +53,7 @@ const Login = () => {
             <button
               type="submit"
               className="btn btn-primary btn-block"
-              style={{ "background-color": "#2F9599" }}
+              style={{ backgroundColor: "#2F9599" }}
             >
               Login
             </button>
@@ -68,4 +64,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

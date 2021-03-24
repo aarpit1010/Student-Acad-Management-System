@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import studentImg from "../images/student-img.jpg";
+import studentImg from "../images/student.png";
 import "./profile.css";
 import axios from "axios";
 
@@ -20,7 +20,7 @@ function Profile() {
 
   return (
     <div className="profile">
-      <div className="card w-50 mb-3 mt-3">
+      <div className="card w-50 mb-3 mt-3 profile-card">
         <img
           className="card-img-top rounded mx-auto d-block .img-fluid. max-width: 50%"
           src={studentImg}

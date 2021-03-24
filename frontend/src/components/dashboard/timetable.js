@@ -45,7 +45,6 @@ function Timetable() {
       </thead>
       <tbody>
         {daysArray.map((outer, keyOuter) => {
-          console.log("DAYS ARRAY:", daysArray);
           return (
             <tr id={keyOuter}>
               {outer.map((inner, keyInner) => {
