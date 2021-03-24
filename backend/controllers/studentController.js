@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Student = require("../model/Student");
+const Log = require("../model/log");
 const {course_summary,droppedcourses} = require("../model/marks");
 const viewprof = require("../model/facultyList");
 const Timetable = require("../utils/timetable");
@@ -39,6 +40,31 @@ const studentRegister = async (req, res) => {
     student.password = await bcrypt.hash(givenPassword, salt);
 
     try {
+        var created_date_time = student.creation_date;
+        var current_date_time = student.last_login_date;
+
+        now = new Date();
+        current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        if(!created_date_time) {
+            created_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        }
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Successfully Registered",
+            role: "Student" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Updated Logs");
+            }
+        });
+
         const savedStudent = await student.save();
         res.status(201).json(savedStudent);
     } catch(err) {
@@ -62,21 +88,45 @@ const studentLogin = async (req, res) => {
     const validPass = await bcrypt.compare(password, student.password);
     if(!validPass) return res.status(403).json("Invalid Password!");
 
+    var created_date_time = student.creation_date;
+    var current_date_time = student.last_login_date;
+
+    now = new Date();
+    current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    if(!created_date_time) {
+        created_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    }
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Successfully Logged In",
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+
     const token = jwt.sign({
         _id: student._id,
       },
       process.env.TOKEN_SECRET
     );
     res.header('auth-token', token).json(token);
- 
 
 };
 
 const studentTimetable = async (req, res) => {
     const id=req.student._id;
-       const student= await Student.findOne({_id:id});
-       if(!student)
-       res.status(400).json("Student doesn't exist in Database");
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
 
     Timetable.finder("timetable",
 					{

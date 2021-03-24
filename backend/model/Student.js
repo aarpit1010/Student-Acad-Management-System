@@ -44,8 +44,30 @@ const studentSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    creation_date: {
+      type: Date,
+      default: Date.now
+    },
+    last_login_date: {
+        type: Date,
+        default: Date.now
+  }
   });
+
+studentSchema.statics.login = function login(id, callback) {
+  return this.findByIdAndUpdate(id, { $set : { 'last_login_date' : Date.now() },  'new' : true }, callback);
+};
   
-  
+// Sets the created_at parameter equal to the current time
+studentSchema.pre('save', function(next){
+  now = new Date();
+  this.last_login_date = now;
+  if(!this.creation_date) {
+      this.creation_date = now
+  }
+  next();
+});
+
+
 const Student = mongoose.model("Student", studentSchema);
 module.exports = Student;

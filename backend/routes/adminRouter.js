@@ -5,7 +5,8 @@ const {
   adminLogin, 
   studentCoursesummary,
   studentdroppedcourses,
-  facultyList
+  facultyList,
+  logReport
 } 
 = require("../controllers/adminController");
 
@@ -18,6 +19,8 @@ adminRouter.get('/studentmarks', admin_verify, studentCoursesummary);
 adminRouter.get('/studentdroppedcourses', admin_verify, studentdroppedcourses);
 
 adminRouter.get('/addFaculty', admin_verify, facultyList);
+
+adminRouter.get('/generatelogs', admin_verify, logReport);
 
 
 module.exports = adminRouter;

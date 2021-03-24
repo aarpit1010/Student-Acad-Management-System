@@ -7,6 +7,7 @@ const studentAuth = require('./routes/studentRouter');
 const adminAuth = require('./routes/adminRouter');
 const cors = require('cors');
 const addAcadCal = require('./routes/acadCalRoutes')
+const  admin_verify = require('./controllers/admin_verifyToken');
 fs = require('fs-extra')
 
 
@@ -26,6 +27,6 @@ app.use('/student', studentAuth);
 
 app.use('/public', express.static('public'));
 
-app.use('/cal', addAcadCal)
+app.use('/cal', admin_verify, addAcadCal)
 
 app.listen(3001, () => console.log("Server Up and Running"));

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const {course_summary, droppedcourses} = require("../model/marks");
 const faculty_list = require("../model/facultyList");
+const Log = require("../model/log");
 
 
 const adminLogin = function (req, res) {
@@ -10,6 +11,24 @@ const adminLogin = function (req, res) {
     const password=req.body.password;
     if(username=="admin"&&password=="1234")
     {
+        now = new Date();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Successfully Logged In",
+            role: "ADMIN" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log("Updated Logs");
+            }
+        });
+
         const admintoken = jwt.sign({
             _id: password
           },
@@ -32,6 +51,25 @@ const studentCoursesummary = async (req,res) => {
     const savedStudentmarks = await coursesummary.save();
     // console.log("checknow");
     // res.status(200).json(savedStudentmarks.semester_marks[0].c1);
+
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Added new Student's Marks & Attendance",
+        role: "ADMIN" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log("Updated Logs");
+        }
+    });
+
     res.status(200).json(savedStudentmarks);
 };
 
@@ -47,8 +85,28 @@ const studentdroppedcourses = async (req,res) => {
             enrollmentExist.dropped_courses.push(req.body.dropped_courses[i]);
         }
         enrollmentExist.save();
+
+        now = new Date();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Updated List of Student's Dropped Courses",
+            role: "ADMIN" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log("Updated Logs");
+            }
+        });
+
         res.status(400).json(enrollmentExist.dropped_courses);
     }
+
     else
     {
         var enroll=new droppedcourses();
@@ -58,6 +116,25 @@ const studentdroppedcourses = async (req,res) => {
             enroll.dropped_courses.push(req.body.dropped_courses[i]);
         }
         enroll.save();
+
+        now = new Date();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Added List of Student's Dropped Courses",
+            role: "ADMIN" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log("Updated Logs");
+            }
+        });
+
         res.status(200).json(enroll.dropped_courses);
     }
 }
@@ -65,13 +142,37 @@ const studentdroppedcourses = async (req,res) => {
 const facultyList = async (req, res) => {
     const addFaculty = new faculty_list(req.body);
     
-    const profExists = await faculty_list.findOne({ facultyname : req.body.facultyname});
+    const profExists = await faculty_list.findOne({ branch : req.body.branch,
+         semester : req.body.semester, section : req.body.section});
     if(profExists) res.status(400).json("Faculty has already been added");
     
-    const facultyDB = await addFaculty.sort().save();
+    const facultyDB = await addFaculty.save();
+
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Added Faculty List",
+        role: "ADMIN" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log("Updated Logs");
+        }
+    });
 
     res.status(200).json(facultyDB);
        
+};
+
+const logReport = async (req,res) => {
+    const logExists = await Log.find({});
+    if(logExists) res.status(200).json(logExists);
 };
 
 
@@ -79,6 +180,7 @@ module.exports = {
     adminLogin, 
     studentCoursesummary,
     studentdroppedcourses,
-    facultyList
+    facultyList,
     // acadcal
+    logReport
   };
