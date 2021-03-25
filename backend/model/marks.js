@@ -83,9 +83,17 @@ const dropped_courses = new mongoose.Schema({
   dropped_courses:[String]
 });
 
+const notification = new mongoose.Schema({
+  enrollment:{
+    type: mongoose.Schema.Types.String, ref: 'Student'
+  },
+  notifs_arr:[String]
+});
 
 // coursesummary.plugin(findOrCreate);
 
 const course_summary = mongoose.model("coursesummary", coursesummary);
 const droppedcourses= mongoose.model("dropped_courses",dropped_courses);
-module.exports = {course_summary,droppedcourses};
+const notifs= mongoose.model("notification",notification);
+
+module.exports = {course_summary,droppedcourses,notifs};

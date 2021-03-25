@@ -1,8 +1,8 @@
 let express = require('express'),
     multer = require('multer'),
     mongoose = require('mongoose'),
-    // uuidv4 = require('uuid/v4'),
     router = express.Router();
+    Log = require("../model/log");
 
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
@@ -16,7 +16,8 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, uuidv4() + '-' + fileName)
+        // cb(null, uuidv4() + '-' + fileName)
+        cb(null, fileName)
         // cb(null, file.fieldname + '-' + Date.now())
     }
 });
@@ -38,33 +39,64 @@ let User = require('../model/acadCalendar');
 
 router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
     const url = req.protocol + '://' + req.get('host')
-    console.log(url);
+
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
-        // name: req.body.name,
         calpdf: url + '/public/' + req.file.filename
     });
-    // console.log(calpdf);
-    user.save().then(result => {
-        res.status(201).json({
-            message: "Academic Calendar Added!",
-            calAdded: {
-                _id: result._id,
-                calpdf: result.calpdf
+
+    const chk = url + '/public/' + req.file.filename;
+    
+    var cal_id = "605b7f3f595e855a68f57fe2";
+
+    User.findByIdAndUpdate(cal_id, {$set:
+        {calpdf: url + '/public/' + req.file.filename}},
+        {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Something wrong when updating file!");
             }
-        })
-    }).catch(err => {
-        console.log(err),
-            res.status(500).json({
-                error: err
-            });
-    })
+            res.status(201).json(doc);
+    });
+
+    // user.save().then(result => {
+    //     res.status(201).json({
+    //         message: "Academic Calendar Added!",
+    //         calAdded: {
+    //             _id: result._id,
+    //             calpdf: result.calpdf
+    //         }
+    //     })
+    // }).catch(err => {
+    //     console.log(err),
+    //         res.status(500).json({
+    //             error: err
+    //         });
+    // })
+
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Added/Updated Academic Calendar",
+        role: "ADMIN" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+
 })
 
 router.get("/", (req, res, next) => {
     User.find().then(data => {
         res.status(200).json({
-            message: "User list retrieved successfully!",
+            message: "Academic Calendar Uploaded Successfully!",
             users: data
         });
     });

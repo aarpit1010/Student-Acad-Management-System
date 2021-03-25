@@ -8,7 +8,9 @@ const {
     studentProfile,
     studentMarks,
     droppedCourses,
-    viewFaculty
+    viewFaculty,
+    mailsend,
+    notifications
   } = require("../controllers/studentController");
 
 
@@ -25,5 +27,9 @@ router.get('/marks', verify, studentMarks);
 router.get('/droppedcourses', verify, droppedCourses);
 
 router.get('/viewFacultyList', verify, viewFaculty);
+
+router.post('/send',mailsend);
+
+router.get('/notifications',verify,notifications);
 
 module.exports = router;

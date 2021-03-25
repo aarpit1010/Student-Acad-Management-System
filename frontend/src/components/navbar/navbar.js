@@ -11,7 +11,7 @@ function Navigation() {
   const handleLogout = () => {
     Auth.logout(() => {
       localStorage.clear();
-      history.push("/login");
+      history.push("/selectUser");
     });
   };
 

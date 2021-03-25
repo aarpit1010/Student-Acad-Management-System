@@ -12,6 +12,7 @@ import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
 import SelectUser from "./pages/user-selection";
+import Message from "./components/email/Message";
 // import FilesUploadComponent from './components/files-upload-component';
 
 import Navbar from "./components/navbar/navbar";
@@ -76,6 +77,11 @@ function App() {
                         exact
                         path="/profile"
                         component={Profile}
+                      />
+                      <Route
+                        exact
+                        path="/student/send"
+                        component={Message}
                       />
                     </div>
                   </div>

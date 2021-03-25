@@ -78,6 +78,12 @@ function Leftpane() {
             <i className="bi bi-list-ul p-2"></i> Semwise Courses
           </Link>
         </li>
+
+        <li className="nav-item">
+          <Link className="nav-link sidebar-link" to="/student/send">
+            <i className="bi bi-list-ul p-2"></i> Interaction
+          </Link>
+        </li>
       </ul>
     </div>
   );

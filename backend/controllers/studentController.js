@@ -1,12 +1,14 @@
 const router = require("express").Router();
 const Student = require("../model/Student");
 const Log = require("../model/log");
-const {course_summary,droppedcourses} = require("../model/marks");
+const {course_summary,droppedcourses,notifs} = require("../model/marks");
 const viewprof = require("../model/facultyList");
 const Timetable = require("../utils/timetable");
 const Courses = require("../utils/courses");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer')
+const sendGridTransport = require('nodemailer-sendgrid-transport');
 const {studentRegisterValid, studentLoginValid} = require('./validation');
 
 
@@ -258,6 +260,48 @@ const viewFaculty = async (req,res) => {
     
 };
 
+
+const mailsend = (req,res) =>{
+    const transporter = nodemailer.createTransport(sendGridTransport({
+        auth:{
+        api_key:process.env.mail_sender
+        }
+    }));
+    const { name, email, message, subject } = req.body
+    transporter.sendMail({
+    from:"devkarenge@gmail.com",
+    to: email,
+    subject:subject,
+    html:`<h3>${name}</h3>
+    <p>${message}</p>`
+    }).then(resp => {
+    res.json({resp})
+    })
+    .catch(err => {
+    console.log(err)
+    })
+};
+
+
+const notifications = async (req,res) =>{
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
+    
+    const studentnotifications= await notifs.findOne({enrollment:student.username});
+  
+        if (!studentnotifications) {
+            
+            res.json({notifs_arr:[]});
+        }
+        else
+        {
+            res.json({notifs_arr:studentnotifications.notifs_arr});
+        }  
+};
+
+
 module.exports = {
     studentRegister,
     studentLogin,
@@ -265,5 +309,7 @@ module.exports = {
     studentProfile,
     studentMarks,
     droppedCourses,
-    viewFaculty
+    viewFaculty,
+    mailsend,
+    notifications
 };

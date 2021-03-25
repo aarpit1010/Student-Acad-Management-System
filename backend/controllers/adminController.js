@@ -1,15 +1,15 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
-const {course_summary, droppedcourses} = require("../model/marks");
+const {course_summary, droppedcourses,notifs} = require("../model/marks");
 const faculty_list = require("../model/facultyList");
 const Log = require("../model/log");
 
 
 const adminLogin = function (req, res) {
-    const username=req.body.username;
+    const username=req.body.email;
     const password=req.body.password;
-    if(username=="admin"&&password=="1234")
+    if(username=="authority.iiita@gmail.com"&&password=="1234")
     {
         now = new Date();
         var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
@@ -25,7 +25,7 @@ const adminLogin = function (req, res) {
             if(err){
                 console.log(err);
             } else {
-                // console.log("Updated Logs");
+                console.log("Updated Logs");
             }
         });
 
@@ -49,8 +49,6 @@ const studentCoursesummary = async (req,res) => {
     if(enrollmentExist) return res.status(400).json('Enrollment already exists');
     
     const savedStudentmarks = await coursesummary.save();
-    // console.log("checknow");
-    // res.status(200).json(savedStudentmarks.semester_marks[0].c1);
 
     now = new Date();
     var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
@@ -66,7 +64,7 @@ const studentCoursesummary = async (req,res) => {
         if(err){
             console.log(err);
         } else {
-            // console.log("Updated Logs");
+            console.log("Updated Logs");
         }
     });
 
@@ -100,7 +98,7 @@ const studentdroppedcourses = async (req,res) => {
             if(err){
                 console.log(err);
             } else {
-                // console.log("Updated Logs");
+                console.log("Updated Logs");
             }
         });
 
@@ -118,8 +116,9 @@ const studentdroppedcourses = async (req,res) => {
         enroll.save();
 
         now = new Date();
-        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
-            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + 
+            '-' + now.getFullYear() + '    '+ now.getHours()+
+            ':'+now.getMinutes()+':'+now.getSeconds();
         
         const log = new Log({
             createdAt: current_date_time,
@@ -131,7 +130,7 @@ const studentdroppedcourses = async (req,res) => {
             if(err){
                 console.log(err);
             } else {
-                // console.log("Updated Logs");
+                console.log("Updated Logs");
             }
         });
 
@@ -144,7 +143,8 @@ const facultyList = async (req, res) => {
     
     const profExists = await faculty_list.findOne({ branch : req.body.branch,
          semester : req.body.semester, section : req.body.section});
-    if(profExists) res.status(400).json("Faculty has already been added");
+
+    if(profExists) return res.status(400).json("Faculty has already been added");
     
     const facultyDB = await addFaculty.save();
 
@@ -162,7 +162,7 @@ const facultyList = async (req, res) => {
         if(err){
             console.log(err);
         } else {
-            // console.log("Updated Logs");
+            console.log("Updated Logs");
         }
     });
 
@@ -175,12 +175,39 @@ const logReport = async (req,res) => {
     if(logExists) res.status(200).json(logExists);
 };
 
+const notifications =async (req,res) =>{
+    const  Notification= new notifs(req.body);
+    
+    const enrollmentExist = await notifs.findOne({ enrollment : req.body.enrollment});
+    if(enrollmentExist)
+    {
+        for(i=0;i<req.body.notifs_arr.length;i++)
+        {
+            enrollmentExist.notifs_arr.push(req.body.notifs_arr[i]);
+        }
+        enrollmentExist.save();
+
+        res.status(400).json(enrollmentExist.notifs_arr);
+    }
+    else
+    {
+        var enroll=new notifs();
+        enroll.enrollment=req.body.enrollment;
+        for(i=0;i<req.body.notifs_arr.length;i++)
+        {
+            enroll.notifs_arr.push(req.body.notifs_arr[i]);
+        }
+        enroll.save();
+        res.status(200).json(enroll.notifs_arr);
+    }
+};
+
 
 module.exports = {
     adminLogin, 
     studentCoursesummary,
     studentdroppedcourses,
     facultyList,
-    // acadcal
-    logReport
+    logReport,
+    notifications
   };
