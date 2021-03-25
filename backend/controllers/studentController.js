@@ -55,7 +55,7 @@ const studentRegister = async (req, res) => {
         
         const log = new Log({
             createdAt: current_date_time,
-            action: "Successfully Registered",
+            action: "Successfully Registered "+ student.username,
             role: "Student" 
         });
 
@@ -103,7 +103,7 @@ const studentLogin = async (req, res) => {
     
     const log = new Log({
         createdAt: current_date_time,
-        action: "Successfully Logged In",
+        action: "Successfully Logged In "+ student.username,
         role: "Student" 
     });
 
@@ -280,6 +280,24 @@ const mailsend = (req,res) =>{
     .catch(err => {
     console.log(err)
     })
+
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "E-Mail Sent by "+ name+" to : "+email,
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
 };
 
 
@@ -298,9 +316,58 @@ const notifications = async (req,res) =>{
         else
         {
             res.json({notifs_arr:studentnotifications.notifs_arr});
+            now = new Date();
+            var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+                + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+            
+            const log = new Log({
+                createdAt: current_date_time,
+                action: "Notifications Seen by "+ student.username,
+                role: "Student" 
+            });
+
+            log.save(function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log("Updated Logs");
+                }
+            });
         }  
 };
 
+// const studentsemwisecourses= async (req,res) =>{
+//     try{
+//         const id=req.student._id;
+//         const student= await Student.findOne({_id:id});
+//         if(!student)
+//         res.status(400).json("Student doesn't exist in Database");
+//         Courses.findCourse("courses",
+//                      {
+//                          semester: student.semester,
+//                          branch:student.branch
+//                      }, 
+//                      function(err,docs) {
+//         for(i = 0; i <= student.semester; i++) {
+
+//         }
+//         res.status(200).json({
+//              name:student.name,
+//              enrollment_no:student.username,
+//              email:student.email,
+//              contact:student.contact,
+//              branch:student.branch,
+//              semester:student.semester,
+//              section:student.section,
+//              enrolled_course:docs[0].course_list.sort(),
+//         });
+//          });
+//      }
+//     catch(err)
+//     {
+//         res.status(403).json("Invalid Request!");
+//     }
+//  };
 
 module.exports = {
     studentRegister,

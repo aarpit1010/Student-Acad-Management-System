@@ -11,23 +11,23 @@ const adminLogin = function (req, res) {
     const password=req.body.password;
     if(username=="authority.iiita@gmail.com"&&password=="1234")
     {
-        now = new Date();
-        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
-            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        // now = new Date();
+        // var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        //     + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
         
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Successfully Logged In",
-            role: "ADMIN" 
-        });
+        // const log = new Log({
+        //     createdAt: current_date_time,
+        //     action: "Successfully Logged In",
+        //     role: "ADMIN" 
+        // });
 
-        log.save(function(err){
-            if(err){
-                console.log(err);
-            } else {
-                console.log("Updated Logs");
-            }
-        });
+        // log.save(function(err){
+        //     if(err){
+        //         console.log(err);
+        //     } else {
+        //         console.log("Updated Logs");
+        //     }
+        // });
 
         const admintoken = jwt.sign({
             _id: password
@@ -56,7 +56,7 @@ const studentCoursesummary = async (req,res) => {
     
     const log = new Log({
         createdAt: current_date_time,
-        action: "Added new Student's Marks & Attendance",
+        action: "Added "+coursesummary.enrollment+" Marks & Attendance",
         role: "ADMIN" 
     });
 
@@ -90,7 +90,7 @@ const studentdroppedcourses = async (req,res) => {
         
         const log = new Log({
             createdAt: current_date_time,
-            action: "Updated List of Student's Dropped Courses",
+            action: "Updated List of Dropped Courses for "+enrollmentExist.enrollment,
             role: "ADMIN" 
         });
 
@@ -122,7 +122,7 @@ const studentdroppedcourses = async (req,res) => {
         
         const log = new Log({
             createdAt: current_date_time,
-            action: "Added List of Student's Dropped Courses",
+            action: "Added List of Dropped Courses for "+enroll.enrollment,
             role: "ADMIN" 
         });
 
@@ -188,6 +188,24 @@ const notifications =async (req,res) =>{
         enrollmentExist.save();
 
         res.status(400).json(enrollmentExist.notifs_arr);
+
+        now = new Date();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Sent another notification to "+enrollmentExist.enrollment,
+            role: "ADMIN" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Updated Logs");
+            }
+        });
     }
     else
     {
@@ -199,6 +217,23 @@ const notifications =async (req,res) =>{
         }
         enroll.save();
         res.status(200).json(enroll.notifs_arr);
+        now = new Date();
+        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Sent Notifications to "+enroll.enrollment,
+            role: "ADMIN" 
+        });
+
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Updated Logs");
+            }
+        });
     }
 };
 
