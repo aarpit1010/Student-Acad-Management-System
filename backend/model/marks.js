@@ -87,7 +87,12 @@ const notification = new mongoose.Schema({
   enrollment:{
     type: mongoose.Schema.Types.String, ref: 'Student'
   },
-  notifs_arr:[String]
+  notifs_arr:[
+    {
+    message: String,
+    sent_time: String
+   }
+]
 });
 
 // coursesummary.plugin(findOrCreate);

@@ -180,21 +180,25 @@ const notifications =async (req,res) =>{
     
     const enrollmentExist = await notifs.findOne({ enrollment : req.body.enrollment});
     if(enrollmentExist)
-    {
-        for(i=0;i<req.body.notifs_arr.length;i++)
-        {
-            enrollmentExist.notifs_arr.push(req.body.notifs_arr[i]);
+    {  
+        // console.log(req.body.notifs_arr[0].message);
+
+        now = new Date();
+        var notif_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '   '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+
+        var obj = {
+            message: req.body.notifs_arr[0].message,
+            sent_time: notif_date_time
         }
+        enrollmentExist.notifs_arr.push(obj);
+
         enrollmentExist.save();
 
         res.status(200).json(enrollmentExist.notifs_arr);
-
-        now = new Date();
-        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
-            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
         
         const log = new Log({
-            createdAt: current_date_time,
+            createdAt: notif_date_time,
             action: "Sent another notification to "+enrollmentExist.enrollment,
             role: "ADMIN" 
         });
@@ -211,18 +215,24 @@ const notifications =async (req,res) =>{
     {
         var enroll=new notifs();
         enroll.enrollment=req.body.enrollment;
-        for(i=0;i<req.body.notifs_arr.length;i++)
-        {
-            enroll.notifs_arr.push(req.body.notifs_arr[i]);
+
+        // console.log(req.body.notifs_arr[0].message);
+
+        now = new Date();
+        var notif_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+            + '   '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+
+        var obj = {
+            message: req.body.notifs_arr[0].message,
+            sent_time: notif_date_time
         }
+        enroll.notifs_arr.push(obj);
+
         enroll.save();
         res.status(201).json(enroll.notifs_arr);
-        now = new Date();
-        var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
-            + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
         
         const log = new Log({
-            createdAt: current_date_time,
+            createdAt: notif_date_time,
             action: "Sent Notifications to "+enroll.enrollment,
             role: "ADMIN" 
         });
