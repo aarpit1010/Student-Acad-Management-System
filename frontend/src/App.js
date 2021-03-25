@@ -11,8 +11,11 @@ import SemwiseCourses from "./pages/semwise-courses";
 import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
+
 import SelectUser from "./pages/user-selection";
+import EditStudentProfile from "./admin-pages/editStudentProfile";
 import Message from "./components/email/Message";
+import Announcements from "./admin-pages/announcements";
 // import FilesUploadComponent from './components/files-upload-component';
 
 import Navbar from "./components/navbar/navbar";
@@ -28,6 +31,13 @@ function App() {
     <React.Fragment>
       <Switch>
         <Route exact path="/selectUser" component={SelectUser} />
+
+        <Route
+          exact
+          path="/editStudentProfile"
+          component={EditStudentProfile}
+        />
+        <Route exact path="/announcements" component={Announcements} />
         <Route exact path="/adminDashboard" component={AdminDashboard} />
 
         <Route exact path="/login" component={Login} />
@@ -78,11 +88,7 @@ function App() {
                         path="/profile"
                         component={Profile}
                       />
-                      <Route
-                        exact
-                        path="/student/send"
-                        component={Message}
-                      />
+                      <Route exact path="/student/send" component={Message} />
                     </div>
                   </div>
                 </div>

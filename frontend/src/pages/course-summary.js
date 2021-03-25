@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Table } from "react-bootstrap";
 import "./course-summary.css";
 import axios from "axios";
-import Dropped from "./dropped";
 
 const CourseSummary = () => {
   const [isLoading, setLoading] = useState(true);

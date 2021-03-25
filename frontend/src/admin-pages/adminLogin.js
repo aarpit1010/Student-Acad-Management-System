@@ -9,10 +9,10 @@ const AdminLogin = () => {
   const { register, handleSubmit } = useForm();
   const history = useHistory();
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ username, password }) => {
     axios
-      .post("/student/login", {
-        email,
+      .post("/admin/login", {
+        username,
         password,
       })
       .then((res) => {
@@ -33,10 +33,10 @@ const AdminLogin = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <input
-                type="email"
-                name="email"
+                type="username"
+                name="username"
                 className="form-control"
-                placeholder="Email"
+                placeholder="username"
                 ref={register}
               />
             </div>

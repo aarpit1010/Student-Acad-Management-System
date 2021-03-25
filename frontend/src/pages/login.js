@@ -6,8 +6,6 @@ import Auth from "../auth/Auth";
 import { useHistory } from "react-router";
 import studentLogin from "../images/student-login.jpg";
 
-import { Link } from "react-router-dom";
-
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const history = useHistory();
