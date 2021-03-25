@@ -187,7 +187,7 @@ const notifications =async (req,res) =>{
         }
         enrollmentExist.save();
 
-        res.status(400).json(enrollmentExist.notifs_arr);
+        res.status(200).json(enrollmentExist.notifs_arr);
 
         now = new Date();
         var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
@@ -216,7 +216,7 @@ const notifications =async (req,res) =>{
             enroll.notifs_arr.push(req.body.notifs_arr[i]);
         }
         enroll.save();
-        res.status(200).json(enroll.notifs_arr);
+        res.status(201).json(enroll.notifs_arr);
         now = new Date();
         var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
             + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
