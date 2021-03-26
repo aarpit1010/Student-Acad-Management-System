@@ -1,6 +1,6 @@
 import React from "react";
 import "./editStudentProfile.css";
-import AdminNav from "./adminNav";
+// import AdminNav from "./adminNav";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -29,7 +29,7 @@ function EditStudentProfile() {
 
   return (
     <div className="edit-student-profile">
-      <AdminNav />
+      {/* <AdminNav /> */}
       <h3 id="student-details">Student Details</h3>
       <img
         src="https://img.icons8.com/color/96/000000/student-male--v1.png"

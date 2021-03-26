@@ -99,58 +99,9 @@ function App() {
         </Route>
         <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
       </Switch>
+      {/* <NewSidebar /> */}
     </React.Fragment>
   );
 }
 
 export default App;
-
-{
-  /* 
-      <Navbar hasAuth={Auth.isAuthenticated()} />
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-sm-2 sidebar">
-                  <Sidebar />
-                </div>
-                <div className="col">
-                  <div className="row">
-                    <div className="col components">
-                      <ProtectedRoute exact path="/" component={Dashboard} />
-                      <ProtectedRoute
-                        exact
-                        path="/academic-registration"
-                        component={AcademicRegistration}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/certificates"
-                        component={Certificates}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/course-summary"
-                        component={CourseSummary}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/faculty"
-                        component={Faculty}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/semwise-courses"
-                        component={SemwiseCourses}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/profile"
-                        component={Profile}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-*/
-}

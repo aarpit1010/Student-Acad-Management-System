@@ -6,15 +6,17 @@ import AdminLogin from "../admin-pages/adminLogin";
 function UserSelection() {
   return (
     <div className="selectUser">
-      <h2 className="welcome">Welcome to Academic Management System</h2>
+      <h1 className="welcome">
+        Welcome to Student Academic Management System!
+      </h1>
       <div className="container">
         <div className="row pt-2 justify-content-md-center">
           <div className="col-md-5">
-            <h1>Admin</h1>
+            <h2>Admin</h2>
             <AdminLogin />
           </div>
           <div className="col-md-5">
-            <h1>Student</h1>
+            <h2>Student</h2>
             <Login />
           </div>
         </div>

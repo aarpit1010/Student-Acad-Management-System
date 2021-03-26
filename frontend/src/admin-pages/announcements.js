@@ -1,5 +1,5 @@
 import React from "react";
-import AdminNav from "./adminNav";
+// import AdminNav from "./adminNav";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -28,7 +28,7 @@ function Announcements() {
 
   return (
     <div>
-      <AdminNav />
+      {/* <AdminNav /> */}
       <h1>Announcements</h1>
       <div className="card col-md-6 mx-auto p-0">
         <div className="card-header">Current Notices: </div>
