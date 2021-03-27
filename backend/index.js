@@ -7,6 +7,7 @@ const studentAuth = require('./routes/studentRouter');
 const adminAuth = require('./routes/adminRouter');
 const cors = require('cors');
 const addAcadCal = require('./routes/acadCalRoutes')
+const addStuCert = require('./routes/reqCertificate')
 const  admin_verify = require('./controllers/admin_verifyToken');
 const nodemailer =require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
@@ -30,5 +31,7 @@ app.use('/student', studentAuth);
 app.use('/public', express.static('public'));
 
 app.use('/cal', admin_verify, addAcadCal)
+
+app.use('/cert', admin_verify, addStuCert)
 
 app.listen(3001, () => console.log("Server Up and Running"));

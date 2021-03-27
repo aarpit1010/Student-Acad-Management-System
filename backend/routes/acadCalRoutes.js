@@ -35,7 +35,7 @@ var upload = multer({
 });
 
 // User model
-let User = require('../model/acadCalendar');
+let {User,extra} = require('../model/upload');
 
 router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
     const url = req.protocol + '://' + req.get('host')

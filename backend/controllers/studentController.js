@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer')
 const sendGridTransport = require('nodemailer-sendgrid-transport');
 const {studentRegisterValid, studentLoginValid} = require('./validation');
+const acadcals = require("../model/upload");
 
 
 const mongoose = require("mongoose");
@@ -150,12 +151,15 @@ const studentProfile= async (req,res) =>{
        const student= await Student.findOne({_id:id});
        if(!student)
        res.status(400).json("Student doesn't exist in Database");
-       Courses.findCourse("courses",
-					{
-						semester: student.semester,
-						branch:student.branch
-					}, 
-					function(err,docs) {
+       
+    //    Student.findByIdAndUpdate(id, function(err,result){
+            Courses.findCourse("courses",
+            {
+                semester: student.semester,
+                branch: student.branch
+            }, 
+            function(err,docs) {
+                // console.log(docs);
        res.status(200).json({
             name:student.name,
             enrollment_no:student.username,
@@ -166,7 +170,17 @@ const studentProfile= async (req,res) =>{
             section:student.section,
             enrolled_course:docs[0].course_list.sort(),
        });
+    //                 student.enrolled_course=docs[0].course_list.sort();
+    //                 student.save();
+    // //                 // res.json(student);
+    // //                 // console.log(student);
+    //     var item = { enrolled_course: docs[0].course_list.sort() };
+    //     item.push()
+
         });
+        
+    //    });
+       
     }
    catch(err)
    {
@@ -369,6 +383,144 @@ const notifications = async (req,res) =>{
 //     }
 //  };
 
+const viewcal = async (req,res) => {
+    // const link = "605b7f3f595e855a68f57fe2";
+    const view = await acadcals.find({});
+    if(view) res.status(200).json(view[0].calpdf);
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Student "+ student.username + " has viewed the academic Calendar",
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+
+};
+
+const viewcert = async (req,res) => {
+    // const link = "605b7f3f595e855a68f57fe2";
+    const view = await certificates.find({});
+    if(view) res.status(200).json(view[0].certlink);
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Student "+ student.username + " has received Certificate from ADMIN",
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+
+};
+
+
+const courseReg = async (req,res) => {
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
+
+    const currSem = student.semester;
+    const nextSem = currSem + 1;
+    if(currSem != 8) {
+        Courses.findCourse("courses",
+            {
+                semester: nextSem,
+                branch: student.branch
+            }, 
+            function(err,docs2) {
+                    add_course=docs2[0].course_list.sort();
+                    // verify_course_name=docs2[0].course_name.sort();
+                    // console.log(add_course);
+                res.status(200).json(add_course);
+        });
+    }
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Student "+ student.username + " views the"+
+        " list of courses for the next semester",
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+
+}
+
+const regcourses = async (req,res) => {
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
+
+    const currSem = student.semester;
+    const nextSem = currSem + 1;
+    
+    const course_arr = req.body.course_opted;
+    const opted_course_arr = [];
+    var add_course;
+    var idx ;
+    Courses.findCourse("courses",
+        {
+            semester: nextSem,
+            branch: student.branch
+        }, 
+        function(err,docs2) {
+            for(var i=0; i<course_arr.length; i++) {
+                idx = course_arr[i];
+                add_course=docs2[0].course_list[idx];
+                opted_course_arr.push(add_course);
+            }  
+            res.status(200).json(opted_course_arr);
+    });
+
+    now = new Date();
+    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
+        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    
+    const log = new Log({
+        createdAt: current_date_time,
+        action: "Student "+ student.username + " has selected Courses for upcoming Semester.",
+        role: "Student" 
+    });
+
+    log.save(function(err){
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Updated Logs");
+        }
+    });
+    
+}
+
 module.exports = {
     studentRegister,
     studentLogin,
@@ -378,5 +530,9 @@ module.exports = {
     droppedCourses,
     viewFaculty,
     mailsend,
-    notifications
+    notifications,
+    viewcal,
+    viewcert,
+    courseReg,
+    regcourses
 };

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const {course_summary, droppedcourses,notifs} = require("../model/marks");
 const faculty_list = require("../model/facultyList");
 const Log = require("../model/log");
+const Student = require("../model/Student");
 
 
 const adminLogin = function (req, res) {
@@ -247,6 +248,34 @@ const notifications =async (req,res) =>{
     }
 };
 
+const updateProfile = async (req,res) => {
+    const details = req.body;
+    const enrollmentExist = await Student.findOne({ username : details.enrollment});
+    if(enrollmentExist) {
+       if(details.name) {
+        Student.updateOne({username: details.enrollment}, {name: details.name}, function(
+            err,result) {
+            if (err) {
+              res.json(err);
+            } else {
+            //   res.json(result);
+            }
+        });
+       }
+       if(details.contact) {
+        Student.updateOne({username: details.enrollment}, {contact: details.contact}, function(
+            err,result) {
+            if (err) {
+              res.json(err);
+            } else {
+            //   res.json(result);
+            }
+        });
+       }
+       else res.json("doesn't exist");
+    }
+    // else console.log("wrong2");
+}
 
 module.exports = {
     adminLogin, 
@@ -254,5 +283,6 @@ module.exports = {
     studentdroppedcourses,
     facultyList,
     logReport,
-    notifications
+    notifications,
+    updateProfile
   };

@@ -49,9 +49,12 @@ const studentSchema = new mongoose.Schema({
       default: Date.now
     },
     last_login_date: {
-        type: Date,
-        default: Date.now
-  }
+      type: Date,
+      default: Date.now
+    },
+    enrolled_course: {
+      type: Array
+    }
   });
 
 studentSchema.statics.login = function login(id, callback) {

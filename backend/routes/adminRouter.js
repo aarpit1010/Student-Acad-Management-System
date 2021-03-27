@@ -7,13 +7,16 @@ const {
   studentdroppedcourses,
   facultyList,
   logReport,
-  notifications
+  notifications,
+  updateProfile
 } 
 = require("../controllers/adminController");
 
 
 
 adminRouter.post('/login', adminLogin);
+
+adminRouter.get('/updatestudentprofile', updateProfile);
 
 adminRouter.post('/studentmarks', admin_verify, studentCoursesummary);
 
