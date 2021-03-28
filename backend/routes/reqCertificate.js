@@ -7,6 +7,23 @@ let express = require('express'),
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
 
+var currentTime = new Date();
+
+function currDateTime(currentTime) {
+  var currentOffset = currentTime.getTimezoneOffset();
+  var ISTOffset = 330;   
+  var ISTTime = new Date(currentTime.getTime() + 
+    (ISTOffset + currentOffset)*60000);
+  var hoursIST = ISTTime.getHours();
+  var minutesIST = ISTTime.getMinutes();
+  var secondsIST = ISTTime.getSeconds();
+  var time = hoursIST + ":" + minutesIST + ":" + secondsIST;
+  var mnth = currentTime.getMonth() + 1;
+  var date_time = currentTime.getDate() + 
+    '-' + mnth +
+    '-' + currentTime.getFullYear() + ' ' + time;
+  return date_time;
+}
 
 const DIR = './public/';
 
@@ -72,9 +89,7 @@ router.post('/uploadcertificate', upload.single('certpdf'), (req, res, next) => 
     //         });
     // })
 
-    now = new Date();
-    var current_date_time = now.getDate() + '-' + now.getMonth() + '-' + now.getFullYear()
-        + '    '+ now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    var current_date_time = currDateTime(currentTime);
     
     const log = new Log({
         createdAt: current_date_time,
@@ -86,7 +101,7 @@ router.post('/uploadcertificate', upload.single('certpdf'), (req, res, next) => 
         if(err){
             console.log(err);
         } else {
-            console.log("Updated Logs");
+            // console.log("Updated Logs");
         }
     });
 

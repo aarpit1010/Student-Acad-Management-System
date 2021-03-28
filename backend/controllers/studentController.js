@@ -20,7 +20,25 @@ mongoose.connect(
     process.env.DB_CONNECT,
     { useUnifiedTopology: true, useNewUrlParser: true },
     () => console.log("Connected to MongoDB")
-);
+); 
+
+var currentTime = new Date();
+
+function currDateTime(currentTime) {
+  var currentOffset = currentTime.getTimezoneOffset();
+  var ISTOffset = 330;   
+  var ISTTime = new Date(currentTime.getTime() + 
+    (ISTOffset + currentOffset)*60000);
+  var hoursIST = ISTTime.getHours();
+  var minutesIST = ISTTime.getMinutes();
+  var secondsIST = ISTTime.getSeconds();
+  var time = hoursIST + ":" + minutesIST + ":" + secondsIST;
+  var mnth = currentTime.getMonth() + 1;
+  var date_time = currentTime.getDate() + 
+    '-' + mnth +
+    '-' + currentTime.getFullYear() + ' ' + time;
+  return date_time;
+}
 
 const studentRegister = async (req, res) => {
     const student = new Student(req.body);
@@ -28,13 +46,13 @@ const studentRegister = async (req, res) => {
     let givenPassword = req.body.password;
 
     // validation
-    const { error } = studentRegisterValid(req.body);
+    const {error} = studentRegisterValid(req.body);
     if (error) return res.status(400).json(error.details[0].message);
-
+    
     // check whether user already in database or not
-    const emailExist = await Student.findOne({ email: givenEmail });
+    const emailExist = await Student.findOne({ email: givenEmail});
     // const contactExist = await Student.findOne{( contact: req.body.contact)};
-    if (emailExist) return res.status(400).json("Email already exists");
+    if(emailExist) return res.status(400).json('Email already exists');
 
     // hash password
     const salt = await bcrypt.genSalt(10);
@@ -44,139 +62,100 @@ const studentRegister = async (req, res) => {
         var created_date_time = student.creation_date;
         var current_date_time = student.last_login_date;
 
-        const now = new Date();
-        current_date_time =
-            now.getDate() +
-            "-" +
-            now.getMonth() +
-            "-" +
-            now.getFullYear() +
-            "    " +
-            now.getHours() +
-            ":" +
-            now.getMinutes() +
-            ":" +
-            now.getSeconds();
-        if (!created_date_time) {
-            created_date_time =
-                now.getDate() +
-                "-" +
-                now.getMonth() +
-                "-" +
-                now.getFullYear() +
-                "    " +
-                now.getHours() +
-                ":" +
-                now.getMinutes() +
-                ":" +
-                now.getSeconds();
+        current_date_time = currDateTime(currentTime);
+        if(!created_date_time) {
+            created_date_time = currDateTime(currentTime);
         }
-
+        
         const log = new Log({
             createdAt: current_date_time,
-            action: "Successfully Registered " + student.username,
-            role: "Student",
+            action: "Successfully Registered "+ student.username,
+            role: "Student" 
         });
 
-        log.save(function (err) {
-            if (err) {
+        log.save(function(err){
+            if(err){
                 console.log(err);
             } else {
-                console.log("Updated Logs");
+                // console.log("Updated Logs");
             }
         });
 
         const savedStudent = await student.save();
         res.status(201).json(savedStudent);
-    } catch (err) {
+    } catch(err) {
         res.status(400).json(err);
     }
 };
+
 
 const studentLogin = async (req, res) => {
     const { email, password } = req.body;
 
     // validation
-    const { error } = studentLoginValid(req.body);
+    const {error} = studentLoginValid(req.body);
     if (error) return res.status(400).json(error.details[0].message);
 
-    // check whether email exists
+    // check whether email exists 
     const student = await Student.findOne({ email });
-    if (!student) return res.status(400).json("Email doesn't exists!");
+    if(student.access == true) {
+        if(!student) return res.status(400).json("Email doesn't exists!");
 
-    // check password
-    const validPass = await bcrypt.compare(password, student.password);
-    if (!validPass) return res.status(403).json("Invalid Password!");
+        // check password
+        const validPass = await bcrypt.compare(password, student.password);
+        if(!validPass) return res.status(403).json("Invalid Password!");
 
-    var created_date_time = student.creation_date;
-    var current_date_time = student.last_login_date;
+        var created_date_time = student.creation_date;
+        var current_date_time = student.last_login_date;
 
-    const now = new Date();
-    current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
-    if (!created_date_time) {
-        created_date_time =
-            now.getDate() +
-            "-" +
-            now.getMonth() +
-            "-" +
-            now.getFullYear() +
-            "    " +
-            now.getHours() +
-            ":" +
-            now.getMinutes() +
-            ":" +
-            now.getSeconds();
-    }
-
-    const log = new Log({
-        createdAt: current_date_time,
-        action: "Successfully Logged In " + student.username,
-        role: "Student",
-    });
-
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Updated Logs");
+        current_date_time = currDateTime(currentTime);
+        if(!created_date_time) {
+            created_date_time = currDateTime(currentTime);
         }
-    });
+        
+        const log = new Log({
+            createdAt: current_date_time,
+            action: "Successfully Logged In "+ student.username,
+            role: "Student" 
+        });
 
-    const token = jwt.sign(
-        {
+        log.save(function(err){
+            if(err){
+                console.log(err);
+            } else {
+                // console.log("Updated Logs");
+            }
+        });
+
+        const token = jwt.sign({
             _id: student._id,
         },
         process.env.TOKEN_SECRET
-    );
-    res.header("auth-token", token).json(token);
+        );
+        res.header('auth-token', token).json(token);
+    }
+    else return res.status(401).json("Unauthorized Student");
+
 };
 
 const studentTimetable = async (req, res) => {
-    const id = req.student._id;
-    const student = await Student.findOne({ _id: id });
-    if (!student) res.status(400).json("Student doesn't exist in Database");
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
 
-    Timetable.finder(
-        "timetable",
-        {
-            semester: student.semester,
-            section: student.section,
-        },
-        function (err, docs) {
-            res.json({ user: student._id, data: docs });
-        }
-    );
+    Timetable.finder("timetable",
+					{
+						semester: student.semester,
+						section:student.section
+					}, 
+					function(err,docs) {
+                    res.json(
+                    {user: student._id,
+                    data: docs}
+                    );
+				});
+
 };
 
 const studentProfile = async (req, res) => {
@@ -319,6 +298,7 @@ const viewFaculty = async (req, res) => {
     );
 };
 
+
 const mailsend = (req, res) => {
     const transporter = nodemailer.createTransport(
         sendGridTransport({
@@ -343,180 +323,101 @@ const mailsend = (req, res) => {
             console.log(err);
         });
 
-    const now = new Date();
-    var current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
-
+    var current_date_time = currDateTime(currentTime);
+    
     const log = new Log({
         createdAt: current_date_time,
-        action: "E-Mail Sent by " + name + " to : " + email,
-        role: "Student",
+        action: "E-Mail Sent by "+ name+" to : "+email,
+        role: "Student" 
     });
 
-    log.save(function (err) {
-        if (err) {
+    log.save(function(err){
+        if(err){
             console.log(err);
         } else {
-            console.log("Updated Logs");
+            // console.log("Updated Logs");
         }
     });
 };
 
-const notifications = async (req, res) => {
-    const id = req.student._id;
-    const student = await Student.findOne({ _id: id });
-    if (!student) res.status(400).json("Student doesn't exist in Database");
 
-    const studentnotifications = await notifs.findOne({
-        enrollment: student.username,
-    });
-
-    if (!studentnotifications) {
-        res.json({ notifs_arr: [] });
-    } else {
-        res.json({ notifs_arr: studentnotifications.notifs_arr });
-        const now = new Date();
-        var current_date_time =
-            now.getDate() +
-            "-" +
-            now.getMonth() +
-            "-" +
-            now.getFullYear() +
-            "    " +
-            now.getHours() +
-            ":" +
-            now.getMinutes() +
-            ":" +
-            now.getSeconds();
-
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Notifications Seen by " + student.username,
-            role: "Student",
-        });
-
-        log.save(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Updated Logs");
-            }
-        });
-    }
-};
-
-// const studentsemwisecourses= async (req,res) =>{
-//     try{
-//         const id=req.student._id;
-//         const student= await Student.findOne({_id:id});
-//         if(!student)
-//         res.status(400).json("Student doesn't exist in Database");
-//         Courses.findCourse("courses",
-//                      {
-//                          semester: student.semester,
-//                          branch:student.branch
-//                      },
-//                      function(err,docs) {
-//         for(i = 0; i <= student.semester; i++) {
-
-//         }
-//         res.status(200).json({
-//              name:student.name,
-//              enrollment_no:student.username,
-//              email:student.email,
-//              contact:student.contact,
-//              branch:student.branch,
-//              semester:student.semester,
-//              section:student.section,
-//              enrolled_course:docs[0].course_list.sort(),
-//         });
-//          });
-//      }
-//     catch(err)
-//     {
-//         res.status(403).json("Invalid Request!");
-//     }
-//  };
-
-const viewcal = async (req, res) => {
-    // const link = "605b7f3f595e855a68f57fe2";
-    const view = await acadcals.find({});
-    if (view) res.status(200).json(view[0].calpdf);
-    const now = new Date();
-    var current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
-
-    const log = new Log({
-        createdAt: current_date_time,
-        action:
-            "Student " + student.username + " has viewed the academic Calendar",
-        role: "Student",
-    });
-
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Updated Logs");
+const notifications = async (req,res) =>{
+    const id=req.student._id;
+    const student= await Student.findOne({_id:id});
+    if(!student)
+    res.status(400).json("Student doesn't exist in Database");
+    
+    const studentnotifications= await notifs.findOne({enrollment:student.username});
+  
+        if (!studentnotifications) {
+            
+            res.json({notifs_arr:[]});
         }
-    });
+        else
+        {
+            res.json({notifs_arr:studentnotifications.notifs_arr});
+            var current_date_time = currDateTime(currentTime);
+            
+            const log = new Log({
+                createdAt: current_date_time,
+                action: "Notifications Seen by "+ student.username,
+                role: "Student" 
+            });
+
+            log.save(function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    // console.log("Updated Logs");
+                }
+            });
+        }  
 };
 
-const viewcert = async (req, res) => {
-    // const link = "605b7f3f595e855a68f57fe2";
-    const view = await certificates.find({});
-    if (view) res.status(200).json(view[0].certlink);
-    const now = new Date();
-    var current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
+const viewcal = async (req,res) => {
+    const link = "605b7f3f595e855a68f57fe2";
+    const view = await acadcals.find({"_id": link});
+    if(view) return res.status(200).json(view[0].calpdf);
+    // var current_date_time = currDateTime(currentTime);
+    
+    // const log = new Log({
+    //     createdAt: current_date_time,
+    //     action: "Student "+ student.username + " has viewed the academic Calendar",
+    //     role: "Student" 
+    // });
 
-    const log = new Log({
-        createdAt: current_date_time,
-        action:
-            "Student " +
-            student.username +
-            " has received Certificate from ADMIN",
-        role: "Student",
-    });
+    // log.save(function(err){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+            // console.log("Updated Logs");
+    //     }
+    // });
 
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Updated Logs");
-        }
-    });
 };
+
+const viewcert = async (req,res) => {
+    const link = "605f718915adb20c983ba555";
+    const view = await certificates.find({"_id": link});
+    if(view) return res.status(200).json(view[0].certlink);
+    // var current_date_time = currDateTime(currentTime);
+    
+    // const log = new Log({
+    //     createdAt: current_date_time,
+    //     action: "Student "+ student.username + " has received Certificate from ADMIN",
+    //     role: "Student" 
+    // });
+
+    // log.save(function(err){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         console.log("Updated Logs");
+    //     }
+    // });
+
+};
+
 
 const courseReg = async (req, res) => {
     const id = req.student._id;
@@ -540,38 +441,24 @@ const courseReg = async (req, res) => {
             }
         );
     }
-    const now = new Date();
-    var current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
-
+    var current_date_time = currDateTime(currentTime);
+    
     const log = new Log({
         createdAt: current_date_time,
-        action:
-            "Student " +
-            student.username +
-            " views the" +
-            " list of courses for the next semester",
-        role: "Student",
+        action: "Student "+ student.username + " views the"+
+        " list of courses for the next semester",
+        role: "Student" 
     });
 
-    log.save(function (err) {
-        if (err) {
+    log.save(function(err){
+        if(err){
             console.log(err);
         } else {
-            console.log("Updated Logs");
+            // console.log("Updated Logs");
         }
     });
-};
+
+}
 
 const regcourses = async (req, res) => {
     const id = req.student._id;
@@ -601,37 +488,23 @@ const regcourses = async (req, res) => {
         }
     );
 
-    const now = new Date();
-    var current_date_time =
-        now.getDate() +
-        "-" +
-        now.getMonth() +
-        "-" +
-        now.getFullYear() +
-        "    " +
-        now.getHours() +
-        ":" +
-        now.getMinutes() +
-        ":" +
-        now.getSeconds();
-
+    var current_date_time = currDateTime(currentTime);
+    
     const log = new Log({
         createdAt: current_date_time,
-        action:
-            "Student " +
-            student.username +
-            " has selected Courses for upcoming Semester.",
-        role: "Student",
+        action: "Student "+ student.username + " has selected Courses for upcoming Semester.",
+        role: "Student" 
     });
 
-    log.save(function (err) {
-        if (err) {
+    log.save(function(err){
+        if(err){
             console.log(err);
         } else {
-            console.log("Updated Logs");
+            // console.log("Updated Logs");
         }
     });
-};
+    
+}
 
 module.exports = {
     studentRegister,
@@ -647,5 +520,5 @@ module.exports = {
     viewcert,
     courseReg,
     regcourses,
-    studentProfileAll,
+    studentProfileAll
 };

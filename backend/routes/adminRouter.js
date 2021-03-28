@@ -8,7 +8,8 @@ const {
   facultyList,
   logReport,
   notifications,
-  updateProfile
+  updateProfile,
+  stuAccess
 } 
 = require("../controllers/adminController");
 
@@ -27,6 +28,8 @@ adminRouter.post('/addFaculty', admin_verify, facultyList);
 adminRouter.post('/generatelogs', admin_verify, logReport);
 
 adminRouter.post('/notifications', admin_verify, notifications);
+
+adminRouter.post('/disableUser', admin_verify, stuAccess);
 
 
 module.exports = adminRouter;

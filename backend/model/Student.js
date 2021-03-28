@@ -54,6 +54,10 @@ const studentSchema = new mongoose.Schema({
     },
     enrolled_course: {
       type: Array
+    },
+    access: {
+      type: Boolean,
+      default: true
     }
   });
 

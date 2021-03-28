@@ -8,8 +8,8 @@ const adminAuth = require("./routes/adminRouter");
 const cors = require("cors");
 const addAcadCal = require("./routes/acadCalRoutes");
 const addStuCert = require("./routes/reqCertificate");
-const admin_verify = require("./controllers/admin_verifyToken");
-const nodemailer = require("nodemailer");
+const  admin_verify = require("./controllers/admin_verifyToken");
+const nodemailer =require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 const fs = require("fs-extra");
 
@@ -19,7 +19,7 @@ mongoose.connect(
     process.env.DB_CONNECT,
     { useUnifiedTopology: true, useNewUrlParser: true },
     () => console.log("Connected to MongoDB")
-);
+); 
 
 // Middleware
 app.use(express.json());
