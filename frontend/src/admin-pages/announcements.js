@@ -33,7 +33,7 @@ function Announcements() {
                 <ul className="list-group list-group-flush">
                     {data.notifs_arr.map((item, key) => {
                         return (
-                            <li className="list-group-item">
+                            <li key={key} className="list-group-item">
                                 {key + 1}. {item}
                             </li>
                         );

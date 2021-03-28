@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import "./login.css";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -10,6 +10,8 @@ import studentLogin from "../images/student-login.jpg";
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const history = useHistory();
+
+    const [serverError, setServerError] = useState("");
 
     const onSubmit = ({ email, password }) => {
         axios
@@ -24,7 +26,10 @@ const Login = () => {
                     history.push("/student/studentDashboard");
                 });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log({ err });
+                setServerError(err.response.statusText);
+            });
     };
 
     return (
@@ -67,6 +72,14 @@ const Login = () => {
                             Login
                         </button>
                     </form>
+                    {serverError && serverError === "Unauthorized" && (
+                        <div style={{ color: "red" }}>
+                            <br />
+                            YOU DO NOT HAVE PERMISSION TO ACCESS THE PORTAL.
+                            <br />
+                            CONTACT ADMIN!
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

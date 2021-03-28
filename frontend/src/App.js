@@ -8,16 +8,15 @@ import CourseSummary from "./pages/course-summary";
 import Dashboard from "./components/dashboard/dashboard";
 import Faculty from "./pages/faculty";
 import SemwiseCourses from "./pages/semwise-courses";
-import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
 import AdminNav from "./admin-pages/adminNav";
+import AcademicCalendar from "./admin-pages/academicCalendar";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
 import Message from "./components/email/Message";
 import Announcements from "./admin-pages/announcements";
-// import FilesUploadComponent from './components/files-upload-component';
 
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
@@ -50,12 +49,16 @@ function App() {
                         path="/admin/announcements"
                         component={Announcements}
                     />
+                    <AdminProtectedRoute
+                        exact
+                        path="/admin/academicCalendar"
+                        component={AcademicCalendar}
+                    />
                     <Route path="/admin/*">
                         <Redirect to="/admin/adminDashboard" />
                     </Route>
                 </Route>
 
-                <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route path="/student">
                     <div className="App">

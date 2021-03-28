@@ -10,6 +10,7 @@ function Leftpane(hasAuth) {
     const [data, setData] = useState({});
 
     useEffect(() => {
+        let isSubscribed = true;
         axios
             .get("/student/profile", {
                 headers: {
@@ -18,11 +19,15 @@ function Leftpane(hasAuth) {
                 },
             })
             .then((response) => {
-                setData(response.data);
-                setLoading(false);
-                console.log(data);
+                if (isSubscribed) {
+                    setData(response.data);
+                    setLoading(false);
+                    console.log(data);
+                }
             })
             .catch((error) => console.log(error));
+
+        return () => (isSubscribed = false);
     }, []);
 
     if (isLoading) {

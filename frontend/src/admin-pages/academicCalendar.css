@@ -1,0 +1,13 @@
+.Calendar-page {
+    width: 100% !important;
+    height: 92vh !important;
+    background-image: linear-gradient(
+        #e5fcc2,
+        #9de0ad,
+        #45ada8,
+        #547980,
+        #2a363b
+    );
+    background-size: cover;
+    text-align: center;
+}

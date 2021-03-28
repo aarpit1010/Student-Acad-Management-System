@@ -104,7 +104,7 @@ function AdminDashboard() {
                                             className="btn btn-info"
                                         >
                                             <Link
-                                                to="/admin/announcements"
+                                                to="/admin/academicCalendar"
                                                 className="a-dashboard-button"
                                             >
                                                 Upload new

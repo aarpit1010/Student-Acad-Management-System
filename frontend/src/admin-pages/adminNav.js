@@ -42,12 +42,12 @@ function AdminNav(hasAuth) {
                             className="navbar-nav ml-auto
 ml-auto "
                         >
-                            <a
+                            <Link
                                 className=" nav-item nav-link  navbar-content-admin"
-                                href="#notifs"
+                                to="#notifs"
                             >
                                 Notifications
-                            </a>
+                            </Link>
                             <button
                                 className="btn btn-danger"
                                 onClick={() => handleLogout()}
