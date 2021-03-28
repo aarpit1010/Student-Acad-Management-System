@@ -35,21 +35,20 @@ var upload = multer({
 });
 
 // User model
-let {User,extra} = require('../model/upload');
+let {calendar, certificate} = require('../model/upload');
 
 router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
     const url = req.protocol + '://' + req.get('host')
 
-    const user = new User({
+    const user = new calendar({
         _id: new mongoose.Types.ObjectId(),
         calpdf: url + '/public/' + req.file.filename
     });
-
     const chk = url + '/public/' + req.file.filename;
     
     var cal_id = "605b7f3f595e855a68f57fe2";
 
-    User.findByIdAndUpdate(cal_id, {$set:
+    calendar.findByIdAndUpdate(cal_id, {$set:
         {calpdf: url + '/public/' + req.file.filename}},
         {new: true}, (err, doc) => {
             if (err) {
@@ -94,7 +93,7 @@ router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
 })
 
 router.get("/", (req, res, next) => {
-    User.find().then(data => {
+    calendar.find().then(data => {
         res.status(200).json({
             message: "Academic Calendar Uploaded Successfully!",
             users: data
