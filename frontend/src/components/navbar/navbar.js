@@ -5,32 +5,36 @@ import { Link } from "react-router-dom";
 import Auth from "../../auth/Auth";
 import { useHistory } from "react-router-dom";
 
-function Navigation() {
-  const history = useHistory();
+function Navigation(hasAuth) {
+    const history = useHistory();
 
-  const handleLogout = () => {
-    Auth.logout(() => {
-      localStorage.clear();
-      history.push("/selectUser");
-    });
-  };
+    const handleLogout = () => {
+        Auth.logoutStudent(() => {
+            localStorage.clear();
+            history.push("/selectUser");
+        });
+    };
 
-  return (
-    <div className="navbar-student">
-      <Navbar>
-        {/* <Navbar.Brand className="portal-name">Student Portal</Navbar.Brand> */}
-        <Nav className="ml-auto items">
-          <Nav.Link>
-            <Link to="/profile">Profile</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/notifications">Notifications</Link>
-          </Nav.Link>
-          <Button onClick={() => handleLogout()}>Logout</Button>
-        </Nav>
-      </Navbar>
-    </div>
-  );
+    if (hasAuth)
+        return (
+            <div className="navbar-student">
+                <Navbar>
+                    {/* <Navbar.Brand className="portal-name">Student Portal</Navbar.Brand> */}
+                    <Nav className="ml-auto items">
+                        <Nav.Link>
+                            <Link to="/student/profile">Profile</Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Link to="/student/notifications">
+                                Notifications
+                            </Link>
+                        </Nav.Link>
+                        <Button onClick={() => handleLogout()}>Logout</Button>
+                    </Nav>
+                </Navbar>
+            </div>
+        );
+    else return <></>;
 }
 
 export default Navigation;

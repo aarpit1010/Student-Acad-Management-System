@@ -1,20 +1,35 @@
 class Auth {
     constructor() {
-        this.authenticated = false;
+        this.authenticatedStudent = false;
+        this.authenticatedAdmin = false;
     }
 
-    login(callback) {
-        this.authenticated = true;
+    loginStudent(callback) {
+        this.authenticatedStudent = true;
         callback();
     }
 
-    logout(callback) {
-        this.authenticated = false;
+    loginAdmin(callback) {
+        this.authenticatedAdmin = true;
         callback();
     }
 
-    isAuthenticated() {
-        return this.authenticated;
+    logoutStudent(callback) {
+        this.authenticatedStudent = false;
+        callback();
+    }
+
+    logoutAdmin(callback) {
+        this.authenticatedAdmin = false;
+        callback();
+    }
+
+    isAuthenticatedStudent() {
+        return this.authenticatedStudent;
+    }
+
+    isAuthenticatedAdmin() {
+        return this.authenticatedAdmin;
     }
 }
 

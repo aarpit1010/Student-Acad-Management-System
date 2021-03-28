@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const  verify = require('../controllers/verifyToken');
-const  admin_verify = require('../controllers/admin_verifyToken');
+const verify = require("../controllers/verifyToken");
+const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
     studentRegister,
@@ -15,34 +15,35 @@ const {
     viewcal,
     viewcert,
     courseReg,
-    regcourses
-  } = require("../controllers/studentController");
+    regcourses,
+    studentProfileAll,
+} = require("../controllers/studentController");
 
+router.post("/register", studentRegister);
 
-router.post('/register', studentRegister);
+router.post("/login", studentLogin);
 
-router.post('/login', studentLogin);
+router.get("/timetable", verify, studentTimetable);
 
-router.get('/timetable', verify, studentTimetable);
+router.get("/profile", verify, studentProfile);
+router.get("/profile-all", verify, studentProfileAll);
 
-router.get('/profile',verify, studentProfile);
+router.get("/marks", verify, studentMarks);
 
-router.get('/marks', verify, studentMarks);
+router.get("/droppedcourses", verify, droppedCourses);
 
-router.get('/droppedcourses', verify, droppedCourses);
+router.get("/viewFacultyList", verify, viewFaculty);
 
-router.get('/viewFacultyList', verify, viewFaculty);
+router.post("/send", mailsend);
 
-router.post('/send',mailsend);
+router.get("/notifications", verify, notifications);
 
-router.get('/notifications',verify,notifications);
+router.get("/viewcalendar", verify, viewcal);
 
-router.get('/viewcalendar', verify, viewcal);
+router.get("/viewcertificate", verify, viewcert);
 
-router.get('/viewcertificate', verify, viewcert);
+router.get("/courseregn", verify, courseReg);
 
-router.get('/courseregn',verify,courseReg);
-
-router.get('/courseregn/opted', verify, regcourses);
+router.get("/courseregn/opted", verify, regcourses);
 
 module.exports = router;

@@ -1,35 +1,37 @@
-import React,{useState} from "react"
-import form from "react-bootstrap"
-const Message = ()=>{
-const [name,setName] = useState("")
-const [email,setEmail] = useState("")
-const [message,setMessage] = useState("")
-const [subject,setSubject] = useState("")
-const PostData = ()=>{
-fetch("/student/send",{
-method:"post",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-name,
-email,
-subject,
-message
-})
-}).then(res=>res.json())
-.then(data=>{
-alert("message send")
-setMessage('')
-setName('')
-setSubject('')
-setEmail('')
-}).catch(err=>{
-console.log(err)
-})
-}
-return (
-    /*
+import React, { useState } from "react";
+import form from "react-bootstrap";
+const Message = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [subject, setSubject] = useState("");
+    const PostData = () => {
+        fetch("/student/send", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                subject,
+                message,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                alert("message send");
+                setMessage("");
+                setName("");
+                setSubject("");
+                setEmail("");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    return (
+        /*
 <div style={{maxWidth: '60%', display:'flex', flexDirection: 'column', alignItems:'center'}} className="mycard">
 <div className="card auth-card input-field">
 
@@ -64,35 +66,62 @@ Send Message
 </button>
 </div>
 </div>*/
-<div>
-<h2>Send Admin a Message</h2>
-<form>
-  <div className="form-group">
-    <label >Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email address" value={email}
-    onChange={(e)=>setEmail(e.target.value)} />
-   </div>
-   <div className="form-group">
-    <label >Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1"  placeholder="Your Name" 
-    value={name}
-    onChange={(e)=>setName(e.target.value)} />
-   </div>
-    <div className="form-group">
-    <label >Subject</label>
-    <input type="text" class="form-control"  placeholder="Subject" 
-    value={subject}
-    onChange={(e)=>setSubject(e.target.value)} />
-    </div>
-   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Message</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" type="text" placeholder="Message" 
-value={message}
-onChange={(e)=>setMessage(e.target.value)}></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary" onClick={()=>PostData()}>Send Email</button>
-</form>
-</div>
-)
-}
-export default Message
+        <div>
+            <h2>Send Admin a Message</h2>
+            <form>
+                <div className="form-group">
+                    <label>Email address</label>
+                    <input
+                        type="email"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        placeholder="Enter email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        placeholder="Your Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Subject</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Subject"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label for="exampleFormControlTextarea1">Message</label>
+                    <textarea
+                        className="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        type="text"
+                        placeholder="Message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    ></textarea>
+                </div>
+                <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={() => PostData()}
+                >
+                    Send Email
+                </button>
+            </form>
+        </div>
+    );
+};
+export default Message;

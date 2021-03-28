@@ -11,6 +11,7 @@ import SemwiseCourses from "./pages/semwise-courses";
 import Login from "./pages/login";
 import Register from "./pages/registration";
 import Profile from "./pages/profile";
+import AdminNav from "./admin-pages/adminNav";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -21,87 +22,112 @@ import Announcements from "./admin-pages/announcements";
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
 
-import ProtectedRoute from "./auth/ProtectedRoute";
+import StudentProtectedRoute from "./auth/StudentProtectedRoute";
+import AdminProtectedRoute from "./auth/AdminProtectedRoute";
 
-import { Route, Switch } from "react-router-dom";
-import AdminDashboard from "./admin-pages/admin-dashboard";
+import { Redirect, Route, Switch } from "react-router-dom";
+import AdminDashboard from "./admin-pages/adminDashboard";
 
 function App() {
-  return (
-    <React.Fragment>
-      <Switch>
-        <Route exact path="/selectUser" component={SelectUser} />
+    return (
+        <React.Fragment>
+            <Switch>
+                <Route exact path="/selectUser" component={SelectUser} />
+                <Route path="/admin">
+                    <AdminNav hasAuth={Auth.isAuthenticatedStudent()} />
+                    <AdminProtectedRoute
+                        exact
+                        path="/admin/adminDashboard"
+                        component={AdminDashboard}
+                    />
+                    <AdminProtectedRoute
+                        exact
+                        path="/admin/editStudentProfile"
+                        component={EditStudentProfile}
+                    />
+                    <AdminProtectedRoute
+                        exact
+                        path="/admin/announcements"
+                        component={Announcements}
+                    />
+                </Route>
 
-        <Route
-          exact
-          path="/editStudentProfile"
-          component={EditStudentProfile}
-        />
-        <Route exact path="/announcements" component={Announcements} />
-        <Route exact path="/adminDashboard" component={AdminDashboard} />
-
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route path="/">
-          <div className="App">
-            <div className="container-fluid h-100">
-              <div className="row h-100">
-                <div className="col-sm-2 sidebar p-0">
-                  <Sidebar />
-                </div>
-                <div className="col-sm-10 p-0">
-                  <div className="row m-0">
-                    <div className="col p-0">
-                      <Navbar hasAuth={Auth.isAuthenticated()} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route path="/student">
+                    <div className="App">
+                        <div className="container-fluid h-100">
+                            <div className="row h-100">
+                                <div className="col-sm-2 sidebar p-0">
+                                    <Sidebar
+                                        hasAuth={Auth.isAuthenticatedStudent()}
+                                    />
+                                </div>
+                                <div className="col-sm-10 p-0">
+                                    <div className="row m-0">
+                                        <div className="col p-0">
+                                            <Navbar
+                                                hasAuth={Auth.isAuthenticatedStudent()}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row m-0">
+                                        <div className="col main-col">
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/studentDashboard"
+                                                component={Dashboard}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/academic-registration"
+                                                component={AcademicRegistration}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/certificates"
+                                                component={Certificates}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/course-summary"
+                                                component={CourseSummary}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/faculty"
+                                                component={Faculty}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/semwise-courses"
+                                                component={SemwiseCourses}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/profile"
+                                                component={Profile}
+                                            />
+                                            <Route
+                                                exact
+                                                path="/student/send"
+                                                component={Message}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div className="row m-0">
-                    <div className="col main-col">
-                      <ProtectedRoute exact path="/" component={Dashboard} />
-                      <ProtectedRoute
-                        exact
-                        path="/academic-registration"
-                        component={AcademicRegistration}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/certificates"
-                        component={Certificates}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/course-summary"
-                        component={CourseSummary}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/faculty"
-                        component={Faculty}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/semwise-courses"
-                        component={SemwiseCourses}
-                      />
-                      <ProtectedRoute
-                        exact
-                        path="/profile"
-                        component={Profile}
-                      />
-                      <Route exact path="/student/send" component={Message} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          ;
-        </Route>
-        <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
-      </Switch>
-      {/* <NewSidebar /> */}
-    </React.Fragment>
-  );
+                </Route>
+                <Route exact path="/">
+                    <Redirect to="/selectUser" />
+                </Route>
+                <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
+            </Switch>
+            {/* <NewSidebar /> */}
+        </React.Fragment>
+    );
 }
 
 export default App;
