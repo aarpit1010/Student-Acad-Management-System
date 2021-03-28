@@ -50,6 +50,9 @@ function App() {
                         path="/admin/announcements"
                         component={Announcements}
                     />
+                    <Route path="/admin/*">
+                        <Redirect to="/admin/adminDashboard" />
+                    </Route>
                 </Route>
 
                 <Route exact path="/login" component={Login} />
@@ -108,11 +111,14 @@ function App() {
                                                 path="/student/profile"
                                                 component={Profile}
                                             />
-                                            <Route
+                                            <StudentProtectedRoute
                                                 exact
                                                 path="/student/send"
                                                 component={Message}
                                             />
+                                            <Route path="/student/*">
+                                                <Redirect to="/student/studentDashboard" />
+                                            </Route>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +131,6 @@ function App() {
                 </Route>
                 <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
             </Switch>
-            {/* <NewSidebar /> */}
         </React.Fragment>
     );
 }
