@@ -62,7 +62,11 @@ function EditStudentProfile() {
                 array.push(details);
             });
             setEnrolledCourseData(array);
-            console.log(enrolledCourseData);
+            console.log("RESPONSE::", {
+                profileData: found,
+                enrolledCourseData,
+            });
+            console.log("PROFILE-ALL::", profileData);
         } else {
             console.log("NO STUDENT FOUND!");
             reset();
@@ -202,7 +206,6 @@ function EditStudentProfile() {
                             </thead>
                             <tbody>
                                 {enrolledCourseData?.map((c, courseKey) => {
-                                    console.log("CCCC:: ", c);
                                     return (
                                         <tr key={courseKey}>
                                             <td>

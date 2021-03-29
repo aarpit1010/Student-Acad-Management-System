@@ -213,19 +213,6 @@ const studentProfile = async (req, res) => {
     }
 };
 
-const studentProfileAllOld = async (req, res) => {
-    try {
-        const student = await Student.find();
-        if (!student) res.status(400).json("No students in database!");
-
-        Courses.findCourse("courses", {}, function (err, docs) {
-            res.status(200).json(student);
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(403).json("Invalid Request!");
-    }
-};
 const studentProfileAll = async (req, res) => {
     try {
         const student = await Student.find();
