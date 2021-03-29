@@ -5,10 +5,13 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function EditStudentProfile() {
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState({});
+    const { register, handleSubmit, watch, setValue, reset } = useForm();
 
-    const { register, handleSubmit, setValue } = useForm();
+    const [isLoading, setLoading] = useState(true);
+    const [profileData, setProfileData] = useState({});
+    const [enrolledCourseData, setEnrolledCourseData] = useState([
+        { course: { course_ID: null, course_Name: null }, marks: {} },
+    ]);
 
     useEffect(() => {
         axios
@@ -19,15 +22,16 @@ function EditStudentProfile() {
                 },
             })
             .then((response) => {
-                setData(response.data);
+                setProfileData(response.data);
                 console.log(response.data);
                 setLoading(false);
             })
             .catch((error) => console.log(error));
     }, []);
 
-    const onSubmit = ({ enrollment_no }) => {
-        const found = data.find((stud) =>
+    const fetchStudentDetails = () => {
+        const enrollment_no = watch("enrollment_no");
+        const found = profileData.student.find((stud) =>
             stud.username.toLowerCase().includes(enrollment_no.toLowerCase())
         );
 
@@ -39,9 +43,46 @@ function EditStudentProfile() {
             setValue("email", student.email);
             setValue("branch", student.branch);
             setValue("semester", student.semester);
-            setValue("section", student.semester);
+            setValue("section", student.section);
             console.log(student.name, student.username);
-        } else console.log("NO STUDENT FOUND!");
+
+            const array = [];
+            const course = profileData.enrolled_courses.find(
+                (c) => c.semester === student.semester
+            );
+            course.course_list.forEach((i1, index) => {
+                const details = {};
+
+                details.course_ID = i1.course_ID;
+                details.course_Name = i1.course_Name;
+
+                details.marks = profileData.marks.find(
+                    (s) => s.enrollment === student.username
+                ).semester_marks[index];
+                array.push(details);
+            });
+            setEnrolledCourseData(array);
+            console.log(enrolledCourseData);
+        } else {
+            console.log("NO STUDENT FOUND!");
+            reset();
+            alert("NO STUDENT FOUND!");
+            setEnrolledCourseData([]);
+        }
+    };
+
+    const onSubmit = ({ enrollment_no, name, contact }) => {
+        console.log({ enrollment_no, name, contact });
+        axios
+            .post("/admin/updatestudentprofile", {
+                enrollment: enrollment_no,
+                name,
+                contact,
+            })
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+
+        console.log("FORM SUBMITTED");
     };
 
     if (isLoading) {
@@ -56,7 +97,7 @@ function EditStudentProfile() {
                 className="student-details-img"
                 alt="student-details-img"
             />
-            <div className="card col-md-6 mx-auto p-2">
+            <div className="card col-md-10 mx-auto p-2">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-row">
                         <div className="form-group col-md-6">
@@ -77,7 +118,6 @@ function EditStudentProfile() {
                                 id="contact"
                                 name="contact"
                                 className="form-control"
-                                disabled
                             />
                         </div>
                     </div>
@@ -90,7 +130,6 @@ function EditStudentProfile() {
                                 className="form-control"
                                 id="name"
                                 name="name"
-                                disabled
                             />
                         </div>
                         <div className="form-group col-md-6">
@@ -139,30 +178,89 @@ function EditStudentProfile() {
                                 disabled
                             />
                         </div>
-                        <h5>Enrolled Courses: </h5>
-                        <div className="form-row">
-                            {data.enrolled_course &&
-                                data.enrolled_course.map(
-                                    (course, courseKey) => {
-                                        return (
-                                            <div
-                                                className="form-group col-md-6"
-                                                key={courseKey}
-                                            >
+                        <button
+                            type="button"
+                            className="btn btn-warning mx-auto"
+                            onClick={() => fetchStudentDetails()}
+                        >
+                            Fetch Student Details
+                        </button>
+                    </div>
+                    <div className="form-row">
+                        <h4>Enrolled Courses: </h4>
+                        <table className="table table-bordered">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">C.Id.</th>
+                                    <th scope="col">C.Name</th>
+                                    <th scope="col">C1 Marks</th>
+                                    <th scope="col">C2 Marks</th>
+                                    <th scope="col">C3 Marks</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">GPA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {enrolledCourseData?.map((c, courseKey) => {
+                                    console.log("CCCC:: ", c);
+                                    return (
+                                        <tr key={courseKey}>
+                                            <td>
                                                 <input
-                                                    ref={register}
                                                     type="text"
-                                                    className="form-control"
-                                                    id="course-name"
-                                                    name="course-name"
-                                                    value={course}
+                                                    className="form-control p-1"
+                                                    placeholder={c.course_ID}
                                                     disabled
                                                 />
-                                            </div>
-                                        );
-                                    }
-                                )}
-                        </div>
+                                            </td>
+                                            <td width="30%">
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.course_Name}
+                                                    disabled
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.marks.c1}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.marks.c2}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.marks.c3}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.marks.total}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    className="form-control p-1"
+                                                    placeholder={c.marks.gpa}
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                     <button type="submit" className="btn btn-primary">
                         Confirm Changes

@@ -12,6 +12,7 @@ import Register from "./pages/registration";
 import Profile from "./pages/profile";
 import AdminNav from "./admin-pages/adminNav";
 import AcademicCalendar from "./admin-pages/academicCalendar";
+import Notifications from "./pages/notifications";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -54,6 +55,7 @@ function App() {
                         path="/admin/academicCalendar"
                         component={AcademicCalendar}
                     />
+
                     <Route path="/admin/*">
                         <Redirect to="/admin/adminDashboard" />
                     </Route>
@@ -118,6 +120,11 @@ function App() {
                                                 exact
                                                 path="/student/send"
                                                 component={Message}
+                                            />
+                                            <StudentProtectedRoute
+                                                exact
+                                                path="/student/notifications"
+                                                component={Notifications}
                                             />
                                             <Route path="/student/*">
                                                 <Redirect to="/student/studentDashboard" />

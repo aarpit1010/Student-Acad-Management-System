@@ -21,14 +21,8 @@ function Navigation(hasAuth) {
                 <Navbar>
                     {/* <Navbar.Brand className="portal-name">Student Portal</Navbar.Brand> */}
                     <Nav className="ml-auto items">
-                        <Nav.Link>
-                            <Link to="/student/profile">Profile</Link>
-                        </Nav.Link>
-                        <Nav.Link>
-                            <Link to="/student/notifications">
-                                Notifications
-                            </Link>
-                        </Nav.Link>
+                        <Link to="/student/profile">Profile</Link>
+                        <Link to="/student/notifications">Notifications</Link>
                         <Button onClick={() => handleLogout()}>Logout</Button>
                     </Nav>
                 </Navbar>

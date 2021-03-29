@@ -1,5 +1,5 @@
 import "./leftpane.css";
-import { Nav, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 import studentImg from "../../images/student.png";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";

@@ -8,18 +8,19 @@ function Announcements() {
 
     useEffect(() => {
         axios
-            .get("/student/notifications", {
+            .get("/admin/notifications/view", {
                 headers: {
-                    "auth-token": localStorage.token,
+                    "admin-auth-token": localStorage.token,
                     "Content-Type": "application/json",
                 },
             })
             .then((response) => {
                 setData(response.data);
                 setLoading(false);
+                console.log(data);
             })
             .catch((error) => console.log(error));
-    }, []);
+    }, [data]);
 
     if (isLoading) {
         return <div className="Course-Summary">Loading...</div>;

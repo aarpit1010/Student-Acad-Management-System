@@ -1,39 +1,34 @@
 const adminRouter = require("express").Router();
-const  admin_verify = require('../controllers/admin_verifyToken');
+const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
-  adminLogin, 
-  studentCoursesummary,
-  studentdroppedcourses,
-  facultyList,
-  logReport,
-  notifications,
-  displayNotifs,
-  updateProfile,
-  stuAccess
-} 
-= require("../controllers/adminController");
+    adminLogin,
+    studentCoursesummary,
+    studentdroppedcourses,
+    facultyList,
+    logReport,
+    notifications,
+    displayNotifs,
+    updateProfile,
+    stuAccess,
+} = require("../controllers/adminController");
 
+adminRouter.post("/login", adminLogin);
 
+adminRouter.post("/updatestudentprofile", updateProfile);
 
-adminRouter.post('/login', adminLogin);
+adminRouter.post("/studentmarks", admin_verify, studentCoursesummary);
 
-adminRouter.get('/updatestudentprofile', updateProfile);
+adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
 
-adminRouter.post('/studentmarks', admin_verify, studentCoursesummary);
+adminRouter.post("/addFaculty", admin_verify, facultyList);
 
-adminRouter.post('/studentdroppedcourses', admin_verify, studentdroppedcourses);
+adminRouter.get("/generatelogs", admin_verify, logReport);
 
-adminRouter.post('/addFaculty', admin_verify, facultyList);
+adminRouter.post("/notifications", admin_verify, notifications);
 
-adminRouter.get('/generatelogs', admin_verify, logReport);
+adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
-adminRouter.post('/notifications', admin_verify, notifications);
-
-adminRouter.get('/notifications/view', admin_verify, displayNotifs);
-
-adminRouter.post('/disableUser', admin_verify, stuAccess);
-
+adminRouter.post("/disableUser", admin_verify, stuAccess);
 
 module.exports = adminRouter;
-

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const verify = require("../controllers/verifyToken");
-const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
     studentRegister,
@@ -16,7 +15,7 @@ const {
     viewcert,
     courseReg,
     regcourses,
-    studentProfileAll
+    studentProfileAll,
 } = require("../controllers/studentController");
 
 router.post("/register", studentRegister);

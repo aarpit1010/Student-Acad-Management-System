@@ -6,6 +6,7 @@
     "@devexpress/dx-react-chart": "^2.7.5",
     "@devexpress/dx-react-chart-bootstrap4": "^2.7.5",
     "@devexpress/dx-react-core": "^2.7.5",
+    "@devexpress/dx-react-grid-bootstrap4": "^2.7.5",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
