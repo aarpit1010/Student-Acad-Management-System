@@ -14,8 +14,8 @@ const {
     viewcal,
     viewcert,
     courseReg,
-    regcourses,
-    studentProfileAll,
+    regcourses
+    // studentProfileAll,
 } = require("../controllers/studentController");
 
 router.post("/register", studentRegister);
@@ -26,7 +26,7 @@ router.get("/timetable", verify, studentTimetable);
 
 router.get("/profile", verify, studentProfile);
 
-router.get("/profile-all", verify, studentProfileAll);
+// router.get("/profile-all", verify, studentProfileAll);
 
 router.get("/marks", verify, studentMarks);
 

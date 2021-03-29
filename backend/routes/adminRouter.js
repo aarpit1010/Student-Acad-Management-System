@@ -3,6 +3,7 @@ const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
     adminLogin,
+    studentProfileAll,
     studentCoursesummary,
     studentdroppedcourses,
     facultyList,
@@ -14,6 +15,8 @@ const {
 } = require("../controllers/adminController");
 
 adminRouter.post("/login", adminLogin);
+
+adminRouter.get("/profile-all", admin_verify, studentProfileAll);
 
 adminRouter.post("/updatestudentprofile", updateProfile);
 

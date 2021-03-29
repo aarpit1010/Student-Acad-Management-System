@@ -9,46 +9,70 @@ const coursesummary = new mongoose.Schema({
     semester_marks:
       [
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         },
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         },
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         },
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         },
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         },
         {
-          c1: Number,
-          c2: Number,
-          c3: Number,
-          total: Number,
-          gpa: Number
+          course_ID:{type:String,default:""},
+          course_Name:{type:String,default:""},
+          marks:{
+          c1:{type:Number,default:0},
+          c2: {type:Number,default:0},
+          c3:{type:Number,default:0},
+          total: {type:Number,default:0},
+          gpa:{type:Number,default:0}
+          }
         }
       ],
     attendance:

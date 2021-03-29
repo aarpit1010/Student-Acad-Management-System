@@ -213,27 +213,27 @@ const studentProfile = async (req, res) => {
     }
 };
 
-const studentProfileAll = async (req, res) => {
-    try {
-        const student = await Student.find();
-        course_summary.find({}, function (err1, docs) {
-            if (err1) {
-                return res.status(404).json("NOT FOUND");
-            }
-            Courses.findCourse("courses", {}, function (err2, docs2) {
-                if (err2) res.json(err);
-                res.status(200).json({
-                    enrolled_courses: docs2,
-                    student,
-                    marks: docs,
-                });
-            });
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(403).json("Invalid Request!");
-    }
-};
+// const studentProfileAll = async (req, res) => {
+//     try {
+//         const student = await Student.find();
+//         course_summary.find({}, function (err1, docs) {
+//             if (err1) {
+//                 return res.status(404).json("NOT FOUND");
+//             }
+//             Courses.findCourse("courses", {}, function (err2, docs2) {
+//                 if (err2) res.json(err);
+//                 res.status(200).json({
+//                     enrolled_courses: docs2,
+//                     student,
+//                     marks: docs,
+//                 });
+//             });
+//         });
+//     } catch (err) {
+//         console.log(err);
+//         res.status(403).json("Invalid Request!");
+//     }
+// };
 
 const studentMarks = async (req, res) => {
     try {
@@ -246,22 +246,22 @@ const studentMarks = async (req, res) => {
                 if (err) {
                     return res.status(404).json("NOT FOUND");
                 }
-                let enrolled_course;
-                Courses.findCourse(
-                    "courses",
-                    {
-                        semester: student.semester,
-                        branch: student.branch,
-                    },
-                    function (err, docs2) {
-                        enrolled_course = docs2[0].course_list.sort();
+                // let enrolled_course;
+                // Courses.findCourse(
+                    // "courses",
+                    // {
+                        // semester: student.semester,
+                        // branch: student.branch,
+                    // },
+                    // function (err, docs2) {
+                        // enrolled_course = docs2[0].course_list.sort();
                         res.status(200).json({
-                            course: enrolled_course,
+                            // course: enrolled_course,
                             marks: docs[0].semester_marks,
                             attendance: docs[0].attendance,
                         });
-                    }
-                );
+                    // }
+                // );
             }
         );
     } catch (err) {
@@ -545,6 +545,6 @@ module.exports = {
     viewcal,
     viewcert,
     courseReg,
-    regcourses,
-    studentProfileAll,
+    regcourses
+    // studentProfileAll,
 };
