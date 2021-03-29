@@ -8,6 +8,7 @@ const {
   facultyList,
   logReport,
   notifications,
+  displayNotifs,
   updateProfile,
   stuAccess
 } 
@@ -25,9 +26,11 @@ adminRouter.post('/studentdroppedcourses', admin_verify, studentdroppedcourses);
 
 adminRouter.post('/addFaculty', admin_verify, facultyList);
 
-adminRouter.post('/generatelogs', admin_verify, logReport);
+adminRouter.get('/generatelogs', admin_verify, logReport);
 
 adminRouter.post('/notifications', admin_verify, notifications);
+
+adminRouter.get('/notifications/view', admin_verify, displayNotifs);
 
 adminRouter.post('/disableUser', admin_verify, stuAccess);
 

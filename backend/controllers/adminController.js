@@ -246,6 +246,11 @@ const notifications =async (req,res) =>{
     }
 };
 
+const displayNotifs = async (req,res) => {
+    const notifsExists = await notifs.find({});
+    if(notifsExists) res.status(200).json(notifsExists);
+};
+
 const updateProfile = async (req,res) => {
     const details = req.body;
     const enrollmentExist = await Student.findOne({ username : details.enrollment});
@@ -337,6 +342,7 @@ module.exports = {
     facultyList,
     logReport,
     notifications,
+    displayNotifs,
     updateProfile,
     stuAccess
   };

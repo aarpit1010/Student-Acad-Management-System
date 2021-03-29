@@ -10,7 +10,7 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 const { studentRegisterValid, studentLoginValid } = require("./validation");
-const acadcals = require("../model/upload");
+const {calendar, certificate} = require("../model/upload");
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -172,7 +172,7 @@ const studentProfile = async (req, res) => {
                 branch: student.branch,
             },
             function (err, docs) {
-                console.log(docs);
+                // console.log(docs);
                 res.status(200).json({
                     name: student.name,
                     enrollment_no: student.username,
@@ -376,8 +376,8 @@ const notifications = async (req,res) =>{
 
 const viewcal = async (req,res) => {
     const link = "605b7f3f595e855a68f57fe2";
-    const view = await acadcals.find({"_id": link});
-    if(view) return res.status(200).json(view[0].calpdf);
+    const view = await calendar.findOne({"_id": link});
+    if(view) return res.status(200).json(view.calpdf);
     // var current_date_time = currDateTime(currentTime);
     
     // const log = new Log({
@@ -398,8 +398,8 @@ const viewcal = async (req,res) => {
 
 const viewcert = async (req,res) => {
     const link = "605f718915adb20c983ba555";
-    const view = await certificates.find({"_id": link});
-    if(view) return res.status(200).json(view[0].certlink);
+    const view = await certificate.findOne({"_id": link});
+    if(view) return res.status(200).json(view.certpdf);
     // var current_date_time = currDateTime(currentTime);
     
     // const log = new Log({
