@@ -44,7 +44,7 @@ const studentRegister = async (req, res) => {
     const student = new Student(req.body);
     let givenEmail = req.body.email;
     let givenPassword = req.body.password;
-
+    
     // validation
     const {error} = studentRegisterValid(req.body);
     if (error) return res.status(400).json(error.details[0].message);
@@ -57,7 +57,20 @@ const studentRegister = async (req, res) => {
     // hash password
     const salt = await bcrypt.genSalt(10);
     student.password = await bcrypt.hash(givenPassword, salt);
-
+    Courses.findCourse(
+        "courses",
+        {
+            semester: student.semester,
+            branch: student.branch
+        },
+        function(err,docs2) {
+            for(var i=0; i<docs2[0].course_list.length; i++) {
+                student.enrolled_course.push(docs2[0].course_list[i]);
+            }  
+            student.save();
+        res.status(200).json(student);
+        }
+    );
     try {
         var created_date_time = student.creation_date;
         var current_date_time = student.last_login_date;
@@ -80,9 +93,6 @@ const studentRegister = async (req, res) => {
                 // console.log("Updated Logs");
             }
         });
-
-        const savedStudent = await student.save();
-        res.status(201).json(savedStudent);
     } catch(err) {
         res.status(400).json(err);
     }
@@ -478,13 +488,16 @@ const regcourses = async (req, res) => {
             semester: nextSem,
             branch: student.branch,
         },
-        function (err, docs2) {
-            for (var i = 0; i < course_arr.length; i++) {
+        function(err,docs2) {
+            console.log(docs2[0]);
+            for(var i=0; i<course_arr.length; i++) {
                 idx = course_arr[i];
-                add_course = docs2[0].course_list[idx];
+                add_course=docs2[0].course_list[idx];
+                student.enrolled_course.push(add_course);
                 opted_course_arr.push(add_course);
-            }
+            }  
             res.status(200).json(opted_course_arr);
+           student.save();
         }
     );
 
