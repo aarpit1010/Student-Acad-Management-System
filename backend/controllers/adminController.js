@@ -105,25 +105,37 @@ const studentCoursesummary = async (req,res) => {
     }
 
     enrollmentExist.save();
+
+    var stuExists = await Student.findOne({
+        enrollment: req.body.profileData.enrollment
+    });
+
+    stuExists.name = req.body.profileData.name;
+    stuExists.contact = req.body.profileData.contact;
+
+    stuExists.save();
             
-    res.status(200).json(enrollmentExist.semester_marks);
+    res.status(200).json({
+        profile:stuExists,
+        marks:enrollmentExist.semester_marks
+    });
     
 
-    var current_date_time = currDateTime(currentTime);
+    // var current_date_time = currDateTime(currentTime);
     
-    const log = new Log({
-        createdAt: current_date_time,
-        action: "Added/Updated "+enrollmentExist.enrollment+" Marks & Attendance",
-        role: "ADMIN" 
-    });
+    // const log = new Log({
+    //     createdAt: current_date_time,
+    //     action: "Added/Updated "+enrollmentExist.enrollment+" Marks & Attendance",
+    //     role: "ADMIN" 
+    // });
 
-    log.save(function(err){
-        if(err){
-            console.log(err);
-        } else {
-            // console.log("Updated Logs");
-        }
-    });
+    // log.save(function(err){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         // console.log("Updated Logs");
+    //     }
+    // });
 };
 
 const studentdroppedcourses = async (req,res) => {
