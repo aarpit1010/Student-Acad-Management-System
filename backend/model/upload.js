@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Student = require("./Student");
 
 const acadcalSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -15,7 +16,9 @@ const acadcalSchema = new Schema({
 
 const certSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    // name: "Academic Calendar",
+    enrollment:{
+        type: mongoose.Schema.Types.String, ref: 'Student'
+    },
     certpdf: {
         type: String
     }

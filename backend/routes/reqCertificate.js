@@ -3,6 +3,7 @@ let express = require('express'),
     mongoose = require('mongoose'),
     router = express.Router();
     Log = require("../model/log");
+    Student = require("../model/Student");
 
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
@@ -54,58 +55,80 @@ var upload = multer({
 // User model
 let {calendar,certificate} = require('../model/upload');
 
-router.post('/uploadcertificate', upload.single('certpdf'), (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host')
-
-    const user = new certificate({
-        _id: new mongoose.Types.ObjectId(),
-        certpdf: url + '/public/' + req.file.filename
-    });
+router.post('/uploadcertificate', upload.single('certpdf'), async (req, res, next) => {
+    const url = req.protocol + '://' + req.get('host');
     const chk = url + '/public/' + req.file.filename;
-    
-    var cert_id = "605f718915adb20c983ba555";
 
-    certificate.findByIdAndUpdate(cert_id, {$set:
-        {certpdf: url + '/public/' + req.file.filename}},
-        {new: true}, (err, doc) => {
-            if (err) {
-                console.log("Something wrong when updating file!");
-            }
-            res.status(201).json(doc);
-    });
-
-    // user.save().then(result => {
-    //     res.status(201).json({
-    //         message: "Student Certificate Uploaded!",
-    //         certAdded: {
-    //             _id: result._id,
-    //             certpdf: result.certpdf
-    //         }
-    //     })
-    // }).catch(err => {
-    //     console.log(err),
-    //         res.status(500).json({
-    //             error: err
-    //         });
-    // })
+    var enroll_no = req.body.enrollment;
+    const enrollExists = await Student.findOne({enrollment: enroll_no});
 
     var current_date_time = currDateTime(currentTime);
-    
-    const log = new Log({
-        createdAt: current_date_time,
-        action: "Uploaded Student Certificate",
-        role: "ADMIN" 
-    });
 
-    log.save(function(err){
-        if(err){
-            console.log(err);
-        } else {
-            // console.log("Updated Logs");
+    if(enrollExists) {
+        const pdfExists = await certificate.findOne({enrollment: enroll_no});
+        if (!pdfExists) {
+            const user = new certificate({
+                _id: new mongoose.Types.ObjectId(),
+                enrollment: enrollExists.enrollment,
+                certpdf: chk
+            });
+
+            user.save().then(result => {
+                res.status(201).json({
+                    _id: result._id,
+                    enrollment: enrollExists.enrollment,
+                    certpdf: result.certpdf
+                })
+            }).catch(err => {
+                console.log(err),
+                    res.status(500).json({
+                        error: err
+                    });
+            })
+            // const log = new Log({
+            //     createdAt: current_date_time,
+            //     action: "Uploaded Student Certificate for "
+            //         + enrollExists.enrollment,
+            //     role: "ADMIN" 
+            // });
+        
+            // log.save(function(err){
+            //     if(err){
+            //         console.log(err);
+            //     } else {
+            //         // console.log("Updated Logs");
+            //     }
+            // });
         }
-    });
 
-})
+        else {
+            var cert_id = pdfExists._id;
+            certificate.findByIdAndUpdate(cert_id, {$set:
+                {enrollment: enrollExists.enrollment,certpdf: chk}},
+                {new: true}, (err, doc) => {
+                    if (err) {
+                        console.log("Something wrong when updating file!");
+                    }
+                    res.status(201).json(doc);
+            });
+
+            // const log = new Log({
+            //     createdAt: current_date_time,
+            //     action: "Updated Student Certificate for "
+            //         + enrollExists.enrollment,
+            //     role: "ADMIN" 
+            // });
+        
+            // log.save(function(err){
+            //     if(err){
+            //         console.log(err);
+            //     } else {
+            //         // console.log("Updated Logs");
+            //     }
+            // });
+        }
+    }    
+});
 
 router.get("/", (req, res, next) => {
     certificate.find().then(data => {
