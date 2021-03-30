@@ -21,7 +21,7 @@ adminRouter.get("/profile-all", admin_verify, studentProfileAll);
 
 // adminRouter.post("/updatestudentprofile", updateProfile);
 
-adminRouter.post("/studentmarks", admin_verify, studentCoursesummary);
+adminRouter.post("/updatestudentmarks", admin_verify, studentCoursesummary);
 
 adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
 

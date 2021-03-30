@@ -8,6 +8,7 @@ function EditStudentProfile() {
     const { register, handleSubmit, watch, setValue, reset } = useForm();
 
     const [isLoading, setLoading] = useState(true);
+    const [foundStudent, setFoundStudent] = useState({});
     const [profileData, setProfileData] = useState({});
     const [enrolledCourseData, setEnrolledCourseData] = useState([
         { course: { course_ID: null, course_Name: null }, marks: {} },
@@ -15,9 +16,9 @@ function EditStudentProfile() {
 
     useEffect(() => {
         axios
-            .get("/student/profile-all", {
+            .get("/admin/profile-all", {
                 headers: {
-                    "auth-token": localStorage.token,
+                    "admin-auth-token": localStorage.token,
                     "Content-Type": "application/json",
                 },
             })
@@ -46,6 +47,8 @@ function EditStudentProfile() {
             setValue("section", student.section);
             console.log(student.name, student.username);
 
+            setFoundStudent(found);
+
             const array = [];
             const course = profileData.enrolled_courses.find(
                 (c) => c.semester === student.semester
@@ -58,12 +61,12 @@ function EditStudentProfile() {
 
                 details.marks = profileData.marks.find(
                     (s) => s.enrollment === student.username
-                ).semester_marks[index];
+                ).semester_marks[index].marks;
                 array.push(details);
             });
             setEnrolledCourseData(array);
             console.log("RESPONSE::", {
-                profileData: found,
+                foundStudent,
                 enrolledCourseData,
             });
             console.log("PROFILE-ALL::", profileData);
@@ -77,12 +80,21 @@ function EditStudentProfile() {
 
     const onSubmit = ({ enrollment_no, name, contact }) => {
         console.log({ enrollment_no, name, contact });
+        const updatedData = {
+            ...foundStudent,
+            enrolledCourseData,
+        };
         axios
-            .post("/admin/updatestudentprofile", {
-                enrollment: enrollment_no,
-                name,
-                contact,
-            })
+            .post(
+                "/admin/updatestudentmarks",
+                { profileData: updatedData },
+                {
+                    headers: {
+                        "admin-auth-token": localStorage.token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
 

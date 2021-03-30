@@ -3,90 +3,119 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import "./announcements.css";
 
+import { useForm } from "react-hook-form";
+
 function Announcements() {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("/admin/notifications/view", {
-        headers: {
-          "admin-auth-token": localStorage.token,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    const { register, handleSubmit } = useForm();
 
-  if (isLoading) {
-    return <div className="Course-Summary">Loading...</div>;
-  }
+    useEffect(() => {
+        axios
+            .get("/admin/notifications/view", {
+                headers: {
+                    "admin-auth-token": localStorage.token,
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => {
+                setData(response.data);
+                setLoading(false);
+            })
+            .catch((error) => console.log(error));
+        return () => setLoading(false);
+    }, [isLoading]);
 
-  return (
-    <div className="announcements-page pt-3">
-      <h4 className="mx-auto">Announcements</h4>
+    const onSubmit = ({ enrollment, message }) => {
+        const responseObject = { enrollment, notifs_arr: [{ message }] };
 
-      <div className="card shadow-lg col-md-4 mx-auto p-3">
-        <form>
-          <h5>Enter a new announcement to make</h5>
-          <div class="form-group">
-            <label for="inlineFormInput">Enrollment no.</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inlineFormInput"
-              placeholder="IIT20XX001"
-            />
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlTextarea1">Message</label>
-            <textarea
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              placeholder="Write the message here"
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">
-            Submit
-          </button>
-        </form>
-      </div>
-      <br />
-      <div className="row cards-row">
-        {data.map((item, key) => {
-          console.log("ITEM:", item.notifs_arr);
-          return (
-            <div className="col-sm-4 card-col">
-              <div className="card">
-                <div className="card-body">
-                  <h6 className="card-title">
-                    Enrollment No. {item.enrollment.toUpperCase()}
-                  </h6>
-                  <ul className="list-group">
-                    {item.notifs_arr.map((notif, key2) => {
-                      return (
-                        <li className="list-group-item list-group-item-action list-group-item-info">
-                          <p className="card-text">
-                            {notif.message}
-                            <br />
-                            {notif.sent_time}
-                          </p>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
+        axios
+            .post("/admin/notifications", responseObject, {
+                headers: {
+                    "admin-auth-token": localStorage.token,
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                console.log(res);
+                setLoading(true);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    if (isLoading) {
+        return <div className="Course-Summary">Loading...</div>;
+    }
+
+    return (
+        <div className="announcements-page pt-3">
+            <h4 className="mx-auto">Announcements</h4>
+
+            <div className="card shadow-lg col-md-4 mx-auto p-3">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <h5>Enter a new announcement to make</h5>
+                    <div className="form-group">
+                        <label htmlFor="enrollment">Enrollment no.</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="enrollment"
+                            name="enrollment"
+                            placeholder="IIT20XX001"
+                            ref={register}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="message">Message</label>
+                        <textarea
+                            className="form-control"
+                            id="message"
+                            name="message"
+                            rows="3"
+                            placeholder="Write the message here"
+                            ref={register}
+                        ></textarea>
+                    </div>
+                    <button type="submit" className="btn btn-primary">
+                        Submit
+                    </button>
+                </form>
             </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+            <br />
+            <div className="row cards-row">
+                {data.map((item, key) => {
+                    return (
+                        <div key={key} className="col-sm-4 card-col">
+                            <div className="card">
+                                <div className="card-body">
+                                    <h6 className="card-title">
+                                        Enrollment No.{" "}
+                                        {item.enrollment.toUpperCase()}
+                                    </h6>
+                                    <ul className="list-group">
+                                        {item.notifs_arr.map((notif, key2) => {
+                                            return (
+                                                <li
+                                                    key={key2}
+                                                    className="list-group-item list-group-item-action list-group-item-info"
+                                                >
+                                                    <p className="card-text">
+                                                        {notif.message}
+                                                        <br />
+                                                        {notif.sent_time}
+                                                    </p>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
 }
 export default Announcements;
