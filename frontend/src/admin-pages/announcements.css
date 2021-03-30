@@ -1,0 +1,19 @@
+.announcements-page {
+  background-image: linear-gradient(
+    #e5fcc2,
+    #9de0ad,
+    #45ada8,
+    #547980,
+    #2a363b
+  );
+  background-size: cover;
+  min-height: 100vh;
+  max-width: 100% !important;
+  margin: 0 !important;
+  /* text-align: center; */
+}
+
+.cards-row {
+  padding: 0 20px !important;
+  margin: 0 0 !important;
+}
