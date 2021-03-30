@@ -112,6 +112,7 @@ const studentCoursesummary = async (req,res) => {
 
     stuExists.name = req.body.profileData.name;
     stuExists.contact = req.body.profileData.contact;
+    stuExists.access = req.body.profileData.access;
 
     stuExists.save();
             
@@ -230,6 +231,11 @@ const facultyList = async (req, res) => {
        
 };
 
+const Faculty = async (req,res) => {
+    const facExists = await faculty_list.find({});
+    if(facExists) res.status(200).json(facExists);
+};
+
 const logReport = async (req,res) => {
     const logExists = await Log.find({});
     if(logExists) res.status(200).json(logExists);
@@ -304,89 +310,89 @@ const displayNotifs = async (req,res) => {
     if(notifsExists) res.status(200).json(notifsExists);
 };
 
-const updateProfile = async (req,res) => {
-    const details = req.body;
-    const enrollmentExist = await Student.findOne({ username : details.enrollment});
-    var current_date_time = currDateTime(currentTime);
-    if(enrollmentExist) {
-       if(details.name) {
-        Student.updateOne({username: details.enrollment}, {name: details.name}, function(
-            err,result) {
-            if (err) {
-              res.json(err);
-            } else {
-            //   res.json(result);
-            }
-        });
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Updated "+ details.enrollment +" Name to "+details.name,
-            role: "ADMIN" 
-        });
+// const updateProfile = async (req,res) => {
+//     const details = req.body;
+//     const enrollmentExist = await Student.findOne({ username : details.enrollment});
+//     var current_date_time = currDateTime(currentTime);
+//     if(enrollmentExist) {
+//        if(details.name) {
+//         Student.updateOne({username: details.enrollment}, {name: details.name}, function(
+//             err,result) {
+//             if (err) {
+//               res.json(err);
+//             } else {
+//             //   res.json(result);
+//             }
+//         });
+//         const log = new Log({
+//             createdAt: current_date_time,
+//             action: "Updated "+ details.enrollment +" Name to "+details.name,
+//             role: "ADMIN" 
+//         });
 
-        log.save(function(err){
-            if(err){
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
-       }
-       if(details.contact) {
-        Student.updateOne({username: details.enrollment}, {contact: details.contact}, function(
-            err,result) {
-            if (err) {
-              res.json(err);
-            } else {
-            //   res.json(result);
-            }
-        });
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Updated "+ details.enrollment +" Contact to "+details.contact,
-            role: "ADMIN" 
-        });
+//         log.save(function(err){
+//             if(err){
+//                 console.log(err);
+//             } else {
+//                 // console.log("Updated Logs");
+//             }
+//         });
+//        }
+//        if(details.contact) {
+//         Student.updateOne({username: details.enrollment}, {contact: details.contact}, function(
+//             err,result) {
+//             if (err) {
+//               res.json(err);
+//             } else {
+//             //   res.json(result);
+//             }
+//         });
+//         const log = new Log({
+//             createdAt: current_date_time,
+//             action: "Updated "+ details.enrollment +" Contact to "+details.contact,
+//             role: "ADMIN" 
+//         });
 
-        log.save(function(err){
-            if(err){
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
-       }
-       else res.json("doesn't exist");
-    }
-    // else console.log("wrong2");
-}
+//         log.save(function(err){
+//             if(err){
+//                 console.log(err);
+//             } else {
+//                 // console.log("Updated Logs");
+//             }
+//         });
+//        }
+//        else res.json("doesn't exist");
+//     }
+//     // else console.log("wrong2");
+// }
 
-const stuAccess = async (req,res) => {
-    const details = req.body;
-    const enrollExists = await Student.findOneAndUpdate(
-        {username: details.enrollment},
-        {access: details.access},
-        {new: true});
-    if(enrollExists) {
-         res.status(200).json(enrollExists);
-        var current_date_time = currDateTime(currentTime);
+// const stuAccess = async (req,res) => {
+//     const details = req.body;
+//     const enrollExists = await Student.findOneAndUpdate(
+//         {username: details.enrollment},
+//         {access: details.access},
+//         {new: true});
+//     if(enrollExists) {
+//          res.status(200).json(enrollExists);
+//         var current_date_time = currDateTime(currentTime);
         
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Modified " + details.enrollment + " account access",
-            role: "ADMIN" 
-        });
+//         const log = new Log({
+//             createdAt: current_date_time,
+//             action: "Modified " + details.enrollment + " account access",
+//             role: "ADMIN" 
+//         });
 
-        log.save(function(err){
-            if(err){
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
-    }
-    else return res.status(404).json("Enrollment doesn't exist in Database");
+//         log.save(function(err){
+//             if(err){
+//                 console.log(err);
+//             } else {
+//                 // console.log("Updated Logs");
+//             }
+//         });
+//     }
+//     else return res.status(404).json("Enrollment doesn't exist in Database");
     
-}
+// }
 
 module.exports = {
     adminLogin, 
@@ -394,9 +400,10 @@ module.exports = {
     studentCoursesummary,
     studentdroppedcourses,
     facultyList,
+    Faculty,
     logReport,
     notifications,
     displayNotifs,
-    updateProfile,
-    stuAccess
+    // updateProfile,
+    // stuAccess
   };
