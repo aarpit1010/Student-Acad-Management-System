@@ -229,7 +229,7 @@ const facultyList = async (req, res) => {
         
         const log = new Log({
             createdAt: current_date_time,
-            action: "Added Faculty List",
+            action: "Added Faculty for existing List",
             role: "ADMIN" 
         });
         log.save(function(err){
@@ -246,7 +246,7 @@ const facultyList = async (req, res) => {
 
         const log = new Log({
             createdAt: current_date_time,
-            action: "Added Faculty for existing list",
+            action: "Added Faculty list",
             role: "ADMIN" 
         });
         log.save(function(err){
