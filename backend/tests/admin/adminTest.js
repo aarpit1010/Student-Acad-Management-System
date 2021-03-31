@@ -21,6 +21,6 @@ const api = supertest(app);
 let student;
 
 beforeEach(async () => {
-    await Student.deleteMany({});
+    // await Student.deleteMany({});
     student = await loginStudent(initialStudents[0]);
   });

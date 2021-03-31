@@ -246,22 +246,22 @@ const studentMarks = async (req, res) => {
                 if (err) {
                     return res.status(404).json("NOT FOUND");
                 }
-                // let enrolled_course;
-                // Courses.findCourse(
-                    // "courses",
-                    // {
-                        // semester: student.semester,
-                        // branch: student.branch,
-                    // },
-                    // function (err, docs2) {
-                        // enrolled_course = docs2[0].course_list.sort();
+                let enrolled_course;
+                Courses.findCourse(
+                    "courses",
+                    {
+                        semester: student.semester,
+                        branch: student.branch,
+                    },
+                    function (err, docs2) {
+                        enrolled_course = docs2[0].course_list.sort();
                         res.status(200).json({
-                            // course: enrolled_course,
+                            course: enrolled_course,
                             marks: docs[0].semester_marks,
                             attendance: docs[0].attendance,
                         });
-                    // }
-                // );
+                    }
+                );
             }
         );
     } catch (err) {
