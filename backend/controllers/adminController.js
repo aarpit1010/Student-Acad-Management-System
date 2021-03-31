@@ -35,12 +35,13 @@ const adminLogin = function (req, res) {
     const username = req.body.email;
     const password = req.body.password;
     if (username == "authority.iiita@gmail.com" && password == "1234") {
+    
         // var current_date_time = currDateTime(currentTime);
-
+        
         // const log = new Log({
         //     createdAt: current_date_time,
         //     action: "Successfully Logged In",
-        //     role: "ADMIN"
+        //     role: "ADMIN" 
         // });
 
         // log.save(function(err){
@@ -85,11 +86,11 @@ const studentProfileAll = async (req, res) => {
     }
 };
 
-const studentCoursesummary = async (req, res) => {
-    // const coursesummary = new course_summary(req.body);
-
-    var enrollmentExist = await course_summary.findOne({
-        enrollment: req.body.profileData.enrollment,
+const studentCoursesummary = async (req,res) => {
+   // const coursesummary = new course_summary(req.body);
+    
+   var enrollmentExist = await course_summary.findOne({
+    enrollment: req.body.profileData.enrollment,
     });
 
     if (!enrollmentExist) {
@@ -113,7 +114,7 @@ const studentCoursesummary = async (req, res) => {
     enrollmentExist.save();
 
     var stuExists = await Student.findOne({
-        enrollment: req.body.profileData.enrollment,
+        enrollment: req.body.profileData.enrollment
     });
 
     stuExists.name = req.body.profileData.name;
@@ -121,18 +122,19 @@ const studentCoursesummary = async (req, res) => {
     stuExists.access = req.body.profileData.access;
 
     stuExists.save();
-
+            
     res.status(200).json({
         profile: stuExists,
-        marks: enrollmentExist.semester_marks,
+        marks: enrollmentExist.semester_marks
     });
+    
 
     // var current_date_time = currDateTime(currentTime);
-
+    
     // const log = new Log({
     //     createdAt: current_date_time,
     //     action: "Added/Updated "+enrollmentExist.enrollment+" Marks & Attendance",
-    //     role: "ADMIN"
+    //     role: "ADMIN" 
     // });
 
     // log.save(function(err){
@@ -144,9 +146,9 @@ const studentCoursesummary = async (req, res) => {
     // });
 };
 
-const studentdroppedcourses = async (req, res) => {
-    const droppedCourses = new droppedcourses(req.body);
-
+const studentdroppedcourses = async (req,res) => {
+    const droppedCourses= new droppedcourses(req.body);
+    
     const enrollmentExist = await droppedcourses.findOne({
         enrollment: req.body.enrollment,
     });
@@ -158,13 +160,13 @@ const studentdroppedcourses = async (req, res) => {
         enrollmentExist.save();
 
         var current_date_time = currDateTime(currentTime);
-
+        
         const log = new Log({
             createdAt: current_date_time,
             action:
                 "Updated List of Dropped Courses for " +
                 enrollmentExist.enrollment,
-            role: "ADMIN",
+            role: "ADMIN", 
         });
 
         log.save(function (err) {
@@ -185,15 +187,15 @@ const studentdroppedcourses = async (req, res) => {
         enroll.save();
 
         var current_date_time = currDateTime(currentTime);
-
+        
         const log = new Log({
             createdAt: current_date_time,
             action: "Added List of Dropped Courses for " + enroll.enrollment,
             role: "ADMIN",
         });
 
-        log.save(function (err) {
-            if (err) {
+        log.save(function(err){
+            if(err){
                 console.log(err);
             } else {
                 // console.log("Updated Logs");
@@ -202,11 +204,11 @@ const studentdroppedcourses = async (req, res) => {
 
         res.status(200).json(enroll.dropped_courses);
     }
-};
+}
 
 const facultyList = async (req, res) => {
     const addFaculty = new faculty_list(req.body);
-
+    
     const profExists = await faculty_list.findOne({
         branch: req.body.branch,
         semester: req.body.semester,
@@ -215,19 +217,19 @@ const facultyList = async (req, res) => {
 
     if (profExists)
         return res.status(400).json("Faculty has already been added");
-
+    
     const facultyDB = await addFaculty.save();
 
     var current_date_time = currDateTime(currentTime);
-
+    
     const log = new Log({
         createdAt: current_date_time,
         action: "Added Faculty List",
-        role: "ADMIN",
+        role: "ADMIN" 
     });
 
-    log.save(function (err) {
-        if (err) {
+    log.save(function(err){
+        if(err){
             console.log(err);
         } else {
             // console.log("Updated Logs");
@@ -235,16 +237,17 @@ const facultyList = async (req, res) => {
     });
 
     res.status(200).json(facultyDB);
+       
 };
 
-const Faculty = async (req, res) => {
+const Faculty = async (req,res) => {
     const facExists = await faculty_list.find({});
-    if (facExists) res.status(200).json(facExists);
+    if(facExists) res.status(200).json(facExists);
 };
 
-const logReport = async (req, res) => {
+const logReport = async (req,res) => {
     const logExists = await Log.find({});
-    if (logExists) res.status(200).json(logExists);
+    if(logExists) res.status(200).json(logExists);
 };
 
 const notifications = async (req, res) => {
@@ -265,44 +268,46 @@ const notifications = async (req, res) => {
         enrollmentExist.save();
 
         res.status(200).json(enrollmentExist.notifs_arr);
-
+        
         const log = new Log({
             createdAt: notif_date_time,
             action:
                 "Sent another notification to " + enrollmentExist.enrollment,
-            role: "ADMIN",
+            role: "ADMIN", 
         });
 
-        log.save(function (err) {
-            if (err) {
+        log.save(function(err){
+            if(err){
                 console.log(err);
             } else {
                 // console.log("Updated Logs");
             }
         });
-    } else {
-        var enroll = new notifs();
-        enroll.enrollment = req.body.enrollment;
+    }
+    else
+    {
+        var enroll=new notifs();
+        enroll.enrollment=req.body.enrollment;
 
         var notif_date_time = currDateTime(currentTime);
 
         var obj = {
             message: req.body.notifs_arr[0].message,
             sent_time: notif_date_time,
-        };
+        }
         enroll.notifs_arr.push(obj);
 
         enroll.save();
         res.status(201).json(enroll.notifs_arr);
-
+        
         const log = new Log({
             createdAt: notif_date_time,
-            action: "Sent Notifications to " + enroll.enrollment,
+            action: "Sent Notifications to "+enroll.enrollment,
             role: "ADMIN",
         });
 
-        log.save(function (err) {
-            if (err) {
+        log.save(function(err){
+            if(err){
                 console.log(err);
             } else {
                 // console.log("Updated Logs");
@@ -311,9 +316,9 @@ const notifications = async (req, res) => {
     }
 };
 
-const displayNotifs = async (req, res) => {
+const displayNotifs = async (req,res) => {
     const notifsExists = await notifs.find({});
-    if (notifsExists) res.status(200).json(notifsExists);
+    if(notifsExists) res.status(200).json(notifsExists);
 };
 
 // const updateProfile = async (req,res) => {
@@ -333,7 +338,7 @@ const displayNotifs = async (req, res) => {
 //         const log = new Log({
 //             createdAt: current_date_time,
 //             action: "Updated "+ details.enrollment +" Name to "+details.name,
-//             role: "ADMIN"
+//             role: "ADMIN" 
 //         });
 
 //         log.save(function(err){
@@ -356,7 +361,7 @@ const displayNotifs = async (req, res) => {
 //         const log = new Log({
 //             createdAt: current_date_time,
 //             action: "Updated "+ details.enrollment +" Contact to "+details.contact,
-//             role: "ADMIN"
+//             role: "ADMIN" 
 //         });
 
 //         log.save(function(err){
@@ -381,11 +386,11 @@ const displayNotifs = async (req, res) => {
 //     if(enrollExists) {
 //          res.status(200).json(enrollExists);
 //         var current_date_time = currDateTime(currentTime);
-
+        
 //         const log = new Log({
 //             createdAt: current_date_time,
 //             action: "Modified " + details.enrollment + " account access",
-//             role: "ADMIN"
+//             role: "ADMIN" 
 //         });
 
 //         log.save(function(err){
@@ -397,11 +402,11 @@ const displayNotifs = async (req, res) => {
 //         });
 //     }
 //     else return res.status(404).json("Enrollment doesn't exist in Database");
-
+    
 // }
 
 module.exports = {
-    adminLogin,
+    adminLogin, 
     studentProfileAll,
     studentCoursesummary,
     studentdroppedcourses,
@@ -412,4 +417,4 @@ module.exports = {
     displayNotifs,
     // updateProfile,
     // stuAccess
-};
+  };

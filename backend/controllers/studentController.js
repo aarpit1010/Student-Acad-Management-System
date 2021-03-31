@@ -504,7 +504,7 @@ const regcourses = async (req, res) => {
             for (var i = 0; i < course_arr.length; i++) {
                 idx = course_arr[i];
                 add_course = docs2[0].course_list[idx];
-                student.enrolled_course.push(add_course);
+                student.registered_course.push(add_course);
                 opted_course_arr.push(add_course);
             }
             res.status(200).json(opted_course_arr);
