@@ -19,6 +19,9 @@ import EditStudentProfile from "./admin-pages/editStudentProfile";
 import Message from "./components/email/Message";
 import Announcements from "./admin-pages/announcements";
 import Logs from "./admin-pages/logs";
+import AdminFaculty from "./admin-pages/adminFaculty";
+import AdminEmail from "./admin-pages/adminEmail";
+import AdminCertificates from "./admin-pages/adminCertificates";
 
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
@@ -55,6 +58,21 @@ function App() {
             exact
             path="/admin/academicCalendar"
             component={AcademicCalendar}
+          />
+          <AdminProtectedRoute
+            exact
+            path="/admin/faculty"
+            component={AdminFaculty}
+          />
+          <AdminProtectedRoute
+            exact
+            path="/admin/email"
+            component={AdminEmail}
+          />
+          <AdminProtectedRoute
+            exact
+            path="/admin/grantCertificates"
+            component={AdminCertificates}
           />
           <AdminProtectedRoute exact path="/admin/logs" component={Logs} />
 

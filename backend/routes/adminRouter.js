@@ -2,17 +2,17 @@ const adminRouter = require("express").Router();
 const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
-    adminLogin,
-    studentProfileAll,
-    studentCoursesummary,
-    studentdroppedcourses,
-    facultyList,
-    Faculty,
-    logReport,
-    notifications,
-    displayNotifs,
-    // updateProfile,
-    // stuAccess,
+  adminLogin,
+  studentProfileAll,
+  studentCoursesummary,
+  studentdroppedcourses,
+  facultyList,
+  Faculty,
+  logReport,
+  notifications,
+  displayNotifs,
+  // updateProfile,
+  // stuAccess,
 } = require("../controllers/adminController");
 
 adminRouter.post("/login", adminLogin);
@@ -27,7 +27,7 @@ adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
 
 adminRouter.post("/addFaculty", admin_verify, facultyList);
 
-adminRouter.get("/addFaculty/viewlist", admin_verify, Faculty);
+adminRouter.get("/addFaculty/view", admin_verify, Faculty);
 
 adminRouter.get("/generatelogs", admin_verify, logReport);
 

@@ -1,67 +1,58 @@
-// import React from "react";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-// import "./announcements.css";
+import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import "./announcements.css";
 
-// export default function Logs() {
-//   const [isLoading, setLoading] = useState(true);
-//   const [logs, setLogs] = useState("");
-//   useEffect(() => {
-//     // asynchronous function to fetch logs
-//     const fetchLogs = async () => {
-//       try {
-//         const logResponse = await axios.get("/admin/generatelogs", {
-//           headers: {
-//             "auth-token": localStorage.token,
-//             "Content-Type": "application/json",
-//           },
-//         });
-//         setLogs(logResponse.data);
-//         setLoading(false);
-//       } catch {
-//         (err) => console.log(err);
-//       }
-//     };
-//     fetchLogs();
-//   }, []);
+export default function Logs() {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState("");
 
-//   console.log(logs);
-//   if (isLoading) {
-//     return <div className="Course-Summary">Loading...</div>;
-//   }
+  useEffect(() => {
+    axios
+      .get("/admin/generatelogs", {
+        headers: {
+          "admin-auth-token": localStorage.token,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => console.log(error));
+    return () => setLoading(false);
+  }, [isLoading]);
 
-//   return (
-//     <div className="announcements-page pt-3">
-//       <h4 className="mx-auto">Log Report</h4>
-//       <div className="row cards-row">
-//         {logs.map((item, key) => {
-//           console.log("ITEM:", item.notifs_arr);
-//           return (
-//             <div className="col-sm-4 card-col">
-//               <div className="card">
-//                 <div className="card-body">
-//                   <h6 className="card-title">
-//                     Enrollment No. {item.enrollment.toUpperCase()}
-//                   </h6>
-//                   <ul className="list-group">
-//                     {item.notifs_arr.map((notif, key2) => {
-//                       return (
-//                         <li className="list-group-item list-group-item-action list-group-item-info">
-//                           <p className="card-text">
-//                             {notif.message}
-//                             <br />
-//                             {notif.sent_time}
-//                           </p>
-//                         </li>
-//                       );
-//                     })}
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// }
+  //   console.log(logs);
+  if (isLoading) {
+    return <div className="Course-Summary">Loading...</div>;
+  }
+
+  return (
+    <div className="announcements-page pt-3">
+      <h4 className="mx-auto">Log Report</h4>
+      <table className="table table-light m-0">
+        <thead className="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Action</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, key) => {
+            return (
+              <tr>
+                <th scope="row">{key + 1}</th>
+                <td>{item.createdAt}</td>
+                <td>{item.action}</td>
+                <td>{item.role}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
