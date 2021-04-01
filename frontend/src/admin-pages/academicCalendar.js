@@ -27,7 +27,7 @@ export default class AcademicCalendar extends Component {
       .post("http://localhost:3001/cal/uploadfile", formData, {
         headers: {
           "admin-auth-token": localStorage.token,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {

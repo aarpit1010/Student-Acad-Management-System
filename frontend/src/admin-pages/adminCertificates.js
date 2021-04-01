@@ -39,7 +39,7 @@ export default class AdminCertificates extends Component {
       .post("/cert/uploadcertificate", formData, {
         headers: {
           "admin-auth-token": localStorage.token,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => console.log(res))
