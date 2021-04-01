@@ -93,20 +93,37 @@ const studentCoursesummary = async (req, res) => {
         enrollment: req.body.profileData.enrollment,
     });
 
-    if (!enrollmentExist) {
-        enrollmentExist.semester_marks.pop();
-    }
-    console.log(req.body);
-    for (let i = 0; i < req.body.enrolledCourseData.length; i++) {
-        enrollmentExist.semester_marks.push(req.body.enrolledCourseData[i]);
-    }
+    // if (!enrollmentExist) {
+    //     enrollmentExist.semester_marks.pop();
+    // }
+    // // console.log(req.body);
+    // for (let i = 0; i < req.body.enrolledCourseData.length; i++) {
+    //     enrollmentExist.semester_marks.push(req.body.enrolledCourseData[i]);
+    // }
 
+    // enrollmentExist.save();
+    if(!enrollmentExist) 
+    {
+        var  new_enroll=new course_summary();
+        new_enroll.enrollment=req.body.profileData.enrollment;
+        enrollmentExist=new_enroll;
+    }      
+    var c=enrollmentExist.semester_marks.length;
+    for(i=0;i<c;i++)
+    {
+    enrollmentExist.semester_marks.pop();
+    }
+    for(let i=0;i<req.body.enrolledCourseData.length;i++)
+    {
+        enrollmentExist.semester_marks.push(req.body.enrolledCourseData[i]);   
+    }
     enrollmentExist.save();
+            
 
     var stuExists = await Student.findOne({
         enrollment: req.body.profileData.enrollment,
     });
-    console.log(stuExists);
+    // console.log(stuExists);
     stuExists.name = req.body.profileData.name;
     stuExists.contact = req.body.profileData.contact;
     stuExists.access = req.body.profileData.access;
