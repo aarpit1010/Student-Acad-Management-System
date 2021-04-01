@@ -7,7 +7,7 @@ const Message = () => {
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
   const PostData = () => {
-    fetch("/student/send", {
+    fetch("/admin/send", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

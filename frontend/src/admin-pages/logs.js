@@ -41,7 +41,7 @@ export default function Logs() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, key) => {
+          {data.reverse().map((item, key) => {
             return (
               <tr>
                 <th scope="row">{key + 1}</th>

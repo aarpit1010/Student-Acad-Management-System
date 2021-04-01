@@ -6,7 +6,7 @@ function AdminDashboard() {
   return (
     <React.Fragment>
       <div className="admin-dashboard mx-auto">
-        <h1>Admin Dashboard</h1>
+      <br /><h1>Admin Dashboard</h1><br />
         <div className="row m-0  justify-content-md-center">
           <div className="col-md-4 m-1">
             <div className="card shadow rounded">

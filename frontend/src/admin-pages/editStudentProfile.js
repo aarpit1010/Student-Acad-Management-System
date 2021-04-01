@@ -39,6 +39,7 @@ function EditStudentProfile() {
     if (found) {
       const student = Object.assign(found);
       setValue("enrollment_no", student.username);
+      setValue("access", student.access);
       setValue("contact", student.contact);
       setValue("name", student.name);
       setValue("email", student.email);
@@ -134,7 +135,7 @@ function EditStudentProfile() {
       <div className="card col-md-10 mx-auto p-2">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-4">
               <label htmlFor="lastName">Enrolment No.</label>
               <input
                 ref={register}
@@ -144,7 +145,7 @@ function EditStudentProfile() {
                 name="enrollment_no"
               />
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-4">
               <label htmlFor="firstName">Contact</label>
               <input
                 ref={register}
@@ -152,6 +153,16 @@ function EditStudentProfile() {
                 id="contact"
                 name="contact"
                 className="form-control"
+              />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="lastName">Enable Access</label>
+              <input
+                ref={register}
+                type="text"
+                className="form-control"
+                id="access"
+                name="access"
               />
             </div>
           </div>

@@ -13,7 +13,7 @@ export default function AdminFaculty() {
 
   useEffect(() => {
     axios
-      .get("/admin/addFaculty/view", {
+      .get("/admin/addFaculty/viewlist", {
         headers: {
           "admin-auth-token": localStorage.token,
           "Content-Type": "application/json",

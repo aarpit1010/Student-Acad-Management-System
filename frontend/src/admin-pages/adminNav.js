@@ -24,7 +24,7 @@ function AdminNav(hasAuth) {
             className="navbar-brand  navbar-content-admin"
             to="/admin/adminDashboard"
           >
-            Academic Management System
+            Academic Management Portal
           </Link>
           <button
             className="navbar-toggler"
