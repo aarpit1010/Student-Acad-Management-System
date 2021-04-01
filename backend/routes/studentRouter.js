@@ -14,8 +14,9 @@ const {
     viewcal,
     viewcert,
     courseReg,
-    regcourses
+    regcourses,
     // studentProfileAll,
+    displaycourses
 } = require("../controllers/studentController");
 
 router.post("/register", studentRegister);
@@ -45,5 +46,7 @@ router.get("/viewcertificate", verify, viewcert);
 router.get("/courseregn", verify, courseReg);
 
 router.get("/courseregn/opted", verify, regcourses);
+
+router.get("/semwise_courses", verify, displaycourses);
 
 module.exports = router;

@@ -342,6 +342,45 @@ const displayNotifs = async (req,res) => {
     if(notifsExists) res.status(200).json(notifsExists);
 };
 
+const mailsend = (req, res) => {
+    const transporter = nodemailer.createTransport(
+        sendGridTransport({
+            auth: {
+                api_key: process.env.mail_sender,
+            },
+        })
+    );
+    const { name, email, message, subject } = req.body;
+    transporter
+        .sendMail({
+            from: "authority.iiita@gmail.com",
+            to: email,
+            subject: subject,
+            html: `<h3>${name}</h3>
+    <p>${message}</p>`,
+        })
+        .then((resp) => {
+            res.json({ resp });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    // var current_date_time = currDateTime(currentTime);
+    // const log = new Log({
+    //     createdAt: current_date_time,
+    //     action: "E-Mail Sent by " + name + " to : " + email,
+    //     role: "Student",
+    // });
+    // log.save(function (err) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         // console.log("Updated Logs");
+    //     }
+    // });
+};
+
 // const updateProfile = async (req,res) => {
 //     const details = req.body;
 //     const enrollmentExist = await Student.findOne({ username : details.enrollment});
@@ -436,6 +475,7 @@ module.exports = {
     logReport,
     notifications,
     displayNotifs,
+    mailsend,
     // updateProfile,
     // stuAccess
   };

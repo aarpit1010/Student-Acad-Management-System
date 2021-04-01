@@ -520,6 +520,21 @@ const regcourses = async (req, res) => {
     });
 };
 
+const displaycourses = async (req, res) => {
+    const id = req.student._id;
+    const student = await Student.findOne({ _id: id });
+    if (!student) res.status(400).json("Student doesn't exist in Database");
+
+    Courses.findCourse(
+        "courses",
+        {},
+        function (err, docs2) {
+            res.status(200).json(docs2.sort((a, b) => 
+            (a.semester > b.semester) ? 1 : -1));
+        }
+    );    
+}
+
 module.exports = {
     studentRegister,
     studentLogin,
@@ -533,6 +548,7 @@ module.exports = {
     viewcal,
     viewcert,
     courseReg,
-    regcourses
+    regcourses,
     // studentProfileAll,
+    displaycourses
 };
