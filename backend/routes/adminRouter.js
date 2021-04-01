@@ -12,8 +12,6 @@ const {
     notifications,
     displayNotifs,
     mailsend,
-    // updateProfile,
-    // stuAccess,
 } = require("../controllers/adminController");
 
 adminRouter.post("/login", adminLogin);
@@ -37,7 +35,5 @@ adminRouter.post("/notifications", admin_verify, notifications);
 adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
 adminRouter.get("/send", admin_verify, mailsend);
-
-// adminRouter.post("/disableUser", admin_verify, stuAccess);
 
 module.exports = adminRouter;

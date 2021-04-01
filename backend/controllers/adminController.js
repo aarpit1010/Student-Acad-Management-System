@@ -35,12 +35,13 @@ const adminLogin = function (req, res) {
     const username = req.body.email;
     const password = req.body.password;
     if (username == "authority.iiita@gmail.com" && password == "1234") {
+    
         // var current_date_time = currDateTime(currentTime);
-
+        
         // const log = new Log({
         //     createdAt: current_date_time,
         //     action: "Successfully Logged In",
-        //     role: "ADMIN"
+        //     role: "ADMIN" 
         // });
 
         // log.save(function(err){
@@ -93,14 +94,6 @@ const studentCoursesummary = async (req, res) => {
     });
 
     if (!enrollmentExist) {
-        var new_enroll = new course_summary();
-        new_enroll.enrollment = req.body.profileData.enrollment;
-        enrollmentExist = new_enroll;
-    }
-
-    var c = enrollmentExist.semester_marks.length;
-
-    for (let i = 0; i < c; i++) {
         enrollmentExist.semester_marks.pop();
     }
     console.log(req.body);
@@ -134,11 +127,6 @@ const studentCoursesummary = async (req, res) => {
     // });
 
     // log.save(function(err){
-    //     if(err){
-    //         console.log(err);
-    //     } else {
-    //         // console.log("Updated Logs");
-    //     }
     // });
 };
 
@@ -172,7 +160,6 @@ const studentdroppedcourses = async (req, res) => {
                 // console.log("Updated Logs");
             }
         });
-
         res.status(400).json(enrollmentExist.dropped_courses);
     } else {
         var enroll = new droppedcourses();
@@ -214,7 +201,6 @@ const facultyList = async (req, res) => {
         semester: currSemester,
         section: currSection,
     });
-
     var current_date_time = currDateTime(currentTime);
 
     if (profExists) {
@@ -267,19 +253,16 @@ const logReport = async (req, res) => {
 
 const notifications = async (req, res) => {
     const Notification = new notifs(req.body);
-
     const enrollmentExist = await notifs.findOne({
         enrollment: req.body.enrollment.toLowerCase(),
     });
     if (enrollmentExist) {
         var notif_date_time = currDateTime(currentTime);
-
         var obj = {
             message: req.body.notifs_arr[0].message,
             sent_time: notif_date_time,
         };
         enrollmentExist.notifs_arr.push(obj);
-
         enrollmentExist.save();
 
         res.status(200).json(enrollmentExist.notifs_arr);
@@ -373,92 +356,8 @@ const mailsend = (req, res) => {
     // });
 };
 
-// const updateProfile = async (req,res) => {
-//     const details = req.body;
-//     const enrollmentExist = await Student.findOne({ username : details.enrollment});
-//     var current_date_time = currDateTime(currentTime);
-//     if(enrollmentExist) {
-//        if(details.name) {
-//         Student.updateOne({username: details.enrollment}, {name: details.name}, function(
-//             err,result) {
-//             if (err) {
-//               res.json(err);
-//             } else {
-//             //   res.json(result);
-//             }
-//         });
-//         const log = new Log({
-//             createdAt: current_date_time,
-//             action: "Updated "+ details.enrollment +" Name to "+details.name,
-//             role: "ADMIN"
-//         });
-
-//         log.save(function(err){
-//             if(err){
-//                 console.log(err);
-//             } else {
-//                 // console.log("Updated Logs");
-//             }
-//         });
-//        }
-//        if(details.contact) {
-//         Student.updateOne({username: details.enrollment}, {contact: details.contact}, function(
-//             err,result) {
-//             if (err) {
-//               res.json(err);
-//             } else {
-//             //   res.json(result);
-//             }
-//         });
-//         const log = new Log({
-//             createdAt: current_date_time,
-//             action: "Updated "+ details.enrollment +" Contact to "+details.contact,
-//             role: "ADMIN"
-//         });
-
-//         log.save(function(err){
-//             if(err){
-//                 console.log(err);
-//             } else {
-//                 // console.log("Updated Logs");
-//             }
-//         });
-//        }
-//        else res.json("doesn't exist");
-//     }
-//     // else console.log("wrong2");
-// }
-
-// const stuAccess = async (req,res) => {
-//     const details = req.body;
-//     const enrollExists = await Student.findOneAndUpdate(
-//         {username: details.enrollment},
-//         {access: details.access},
-//         {new: true});
-//     if(enrollExists) {
-//          res.status(200).json(enrollExists);
-//         var current_date_time = currDateTime(currentTime);
-
-//         const log = new Log({
-//             createdAt: current_date_time,
-//             action: "Modified " + details.enrollment + " account access",
-//             role: "ADMIN"
-//         });
-
-//         log.save(function(err){
-//             if(err){
-//                 console.log(err);
-//             } else {
-//                 // console.log("Updated Logs");
-//             }
-//         });
-//     }
-//     else return res.status(404).json("Enrollment doesn't exist in Database");
-
-// }
-
 module.exports = {
-    adminLogin,
+    adminLogin, 
     studentProfileAll,
     studentCoursesummary,
     studentdroppedcourses,
@@ -468,6 +367,4 @@ module.exports = {
     notifications,
     displayNotifs,
     mailsend,
-    // updateProfile,
-    // stuAccess
-};
+  };

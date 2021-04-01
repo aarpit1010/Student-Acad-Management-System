@@ -60,6 +60,7 @@ router.post('/uploadcertificate', upload.single('certpdf'), async (req, res, nex
     const chk = url + '/public/' + req.file.filename;
 
     var enroll_no = req.body.enrollment;
+    var cert_type = req.body.type;
     const enrollExists = await Student.findOne({enrollment: enroll_no});
 
     var current_date_time = currDateTime(currentTime);
@@ -67,12 +68,20 @@ router.post('/uploadcertificate', upload.single('certpdf'), async (req, res, nex
     if(enrollExists) {
         const pdfExists = await certificate.findOne({enrollment: enroll_no});
         if (!pdfExists) {
+            var obj = {
+                type: cert_type,
+                link: chk,
+            };
+            var arr = [];
+            arr.push(obj);
+            // console.log(obj); 
+            // console.log(arr);
             const user = new certificate({
                 _id: new mongoose.Types.ObjectId(),
                 enrollment: enrollExists.enrollment,
-                certpdf: chk
+                certpdf: arr,
             });
-
+            // console.log(user);
             user.save().then(result => {
                 res.status(201).json({
                     _id: result._id,
@@ -85,26 +94,34 @@ router.post('/uploadcertificate', upload.single('certpdf'), async (req, res, nex
                         error: err
                     });
             })
-            // const log = new Log({
-            //     createdAt: current_date_time,
-            //     action: "Uploaded Student Certificate for "
-            //         + enrollExists.enrollment,
-            //     role: "ADMIN" 
-            // });
+
+            const log = new Log({
+                createdAt: current_date_time,
+                action: "Uploaded Student " +  cert_type +
+                 " Certificate for " + enrollExists.enrollment,
+                role: "ADMIN" 
+            });
         
-            // log.save(function(err){
-            //     if(err){
-            //         console.log(err);
-            //     } else {
-            //         // console.log("Updated Logs");
-            //     }
-            // });
+            log.save(function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    // console.log("Updated Logs");
+                }
+            });
         }
 
         else {
             var cert_id = pdfExists._id;
-            certificate.findByIdAndUpdate(cert_id, {$set:
-                {enrollment: enrollExists.enrollment,certpdf: chk}},
+            var obj = {
+                type: cert_type,
+                link: chk,
+            };
+            // console.log(obj);
+            certificate.findByIdAndUpdate(cert_id, {$push:
+                {
+                    certpdf: obj,
+                }},
                 {new: true}, (err, doc) => {
                     if (err) {
                         console.log("Something wrong when updating file!");
@@ -112,20 +129,20 @@ router.post('/uploadcertificate', upload.single('certpdf'), async (req, res, nex
                     res.status(201).json(doc);
             });
 
-            // const log = new Log({
-            //     createdAt: current_date_time,
-            //     action: "Updated Student Certificate for "
-            //         + enrollExists.enrollment,
-            //     role: "ADMIN" 
-            // });
+            const log = new Log({
+                createdAt: current_date_time,
+                action: "Added Student " +  cert_type +
+                " Certificate for " + enrollExists.enrollment,
+                role: "ADMIN" 
+            });
         
-            // log.save(function(err){
-            //     if(err){
-            //         console.log(err);
-            //     } else {
-            //         // console.log("Updated Logs");
-            //     }
-            // });
+            log.save(function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    // console.log("Updated Logs");
+                }
+            });
         }
     }    
 });

@@ -19,8 +19,11 @@ const certSchema = new Schema({
     enrollment:{
         type: mongoose.Schema.Types.String, ref: 'Student'
     },
+    // certpdf: {
+    //     type: String
+    // },
     certpdf: {
-        type: String
+        type: Array
     }
 }
 // , {
