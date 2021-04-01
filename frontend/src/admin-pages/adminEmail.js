@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./adminEmail.css";
 
-const Message = () => {
+const AdminEmail = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -96,4 +96,4 @@ const Message = () => {
     </div>
   );
 };
-export default Message;
+export default AdminEmail;
