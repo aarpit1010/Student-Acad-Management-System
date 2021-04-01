@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 
 /* .App {
   margin: 0;
@@ -29,7 +30,7 @@ body {
 
 .App {
   /* text-align: center; */
-  font-family: "Poppins", sans-serif;
+  font-family: "Lato", sans-serif;
   height: 100vh;
 }
 

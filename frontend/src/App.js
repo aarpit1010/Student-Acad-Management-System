@@ -13,6 +13,7 @@ import Profile from "./pages/profile";
 import AdminNav from "./admin-pages/adminNav";
 import AcademicCalendar from "./admin-pages/academicCalendar";
 import Notifications from "./pages/notifications";
+import Calendar from "./pages/calendar";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -141,6 +142,11 @@ function App() {
                         exact
                         path="/student/notifications"
                         component={Notifications}
+                      />
+                      <StudentProtectedRoute
+                        exact
+                        path="/student/viewCalendar"
+                        component={Calendar}
                       />
                       <Route path="/student/*">
                         <Redirect to="/student/studentDashboard" />
