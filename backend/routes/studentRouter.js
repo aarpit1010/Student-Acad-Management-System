@@ -32,7 +32,7 @@ router.get("/profile", verify, studentProfile);
 
 router.get("/marks", verify, studentMarks);
 
-router.get("/droppedcourses", verify, droppedCourses);
+// router.get("/droppedcourses", verify, droppedCourses);
 
 router.get("/viewFacultyList", verify, viewFaculty);
 
@@ -50,5 +50,6 @@ router.get("/courseregn/opted", verify, regcourses);
 
 router.get("/semwise_courses", verify, displaycourses);
 
-router.get('/attendance',verify,displayattendance);
+router.get("/attendance", verify, displayattendance);
+
 module.exports = router;

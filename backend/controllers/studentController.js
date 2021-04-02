@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const Student = require("../model/Student");
-const Log = require("../model/log");
-const { course_summary, droppedcourses, notifs ,attend} = require("../model/marks");
+const { course_summary, droppedcourses, notifs, attend } = require("../model/marks");
 const viewprof = require("../model/facultyList");
 const Timetable = require("../utils/timetable");
 const Courses = require("../utils/courses");
+const { currDateTime, addtoLog } = require("../utils/logReport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
@@ -23,28 +23,6 @@ mongoose.connect(
 );
 
 var currentTime = new Date();
-
-function currDateTime(currentTime) {
-    var currentOffset = currentTime.getTimezoneOffset();
-    var ISTOffset = 330;
-    var ISTTime = new Date(
-        currentTime.getTime() + (ISTOffset + currentOffset) * 60000
-    );
-    var hoursIST = ISTTime.getHours();
-    var minutesIST = ISTTime.getMinutes();
-    var secondsIST = ISTTime.getSeconds();
-    var time = hoursIST + ":" + minutesIST + ":" + secondsIST;
-    var mnth = currentTime.getMonth() + 1;
-    var date_time =
-        currentTime.getDate() +
-        "-" +
-        mnth +
-        "-" +
-        currentTime.getFullYear() +
-        " " +
-        time;
-    return date_time;
-}
 
 const studentRegister = async (req, res) => {
     const student = new Student(req.body);
@@ -70,30 +48,37 @@ const studentRegister = async (req, res) => {
             branch: student.branch,
         },
         function (err, docs2) {
-            var  new_enroll=new course_summary();
-            var  new_enroll_attend=new attend();
-            new_enroll.enrollment=req.body.enrollment;
-            new_enroll_attend.enrollment=req.body.enrollment;
+            // for (var i = 0; i < docs2[0].course_list.length; i++) {
+            //     student.enrolled_course.push(docs2[0].course_list[i]);
+            // }
+            
+            var  new_enroll = new course_summary();
+            var  new_enroll_attend = new attend();
+            new_enroll.enrollment = req.body.enrollment;
+            new_enroll_attend.enrollment = req.body.enrollment;
             for (var i = 0; i < docs2[0].course_list.length; i++) {
                 new_enroll.semester_marks.push({
-                "course_ID":docs2[0].course_list[i].course_ID,
-                "course_Name":docs2[0].course_list[i].course_Name,
-                "marks":{
-                    "c1":0,
-                    "c2":0,
-                    "c3":0,
-                    "total":0,
-                    "gpa":0
-                }
+                    "course_ID" : docs2[0].course_list[i].course_ID,
+                    "course_Name" : docs2[0].course_list[i].course_Name,
+                    "marks" : {
+                        "c1" : 0,
+                        "c2" : 0,
+                        "c3" : 0,
+                        "total" : 0,
+                        "gpa" : 0
+                    }
                 });
                 new_enroll_attend.subjects_attend.push({
-                    "course_ID":docs2[0].course_list[i].course_ID,
-                "course_Name":docs2[0].course_list[i].course_Name,
-                "daysoutof90":0
+                    "course_ID" : docs2[0].course_list[i].course_ID,
+                    "course_Name" : docs2[0].course_list[i].course_Name,
+                    "daysoutof90" : 0
                 });
             }
             new_enroll.save();
             new_enroll_attend.save();
+
+            student.save();
+            res.status(200).json(student);
         }
     );
     try {
@@ -104,20 +89,9 @@ const studentRegister = async (req, res) => {
         if (!created_date_time) {
             created_date_time = currDateTime(currentTime);
         }
-
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Successfully Registered " + student.username,
-            role: "Student",
-        });
-
-        log.save(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
+        var action_string = "Successfully Registered "
+                            + student.username;
+        addtoLog(action_string, "Student", currentTime);
 
         const savedStudent = await student.save();
         res.status(201).json(savedStudent);
@@ -150,19 +124,9 @@ const studentLogin = async (req, res) => {
             created_date_time = currDateTime(currentTime);
         }
 
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Successfully Logged In " + student.username,
-            role: "Student",
-        });
-
-        log.save(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
+        var action_string = "Successfully Logged In "
+                            + student.username;
+        addtoLog(action_string, "Student", currentTime);
 
         const token = jwt.sign(
             {
@@ -214,45 +178,18 @@ const studentProfile = async (req, res) => {
                     branch: student.branch,
                     semester: student.semester,
                     section: student.section,
-                    enrolled_course: docs[0].course_list.sort(),
+                    enrolled_course: docs[0].course_list.sort(
+                        (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
+                    ),
                 });
-                //                 student.enrolled_course=docs[0].course_list.sort();
-                //                 student.save();
-                // //                 // res.json(student);
-                // //                 // console.log(student);
-                //     var item = { enrolled_course: docs[0].course_list.sort() };
-                //     item.push()
             }
         );
 
-        //    });
     } catch (err) {
         console.log(err);
         res.status(403).json("Invalid Request!");
     }
 };
-
-// const studentProfileAll = async (req, res) => {
-//     try {
-//         const student = await Student.find();
-//         course_summary.find({}, function (err1, docs) {
-//             if (err1) {
-//                 return res.status(404).json("NOT FOUND");
-//             }
-//             Courses.findCourse("courses", {}, function (err2, docs2) {
-//                 if (err2) res.json(err);
-//                 res.status(200).json({
-//                     enrolled_courses: docs2,
-//                     student,
-//                     marks: docs,
-//                 });
-//             });
-//         });
-//     } catch (err) {
-//         console.log(err);
-//         res.status(403).json("Invalid Request!");
-//     }
-// };
 
 const studentMarks = async (req, res) => {
     try {
@@ -317,13 +254,17 @@ const viewFaculty = async (req, res) => {
                     branch: student.branch,
                 },
                 function (err, docs2) {
-                    verify_course = docs2[0].course_list.sort();
+                    verify_course = docs2[0].course_list.sort(
+                        (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
+                    );
                     // verify_course_name=docs2[0].course_name.sort();
 
                     res.status(200).json({
                         // course_id: verify_course_id,
                         // course_name: verify_course_name,
-                        faculty: docs[0].faculty.sort(),
+                        faculty: docs[0].faculty.sort(
+                            (a, b) => (a.coursename > b.coursename) ? 1 : -1
+                        ),
                     });
                 }
             );
@@ -354,22 +295,11 @@ const mailsend = (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-
-    var current_date_time = currDateTime(currentTime);
-
-    const log = new Log({
-        createdAt: current_date_time,
-        action: "E-Mail Sent by " + name + " to : " + email,
-        role: "Student",
-    });
-
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            // console.log("Updated Logs");
-        }
-    });
+    
+    var action_string = "E-Mail Sent by " +
+                        name + 
+                        " to : " + email;
+    addtoLog(action_string, "Student", currentTime);
 };
 
 const notifications = async (req, res) => {
@@ -385,21 +315,10 @@ const notifications = async (req, res) => {
         res.json({ notifs_arr: [] });
     } else {
         res.json({ notifs_arr: studentnotifications.notifs_arr });
-        var current_date_time = currDateTime(currentTime);
-
-        const log = new Log({
-            createdAt: current_date_time,
-            action: "Notifications Seen by " + student.username,
-            role: "Student",
-        });
-
-        log.save(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                // console.log("Updated Logs");
-            }
-        });
+        
+        var action_string = "Notifications Seen by "
+                            + student.username;
+        addtoLog(action_string, "Student", currentTime);
     }
 };
 
@@ -407,85 +326,56 @@ const viewcal = async (req, res) => {
     const link = "605b7f3f595e855a68f57fe2";
     const view = await calendar.findOne({ _id: link });
     if (view) return res.status(200).json(view.calpdf);
-    // var current_date_time = currDateTime(currentTime);
 
-    // const log = new Log({
-    //     createdAt: current_date_time,
-    //     action: "Student "+ student.username + " has viewed the academic Calendar",
-    //     role: "Student"
-    // });
-
-    // log.save(function(err){
-    //     if(err){
-    //         console.log(err);
-    //     } else {
-    // console.log("Updated Logs");
-    //     }
-    // });
+    var action_string = "Student "+
+                        student.username +
+                        " has viewed the academic Calendar";
+    addtoLog(action_string, "Student", currentTime);
 };
 
 const viewcert = async (req, res) => {
     const link = "605f718915adb20c983ba555";
     const view = await certificate.findOne({ _id: link });
     if (view) return res.status(200).json(view.certpdf);
-    // var current_date_time = currDateTime(currentTime);
 
-    // const log = new Log({
-    //     createdAt: current_date_time,
-    //     action: "Student "+ student.username + " has received Certificate from ADMIN",
-    //     role: "Student"
-    // });
-
-    // log.save(function(err){
-    //     if(err){
-    //         console.log(err);
-    //     } else {
-    //         console.log("Updated Logs");
-    //     }
-    // });
+    var action_string = "Student "+
+                        student.username +
+                        " has received Certificate from ADMIN";
+    addtoLog(action_string, "Student", currentTime);
 };
 
 const courseReg = async (req, res) => {
-    const id = req.student._id;
-    const student = await Student.findOne({ _id: id });
-    if (!student) res.status(400).json("Student doesn't exist in Database");
+    if(!req.body.blank_sem) {
+        const id = req.student._id;
+        const student = await Student.findOne({ _id: id });
+        if (!student) res.status(400).json("Student doesn't exist in Database");
 
-    const currSem = student.semester;
-    const nextSem = currSem + 1;
-    if (currSem != 8) {
-        Courses.findCourse(
-            "courses",
-            {
-                semester: nextSem,
-                branch: student.branch,
-            },
-            function (err, docs2) {
-                const add_course = docs2[0].course_list.sort();
-                // verify_course_name=docs2[0].course_name.sort();
-                // console.log(add_course);
-                res.status(200).json(add_course);
-            }
-        );
-    }
-    var current_date_time = currDateTime(currentTime);
-
-    const log = new Log({
-        createdAt: current_date_time,
-        action:
-            "Student " +
-            student.username +
-            " views the" +
-            " list of courses for the next semester",
-        role: "Student",
-    });
-
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            // console.log("Updated Logs");
+        const currSem = student.semester;
+        const nextSem = currSem + 1;
+        if (currSem != 8) {
+            Courses.findCourse(
+                "courses",
+                {
+                    semester: nextSem,
+                    branch: student.branch,
+                },
+                function (err, docs2) {
+                    const add_course = docs2[0].course_list.sort(
+                        (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
+                    );
+                    // verify_course_name=docs2[0].course_name.sort();
+                    // console.log(add_course);
+                    res.status(200).json(add_course);
+                }
+            );
         }
-    });
+
+        var action_string = "Student "+
+                            student.username +
+                            " views the" +
+                            " list of courses for the next semester";
+        addtoLog(action_string, "Student", currentTime);
+    }
 };
 
 const regcourses = async (req, res) => {
@@ -519,24 +409,10 @@ const regcourses = async (req, res) => {
         }
     );
 
-    var current_date_time = currDateTime(currentTime);
-
-    const log = new Log({
-        createdAt: current_date_time,
-        action:
-            "Student " +
-            student.username +
-            " has selected Courses for upcoming Semester.",
-        role: "Student",
-    });
-
-    log.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            // console.log("Updated Logs");
-        }
-    });
+    var action_string = "Student "+
+                        student.username +
+                        " has selected Courses for upcoming Semester.";
+    addtoLog(action_string, "Student", currentTime);
 };
 
 const displaycourses = async (req, res) => {
@@ -553,6 +429,7 @@ const displaycourses = async (req, res) => {
         }
     );    
 }
+
 const displayattendance = async (req,res) =>{
     const id = req.student._id;
     const student = await Student.findOne({ _id: id });
@@ -564,6 +441,7 @@ const displayattendance = async (req,res) =>{
         res.status(200).json(enrollmentExist.subjects_attend);
     }    
 }
+
 module.exports = {
     studentRegister,
     studentLogin,

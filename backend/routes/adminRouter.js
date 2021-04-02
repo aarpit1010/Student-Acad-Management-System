@@ -23,7 +23,7 @@ adminRouter.get("/profile-all", admin_verify, studentProfileAll);
 
 adminRouter.post("/updatestudentmarks", admin_verify, studentCoursesummary);
 
-//adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
+// adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
 
 adminRouter.post("/addFaculty", admin_verify, facultyList);
 
@@ -35,7 +35,8 @@ adminRouter.post("/notifications", admin_verify, notifications);
 
 adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
-adminRouter.post("/send",admin_verify, mailsend);
+adminRouter.post("/send", admin_verify, mailsend);
 
-adminRouter.post('/attendance',admin_verify,Attendance);
+adminRouter.post("/attendance", admin_verify, Attendance);
+
 module.exports = adminRouter;
