@@ -31,7 +31,15 @@ const certSchema = new Schema({
 // }
 )
 
+const certRequest = new Schema({
+    enrollment:{
+        type: mongoose.Schema.Types.String, ref: 'Student'
+    },
+    reqtype: {type:String}
+});
+
 const calendar = mongoose.model('AcadCal', acadcalSchema);
 const certificate = mongoose.model("Certificate", certSchema);
+const Request = mongoose.model("Request Certificate", certRequest);
 
-module.exports = {calendar, certificate};
+module.exports = { calendar, certificate, Request };

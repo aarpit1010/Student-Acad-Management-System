@@ -10,7 +10,7 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 const { studentRegisterValid, studentLoginValid } = require("./validation");
-const { calendar, certificate } = require("../model/upload");
+const { calendar, certificate, Request } = require("../model/upload");
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -334,15 +334,61 @@ const viewcal = async (req, res) => {
 };
 
 const viewcert = async (req, res) => {
-    const link = "605f718915adb20c983ba555";
-    const view = await certificate.findOne({ _id: link });
-    if (view) return res.status(200).json(view.certpdf);
+    const id = req.student._id;
+    const stud = await Student.findOne( { _id : id });
+    const chkReq = await Request.findOne( {enrollment: stud.enrollment});
 
-    var action_string = "Student "+
-                        student.username +
-                        " has received Certificate from ADMIN";
-    addtoLog(action_string, "Student", currentTime);
+    if(!chkReq) 
+        return res.status(200).json("No Request has been sent to Admin");
+    else {
+        const pdfExists = await certificate.findOne({enrollment: stud.enrollment});
+        if(pdfExists){
+            for(let i = 0; i < pdfExists.certpdf.length; i++) {
+                if(pdfExists.certpdf[i].type == chkReq.reqtype) {
+                    res.status(200).json(pdfExists.certpdf[i]);
+                    chkReq.reqtype = null;
+                    chkReq.save();
+                    break;
+                }
+            }
+        }
+
+        else {
+            res.status(201).json("ADMIN has NOT yet uploaded doc");
+        }
+
+        // var action_string = "Student "+
+        //                     student.username +
+        //                     " has received Certificate from ADMIN";
+        // addtoLog(action_string, "Student", currentTime);
+    }
 };
+
+const requestCert = async (req, res) => {
+    const id = req.student._id;
+    const stud = await Student.findOne( { _id : id });
+    var studEnroll = stud.enrollment;
+    const findEnrollReq = await Request.findOne({enrollment: stud.enrollment});
+    if(!findEnrollReq){
+        const sendreq = new Request({
+            enrollment: stud.enrollment,
+            reqtype: req.body.type,
+        });
+        sendreq.save();
+        // console.log(sendreq);
+        res.status(200).json(sendreq);
+    }
+    else {
+        if(findEnrollReq.reqtype != null)
+            return res.json("Only 1 request can be sent at a time");
+        else {
+            findEnrollReq.reqtype = req.body.type;
+            findEnrollReq.save();
+            res.status(200).json(findEnrollReq);
+        }
+    }
+
+}
 
 const courseReg = async (req, res) => {
     if(!req.body.blank_sem) {
@@ -454,6 +500,7 @@ module.exports = {
     notifications,
     viewcal,
     viewcert,
+    requestCert,
     courseReg,
     regcourses,
     // studentProfileAll,

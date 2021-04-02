@@ -13,6 +13,7 @@ const {
     notifications,
     viewcal,
     viewcert,
+    requestCert,
     courseReg,
     regcourses,
     // studentProfileAll,
@@ -43,6 +44,8 @@ router.get("/notifications", verify, notifications);
 router.get("/viewcalendar", verify, viewcal);
 
 router.get("/viewcertificate", verify, viewcert);
+
+router.post("/reqDoc", verify, requestCert);
 
 router.get("/courseregn", verify, courseReg);
 
