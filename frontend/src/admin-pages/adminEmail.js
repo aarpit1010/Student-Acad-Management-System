@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import form from "react-bootstrap";
 import "./adminEmail.css";
 
 const AdminEmail = () => {
@@ -10,6 +11,7 @@ const AdminEmail = () => {
     fetch("/admin/send", {
       method: "post",
       headers: {
+        "admin-auth-token": localStorage.token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -84,7 +86,7 @@ const AdminEmail = () => {
               ></textarea>
             </div>
             <button
-              type="submit"
+              type="button"
               className="btn btn-primary"
               onClick={() => PostData()}
             >

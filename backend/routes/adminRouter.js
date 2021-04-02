@@ -34,6 +34,6 @@ adminRouter.post("/notifications", admin_verify, notifications);
 
 adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
-adminRouter.get("/send", admin_verify, mailsend);
+adminRouter.post("/send",admin_verify, mailsend);
 
 module.exports = adminRouter;

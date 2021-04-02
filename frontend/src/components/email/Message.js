@@ -9,6 +9,7 @@ const Message = () => {
         fetch("/student/send", {
             method: "post",
             headers: {
+                "auth-token": localStorage.token,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -114,7 +115,7 @@ Send Message
                     ></textarea>
                 </div>
                 <button
-                    type="submit"
+                    type="button"
                     className="btn btn-primary"
                     onClick={() => PostData()}
                 >

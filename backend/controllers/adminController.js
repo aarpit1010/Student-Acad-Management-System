@@ -4,6 +4,9 @@ const bcrypt = require("bcryptjs");
 const { course_summary, droppedcourses, notifs } = require("../model/marks");
 const faculty_list = require("../model/facultyList");
 const Log = require("../model/log");
+
+const nodemailer = require("nodemailer");
+const sendGridTransport = require("nodemailer-sendgrid-transport");
 const Student = require("../model/Student");
 const Courses = require("../utils/courses");
 

@@ -44,7 +44,7 @@ ml-auto "
             >
               <Link
                 className=" nav-item nav-link navbar-content-admin mr-3"
-                to="/admin/email"
+                to="/admin/send"
               >
                 Interact
               </Link>

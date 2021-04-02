@@ -67,7 +67,7 @@ function App() {
           />
           <AdminProtectedRoute
             exact
-            path="/admin/email"
+            path="/admin/send"
             component={AdminEmail}
           />
           <AdminProtectedRoute
