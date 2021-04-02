@@ -298,6 +298,23 @@ const Attendance = async (req,res) =>{
     res.status(200).json(enrollmentExist);
 }
 
+const displayStudentList = async (req, res) => {
+    const stuExists = await Student.find({});
+    if (stuExists) {
+        var stuArr = [];
+        for (let i = 0; i < stuExists.length; i++) {
+            stuArr.push({
+                name : stuExists[i].name,
+                enrollment : stuExists[i].enrollment,
+            });
+        }
+        stuArr.sort(
+            (a, b) => (a.enrollment > b.enrollment) ? 1 : -1
+        );
+        res.status(200).json(stuArr);
+    }
+}
+
 module.exports = {
     adminLogin, 
     studentProfileAll,
@@ -309,5 +326,6 @@ module.exports = {
     notifications,
     displayNotifs,
     mailsend,
-    Attendance
+    Attendance,
+    displayStudentList
   };
