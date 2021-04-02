@@ -12,6 +12,7 @@ const {
     notifications,
     displayNotifs,
     mailsend,
+    Attendance
 } = require("../controllers/adminController");
 
 adminRouter.post("/login", adminLogin);
@@ -22,7 +23,7 @@ adminRouter.get("/profile-all", admin_verify, studentProfileAll);
 
 adminRouter.post("/updatestudentmarks", admin_verify, studentCoursesummary);
 
-adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
+//adminRouter.post("/studentdroppedcourses", admin_verify, studentdroppedcourses);
 
 adminRouter.post("/addFaculty", admin_verify, facultyList);
 
@@ -36,4 +37,5 @@ adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
 adminRouter.post("/send",admin_verify, mailsend);
 
+adminRouter.post('/attendance',admin_verify,Attendance);
 module.exports = adminRouter;

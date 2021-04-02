@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { course_summary, droppedcourses, notifs } = require("../model/marks");
+const { course_summary, droppedcourses, notifs, attend } = require("../model/marks");
 const faculty_list = require("../model/facultyList");
 const Log = require("../model/log");
 
@@ -110,7 +110,8 @@ const studentCoursesummary = async (req, res) => {
         var  new_enroll=new course_summary();
         new_enroll.enrollment=req.body.profileData.enrollment;
         enrollmentExist=new_enroll;
-    }      
+    }
+          
     var c=enrollmentExist.semester_marks.length;
     for(i=0;i<c;i++)
     {
@@ -375,7 +376,22 @@ const mailsend = (req, res) => {
     //     }
     // });
 };
-
+const Attendance = async (req,res) =>{
+    const enrollmentExist= await attend.findOne({
+        enrollment: req.body.enrollment,
+    });
+    var c=enrollmentExist.subjects_attend.length;
+    for(i=0;i<c;i++)
+    {
+    enrollmentExist.subjects_attend.pop();
+    }
+    for(let i=0;i<req.body.subjects_attend.length;i++)
+    {
+        enrollmentExist.subjects_attend.push(req.body.subjects_attend[i]);   
+    }
+    enrollmentExist.save();
+    res.status(200).json(enrollmentExist);
+}
 module.exports = {
     adminLogin, 
     studentProfileAll,
@@ -387,4 +403,5 @@ module.exports = {
     notifications,
     displayNotifs,
     mailsend,
+    Attendance
   };

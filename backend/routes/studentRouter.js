@@ -16,7 +16,8 @@ const {
     courseReg,
     regcourses,
     // studentProfileAll,
-    displaycourses
+    displaycourses,
+    displayattendance
 } = require("../controllers/studentController");
 
 router.post("/register", studentRegister);
@@ -49,4 +50,5 @@ router.get("/courseregn/opted", verify, regcourses);
 
 router.get("/semwise_courses", verify, displaycourses);
 
+router.get('/attendance',verify,displayattendance);
 module.exports = router;

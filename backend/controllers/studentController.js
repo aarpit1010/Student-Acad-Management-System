@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Student = require("../model/Student");
 const Log = require("../model/log");
-const { course_summary, droppedcourses, notifs } = require("../model/marks");
+const { course_summary, droppedcourses, notifs ,attend} = require("../model/marks");
 const viewprof = require("../model/facultyList");
 const Timetable = require("../utils/timetable");
 const Courses = require("../utils/courses");
@@ -70,11 +70,30 @@ const studentRegister = async (req, res) => {
             branch: student.branch,
         },
         function (err, docs2) {
+            var  new_enroll=new course_summary();
+            var  new_enroll_attend=new attend();
+            new_enroll.enrollment=req.body.enrollment;
+            new_enroll_attend.enrollment=req.body.enrollment;
             for (var i = 0; i < docs2[0].course_list.length; i++) {
-                student.enrolled_course.push(docs2[0].course_list[i]);
+                new_enroll.semester_marks.push({
+                "course_ID":docs2[0].course_list[i].course_ID,
+                "course_Name":docs2[0].course_list[i].course_Name,
+                "marks":{
+                    "c1":0,
+                    "c2":0,
+                    "c3":0,
+                    "total":0,
+                    "gpa":0
+                }
+                });
+                new_enroll_attend.subjects_attend.push({
+                    "course_ID":docs2[0].course_list[i].course_ID,
+                "course_Name":docs2[0].course_list[i].course_Name,
+                "daysoutof90":0
+                });
             }
-            student.save();
-            res.status(200).json(student);
+            new_enroll.save();
+            new_enroll_attend.save();
         }
     );
     try {
@@ -534,7 +553,17 @@ const displaycourses = async (req, res) => {
         }
     );    
 }
+const displayattendance = async (req,res) =>{
+    const id = req.student._id;
+    const student = await Student.findOne({ _id: id });
+    if (!student) res.status(400).json("Student doesn't exist in Database");
+    else
+    {
+        const enrollmentExist = await attend.findOne({enrollment:student.username});
 
+        res.status(200).json(enrollmentExist.subjects_attend);
+    }    
+}
 module.exports = {
     studentRegister,
     studentLogin,
@@ -550,5 +579,6 @@ module.exports = {
     courseReg,
     regcourses,
     // studentProfileAll,
-    displaycourses
+    displaycourses,
+    displayattendance
 };

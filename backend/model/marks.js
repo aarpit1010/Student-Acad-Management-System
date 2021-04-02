@@ -74,32 +74,40 @@ const coursesummary = new mongoose.Schema({
           gpa:{type:Number,default:0}
           }
         }
-      ],
-    attendance:
-      [
-        {
-          daysout0f90: Number
-        },
-        {
-          daysout0f90: Number
-        },
-        {
-          daysout0f90: Number
-        },
-        {
-          daysout0f90: Number
-        },
-        {
-          daysout0f90: Number
-        },
-        {
-          daysout0f90: Number
-        }
-
       ]
-    
 });
+const attendance = new mongoose.Schema({
+   enrollment :{
+    type: mongoose.Schema.Types.String, ref: 'Student' 
+   },
+   subjects_attend :[
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     },
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     },
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     },
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     },
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     },
+     { course_ID:{type:String,default:""},
+       course_Name:{type:String,default:""},
+       daysoutof90:{type:Number,default:0}
+     }
+   ]
 
+});
 const dropped_courses = new mongoose.Schema({
   enrollment:{
     type: mongoose.Schema.Types.String, ref: 'Student'
@@ -124,5 +132,5 @@ const notification = new mongoose.Schema({
 const course_summary = mongoose.model("coursesummary", coursesummary);
 const droppedcourses= mongoose.model("dropped_courses",dropped_courses);
 const notifs= mongoose.model("notification",notification);
-
-module.exports = {course_summary,droppedcourses,notifs};
+const attend =mongoose.model("attendance",attendance);
+module.exports = {course_summary,droppedcourses,notifs,attend};
