@@ -337,20 +337,30 @@ const viewcert = async (req, res) => {
     const id = req.student._id;
     const stud = await Student.findOne( { _id : id });
     const chkReq = await Request.findOne( {enrollment: stud.enrollment});
-
+    var certArr = [];
+    var firstcertArr = [];
+    
     if(!chkReq) 
         return res.status(200).json("No Request has been sent to Admin");
     else {
         const pdfExists = await certificate.findOne({enrollment: stud.enrollment});
         if(pdfExists){
             for(let i = 0; i < pdfExists.certpdf.length; i++) {
-                if(pdfExists.certpdf[i].type == chkReq.reqtype) {
-                    res.status(200).json(pdfExists.certpdf[i]);
-                    chkReq.reqtype = null;
-                    chkReq.save();
-                    break;
+                if(chkReq.reqtype != null) {
+                    if(pdfExists.certpdf[i].type == chkReq.reqtype) {
+                        firstcertArr.push(pdfExists.certpdf[i]);
+                        res.status(200).json(firstcertArr);
+                        chkReq.reqtype = null;
+                        chkReq.save();
+                        break;
+                    }
+                }
+                else {
+                    certArr = pdfExists.certpdf;
+                    // certArr.push(pdfExists.certpdf);
                 }
             }
+            if(certArr.length != 0) res.status(200).json(certArr);
         }
 
         else {

@@ -281,6 +281,16 @@ const mailsend = (req, res) => {
     addtoLog(action_string, "Student", currentTime);
 };
 
+const getAttendance = async (req,res)=>{
+    const enrollmentExist= await attend.findOne({
+        enrollment: req.body.enrollment,
+    });
+    if(!enrollmentExist)
+    res.status(400).json("not found");
+    else
+    res.status(200).json(enrollmentExist);
+}
+
 const Attendance = async (req,res) =>{
     const enrollmentExist= await attend.findOne({
         enrollment: req.body.enrollment,
@@ -326,6 +336,7 @@ module.exports = {
     notifications,
     displayNotifs,
     mailsend,
+    getAttendance,
     Attendance,
     displayStudentList
   };
