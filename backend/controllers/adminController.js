@@ -338,5 +338,5 @@ module.exports = {
     mailsend,
     getAttendance,
     Attendance,
-    displayStudentList
+    displayStudentList,
   };

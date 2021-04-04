@@ -52,7 +52,7 @@ const studentSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     },
-    enrolled_course: {
+    current_course: {
       type: Array
     },
     registered_course: {
@@ -61,6 +61,10 @@ const studentSchema = new mongoose.Schema({
     access: {
       type: Boolean,
       default: true
+    },
+    fees_paid: {
+      type: Boolean,
+      default: false
     }
   });
 
