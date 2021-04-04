@@ -39,7 +39,7 @@ adminRouter.get("/notifications/view", admin_verify, displayNotifs);
 
 adminRouter.post("/send", admin_verify, mailsend);
 
-adminRouter.get("/getattendance", admin_verify, getAttendance);
+adminRouter.post("/getattendance", admin_verify, getAttendance);
 
 adminRouter.post("/attendance", admin_verify, Attendance);
 

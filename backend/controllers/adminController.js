@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { course_summary, droppedcourses, notifs, attend } = require("../model/marks");
+const {
+    course_summary,
+    droppedcourses,
+    notifs,
+    attend,
+} = require("../model/marks");
 const faculty_list = require("../model/facultyList");
 const { currDateTime, addtoLog } = require("../utils/logReport");
 const Student = require("../model/Student");
@@ -16,7 +21,6 @@ const adminLogin = function (req, res) {
     const username = req.body.email;
     const password = req.body.password;
     if (username == "authority.iiita@gmail.com" && password == "1234") {
-
         var action_string = "Successfully Logged In";
         addtoLog(action_string, "ADMIN", currentTime);
 
@@ -61,44 +65,42 @@ const studentCoursesummary = async (req, res) => {
         enrollment: req.body.profileData.enrollment,
     });
 
-    if(!enrollmentExist) 
-    {
-        var  new_enroll=new course_summary();
-        new_enroll.enrollment=req.body.profileData.enrollment;
-        enrollmentExist=new_enroll;
+    if (!enrollmentExist) {
+        var new_enroll = new course_summary();
+        new_enroll.enrollment = req.body.profileData.enrollment;
+        enrollmentExist = new_enroll;
         enrollmentExist.save();
-    }      
-    else{var c=enrollmentExist.semester_marks.length;
-    for(i=0;i<c;i++) {
-        enrollmentExist.semester_marks.pop();
+    } else {
+        var c = enrollmentExist.semester_marks.length;
+        for (i = 0; i < c; i++) {
+            enrollmentExist.semester_marks.pop();
+        }
+        for (let i = 0; i < req.body.enrolledCourseData.length; i++) {
+            enrollmentExist.semester_marks.push(req.body.enrolledCourseData[i]);
+        }
+        enrollmentExist.save();
+
+        var stuExists = await Student.findOne({
+            enrollment: req.body.profileData.enrollment,
+        });
+        // console.log(stuExists);
+        if (req.body.profileData.name != null)
+            stuExists.name = req.body.profileData.name;
+        if (req.body.profileData.contact != null)
+            stuExists.contact = req.body.profileData.contact;
+        if (req.body.profileData.access != null)
+            stuExists.access = req.body.profileData.access;
+
+        stuExists.save();
+
+        res.status(200).json({
+            profile: stuExists,
+            marks: enrollmentExist.semester_marks,
+        });
     }
-    for(let i=0;i<req.body.enrolledCourseData.length;i++) {
-        enrollmentExist.semester_marks.push(req.body.enrolledCourseData[i]);   
-    }
-    enrollmentExist.save();
-            
 
-    var stuExists = await Student.findOne({
-        enrollment: req.body.profileData.enrollment,
-    });
-    // console.log(stuExists);
-    if(req.body.profileData.name != null)
-        stuExists.name = req.body.profileData.name;
-    if(req.body.profileData.contact != null)
-        stuExists.contact = req.body.profileData.contact;
-    if(req.body.profileData.access != null)
-        stuExists.access = req.body.profileData.access;
-
-    stuExists.save();
-
-    res.status(200).json({
-        profile: stuExists,
-        marks: enrollmentExist.semester_marks,
-    });}
-    
-    var action_string = "Added/Updated " 
-                        + enrollmentExist.enrollment
-                        + " Marks & Attendance";
+    var action_string =
+        "Added/Updated " + enrollmentExist.enrollment + " Marks & Attendance";
     addtoLog(action_string, "ADMIN", currentTime);
 };
 
@@ -121,21 +123,19 @@ const studentdroppedcourses = async (req, res) => {
         }
         enrollmentExist.save();
 
-        for(let i = 0; i < enrollmentExist.dropped_courses.length; i++) {
+        for (let i = 0; i < enrollmentExist.dropped_courses.length; i++) {
             var subj = enrollmentExist.dropped_courses[i];
             marksExist.semester_marks = marksExist.semester_marks.filter(
-                x => x.course_ID != subj
+                (x) => x.course_ID != subj
             );
         }
         res.status(400).json(enrollmentExist.dropped_courses);
         marksExist.save();
 
-        var action_string = "Updated List of Dropped Courses for "
-                            + enrollmentExist.enrollment;
+        var action_string =
+            "Updated List of Dropped Courses for " + enrollmentExist.enrollment;
         addtoLog(action_string, "ADMIN", currentTime);
-
     } else {
-
         var enroll = new droppedcourses();
         enroll.enrollment = req.body.enrollment;
         for (let i = 0; i < req.body.dropped_courses.length; i++) {
@@ -143,10 +143,10 @@ const studentdroppedcourses = async (req, res) => {
         }
         enroll.save();
 
-        for(let i = 0; i < enroll.dropped_courses.length; i++) {
+        for (let i = 0; i < enroll.dropped_courses.length; i++) {
             var subj = enroll.dropped_courses[i];
             marksExist.semester_marks = marksExist.semester_marks.filter(
-                x => x.course_ID != subj
+                (x) => x.course_ID != subj
             );
         }
         // console.log(marksExist);
@@ -154,8 +154,8 @@ const studentdroppedcourses = async (req, res) => {
         marksExist.save();
         res.status(200).json(enroll.dropped_courses);
 
-        var action_string = "Added List of Dropped Courses for "
-                            + enroll.enrollment;
+        var action_string =
+            "Added List of Dropped Courses for " + enroll.enrollment;
         addtoLog(action_string, "ADMIN", currentTime);
     }
 };
@@ -184,7 +184,6 @@ const facultyList = async (req, res) => {
         addtoLog(action_string, "ADMIN", currentTime);
 
         return res.status(200).json(profExists);
-    
     } else {
         addFaculty.save();
 
@@ -221,10 +220,9 @@ const notifications = async (req, res) => {
 
         res.status(200).json(enrollmentExist.notifs_arr);
 
-        var action_string = "Sent another notification to "
-                             + enrollmentExist.enrollment;
+        var action_string =
+            "Sent another notification to " + enrollmentExist.enrollment;
         addtoLog(action_string, "ADMIN", currentTime);
-
     } else {
         var enroll = new notifs();
         enroll.enrollment = req.body.enrollment;
@@ -240,8 +238,7 @@ const notifications = async (req, res) => {
         enroll.save();
         res.status(201).json(enroll.notifs_arr);
 
-        var action_string = "Sent Notifications to "
-                             + enroll.enrollment;
+        var action_string = "Sent Notifications to " + enroll.enrollment;
         addtoLog(action_string, "ADMIN", currentTime);
     }
 };
@@ -275,38 +272,32 @@ const mailsend = (req, res) => {
             console.log(err);
         });
 
-    var action_string = "E-Mail Sent by " +
-                         name + 
-                         " to : " + email;
+    var action_string = "E-Mail Sent by " + name + " to : " + email;
     addtoLog(action_string, "Student", currentTime);
 };
 
-const getAttendance = async (req,res)=>{
-    const enrollmentExist= await attend.findOne({
+const getAttendance = async (req, res) => {
+    const enrollmentExist = await attend.findOne({
         enrollment: req.body.enrollment,
     });
-    if(!enrollmentExist)
-    res.status(400).json("not found");
-    else
-    res.status(200).json(enrollmentExist);
-}
+    if (!enrollmentExist) res.status(400).json("not found");
+    else res.status(200).json(enrollmentExist);
+};
 
-const Attendance = async (req,res) =>{
-    const enrollmentExist= await attend.findOne({
+const Attendance = async (req, res) => {
+    const enrollmentExist = await attend.findOne({
         enrollment: req.body.enrollment,
     });
-    var c=enrollmentExist.subjects_attend.length;
-    for(i=0;i<c;i++)
-    {
-    enrollmentExist.subjects_attend.pop();
+    var c = enrollmentExist.subjects_attend.length;
+    for (i = 0; i < c; i++) {
+        enrollmentExist.subjects_attend.pop();
     }
-    for(let i=0;i<req.body.subjects_attend.length;i++)
-    {
-        enrollmentExist.subjects_attend.push(req.body.subjects_attend[i]);   
+    for (let i = 0; i < req.body.subjects_attend.length; i++) {
+        enrollmentExist.subjects_attend.push(req.body.subjects_attend[i]);
     }
     enrollmentExist.save();
     res.status(200).json(enrollmentExist);
-}
+};
 
 const displayStudentList = async (req, res) => {
     const stuExists = await Student.find({});
@@ -314,19 +305,17 @@ const displayStudentList = async (req, res) => {
         var stuArr = [];
         for (let i = 0; i < stuExists.length; i++) {
             stuArr.push({
-                name : stuExists[i].name,
-                enrollment : stuExists[i].enrollment,
+                name: stuExists[i].name,
+                enrollment: stuExists[i].enrollment,
             });
         }
-        stuArr.sort(
-            (a, b) => (a.enrollment > b.enrollment) ? 1 : -1
-        );
+        stuArr.sort((a, b) => (a.enrollment > b.enrollment ? 1 : -1));
         res.status(200).json(stuArr);
     }
-}
+};
 
 module.exports = {
-    adminLogin, 
+    adminLogin,
     studentProfileAll,
     studentCoursesummary,
     studentdroppedcourses,
@@ -339,4 +328,4 @@ module.exports = {
     getAttendance,
     Attendance,
     displayStudentList,
-  };
+};
