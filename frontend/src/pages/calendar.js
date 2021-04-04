@@ -26,7 +26,7 @@ export default function Calendar() {
   }
   return (
     <div>
-      <a href={cal} target="_blank">
+      <a href={cal} target="_blank" rel="noreferrer">
         CSV
       </a>
     </div>

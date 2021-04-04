@@ -1,15 +1,18 @@
 .navbar-student {
-    width: 100% !important;
-    padding: 0 !important;
-    background-color: #b6e5f8 !important;
-    height: 8vh !important;
+  /* width: 100% !important; */
+  /* padding: 0 !important; */
+  background-color: #b6e5f8 !important;
 }
 
-.items {
+/* .items {
     padding: 10px;
     color: black !important;
 }
 
 .portal-name {
     padding-left: 70px;
+} */
+
+.nav-link:hover {
+  text-decoration: none !important;
 }

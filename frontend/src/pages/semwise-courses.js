@@ -1,7 +1,69 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const SemwiseCourses = () => {
-    return <h1>Semwise Courses</h1>;
+  const [semwiseCourses, setSemwiseCourses] = useState({});
+  const [isLoading, setLoading] = useState(true);
+  // const [data, setData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/student/semwise_courses", {
+        headers: {
+          "auth-token": localStorage.token,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setSemwiseCourses(response.data);
+        setLoading(false);
+        console.log(semwiseCourses);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (isLoading) {
+    return <div className="Course-Summary">Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h4 className="mx-auto">List of semwise courses</h4>
+      {semwiseCourses.map((item, key) => {
+        return (
+          <div>
+            <h5>
+              <div className="branch">
+                Branch: {item.branch},
+                <span className="ml-3">Semester: {item.semester}</span>
+              </div>
+            </h5>
+            <table className="table table-light mb-5  table-hover">
+              <thead className="table-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Course ID</th>
+                  <th scope="col">Course Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {item.course_list.map((course, courseKey) => {
+                  console.log(course);
+                  return (
+                    <tr key={key}>
+                      <th scope="row">{courseKey + 1}</th>
+                      <td>{course.course_ID}</td>
+                      <td>{course.course_Name}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default SemwiseCourses;

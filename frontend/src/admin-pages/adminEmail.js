@@ -74,7 +74,7 @@ const AdminEmail = () => {
               />
             </div>
             <div className="form-group">
-              <label for="exampleFormControlTextarea1">Message</label>
+              <label htmlFor="exampleFormControlTextarea1">Message</label>
               <textarea
                 className="form-control"
                 id="exampleFormControlTextarea1"

@@ -41,8 +41,6 @@ function Leftpane(hasAuth) {
     return () => (isSubscribed = false);
   }, []);
 
-  console.log({ data });
-
   if (isLoading) {
     return <div className="Course-Summary">Loading...</div>;
   }
@@ -67,7 +65,7 @@ function Leftpane(hasAuth) {
             2019-2023
           </Link>
           <hr />
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <Link
               className="nav-link sidebar-link active"
               to="/student/academic-registration"
@@ -76,7 +74,7 @@ function Leftpane(hasAuth) {
               Registration
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <Link
               className="nav-link sidebar-link"
               to="/student/course-summary"
@@ -84,18 +82,18 @@ function Leftpane(hasAuth) {
               <i className="bi bi-clipboard-check p-2"></i> Course Summary
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <Link className="nav-link sidebar-link" to="/student/faculty">
               <i className="bi bi-people p-2"></i> Faculty
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <Link className="nav-link sidebar-link" to="/student/certificates">
               <i className="bi bi-file-earmark-text p-2"></i> Certificates
             </Link>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <Link
               className="nav-link sidebar-link"
               to="/student/semwise-courses"
@@ -104,18 +102,19 @@ function Leftpane(hasAuth) {
             </Link>
           </li>
 
-          <li className="nav-item">
-            <Link className="nav-link sidebar-link" to="/student/send">
-              <i class="bi bi-envelope p-2"></i> Interaction
+          <li className="nav-item pb-2 pl-1">
+            <Link className="nav-link sidebar-link" to="/student/email">
+              <i className="bi bi-envelope p-2"></i> Interaction
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item pb-2 pl-1">
             <a
               className="nav-link sidebar-link"
               href={data.cal}
               target="_blank"
+              rel="noreferrer"
             >
-              <i class="bi bi-calendar-date p-2"></i> Academic Calendar
+              <i className="bi bi-calendar-date p-2"></i> Academic Calendar
             </a>
           </li>
         </ul>

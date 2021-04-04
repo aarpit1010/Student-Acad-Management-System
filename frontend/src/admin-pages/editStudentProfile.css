@@ -1,29 +1,29 @@
 .edit-student-profile {
-    background-image: linear-gradient(
-        #e5fcc2,
-        #9de0ad,
-        #45ada8,
-        #547980,
-        #2a363b
-    );
-    background-size: cover;
-    min-height: 100vh;
-    width: 100vw;
-    text-align: center;
+  background-image: linear-gradient(
+    #e5fcc2,
+    #9de0ad,
+    #45ada8,
+    #547980,
+    #2a363b
+  );
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  text-align: center;
 }
 
 .form-row {
-    margin: 0 auto !important;
+  margin: 0 auto !important;
 }
 
 #student-details {
-    text-align: center;
+  text-align: center;
 }
 
 .student-details-img {
-    text-align: center;
+  text-align: center;
 }
 
 .a-dashboard-button {
-    color: white !important;
+  color: white !important;
 }

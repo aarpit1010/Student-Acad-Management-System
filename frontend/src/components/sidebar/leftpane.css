@@ -13,6 +13,7 @@
 
 .sidebar-component {
   background-color: #2b323f;
+  min-height: 100vh;
 }
 
 .student-img {

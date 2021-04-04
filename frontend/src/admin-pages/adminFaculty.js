@@ -63,7 +63,7 @@ export default function AdminFaculty() {
     return <div className="Course-Summary">Loading...</div>;
   }
   return (
-    <div className="announcements-page pt-3">
+    <div>
       <h4 className="mx-auto">Faculty</h4>
 
       <div className="card shadow-lg col-md-8 mx-auto p-3">
@@ -154,12 +154,12 @@ export default function AdminFaculty() {
             return (
               <div key={teacherKey} className="col-sm-4 card-col">
                 <div key={key} className="card mb-3">
-                  <h5 class="card-header list-group-item-info">
+                  <h5 className="card-header list-group-item-info">
                     {teacher.coursename}
                   </h5>
                   <div className="card-body">
                     <h6 className="card-title">Name: {teacher.facultyname}</h6>
-                    <p class="card-text">
+                    <p className="card-text">
                       Section: {item.section}
                       <br />
                       Course ID: {teacher.courseid}

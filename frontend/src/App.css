@@ -36,10 +36,10 @@ body {
 
 .main-col {
   /* background-color: #ecebeb; */
-  height: 130vh;
+  min-height: 100vh;
 }
 
 .sidebar {
   padding: 0 0 !important;
-  min-height: 130vh !important;
+  min-height: 90vh !important;
 }

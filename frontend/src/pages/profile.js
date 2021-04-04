@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import studentImg from "../images/student.png";
 import "./profile.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const [data, setData] = useState({});
@@ -20,12 +21,12 @@ function Profile() {
 
   return (
     <div className="profile">
-      <div className="card w-50 mb-3 mt-3 profile-card">
-        <img
+      <div className="card w-50 mx-auto profile-card">
+        {/* <img
           className="card-img-top rounded mx-auto d-block .img-fluid. max-width: 50%"
           src={studentImg}
           alt="Card cap"
-        />
+        /> */}
         <div className="card-body mx-auto">
           <h5 className="card-title">Name: {data.name}</h5>
           <p className="card-text">
@@ -41,9 +42,11 @@ function Profile() {
             <br />
             Branch: {data.branch}
             <br />
-            <button type="button" className="btn btn-primary mt-3">
-              Request for Changes
-            </button>
+            <Link to="/student/email">
+              <button type="button" className="btn btn-primary mt-3">
+                Request for Changes
+              </button>
+            </Link>
           </p>
         </div>
       </div>

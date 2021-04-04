@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 function AdminDashboard() {
   return (
     <React.Fragment>
-      <div className="admin-dashboard mx-auto">
-      <br /><h1>Admin Dashboard</h1><br />
-        <div className="row m-0  justify-content-md-center">
+      <div className="admin-dashboard mx-auto pb-3">
+        <br />
+        <h1>Admin Dashboard</h1>
+        <br />
+        <div className="row ml-0 mr-0 justify-content-md-center mb-3">
           <div className="col-md-4 m-1">
             <div className="card shadow rounded">
               <div className="row no-gutters">
@@ -68,7 +70,7 @@ function AdminDashboard() {
             </div>
           </div>
         </div>
-        <div className="row m-0  justify-content-md-center">
+        <div className="row ml-0 mr-0 mb-3 justify-content-md-center">
           <div className="col-md-4 m-1">
             <div className="card shadow rounded">
               <div className="row no-gutters">
@@ -128,7 +130,7 @@ function AdminDashboard() {
             </div>
           </div>
         </div>
-        <div className="row m-0  justify-content-md-center">
+        <div className="row ml-0 mr-0 mb-3 justify-content-md-center">
           <div className="col-md-4 m-1">
             <div className="card shadow rounded">
               <div className="row no-gutters">
@@ -174,6 +176,64 @@ function AdminDashboard() {
                     <Link to="/admin/logs" className="a-dashboard-button">
                       <button type="button" className="btn btn-primary">
                         Log Report
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row ml-0 mr-0 mb-3 justify-content-md-center">
+          <div className="col-md-4 m-1">
+            <div className="card shadow rounded">
+              <div className="row no-gutters">
+                <div className="col-md-4">
+                  <img
+                    src="https://img.icons8.com/color/96/000000/attendance-mark.png"
+                    className="admin-card-img"
+                    alt="admin-card-img"
+                  />
+                </div>
+                <div className="col-md-8">
+                  <div className="card-body text-right">
+                    <h5 className="card-title">Attendance</h5>
+                    <p className="card-text">
+                      Enter the attendance record for Students.
+                    </p>
+                    <Link to="/admin/attendance" className="a-dashboard-button">
+                      <button type="button" className="btn btn-success">
+                        Enter attendance
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4 m-1">
+            <div className="card shadow rounded">
+              <div className="row no-gutters">
+                <div className="col-md-4">
+                  <img
+                    src="https://img.icons8.com/fluent/96/000000/fail.png"
+                    className="admin-card-img"
+                    alt="admin-card-img"
+                  />
+                </div>
+                <div className="col-md-8">
+                  <div className="card-body text-right">
+                    <h5 className="card-title">Student List</h5>
+                    <p className="card-text">
+                      Check out the official list of all students enrolled in
+                      the institute.
+                    </p>
+                    <Link
+                      to="/admin/studentList"
+                      className="a-dashboard-button"
+                    >
+                      <button type="button" className="btn btn-success">
+                        Student List
                       </button>
                     </Link>
                   </div>

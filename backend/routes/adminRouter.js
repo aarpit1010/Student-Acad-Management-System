@@ -2,19 +2,19 @@ const adminRouter = require("express").Router();
 const admin_verify = require("../controllers/admin_verifyToken");
 
 const {
-    adminLogin,
-    studentProfileAll,
-    studentCoursesummary,
-    studentdroppedcourses,
-    facultyList,
-    Faculty,
-    logReport,
-    notifications,
-    displayNotifs,
-    mailsend,
-    getAttendance,
-    Attendance,
-    displayStudentList
+  adminLogin,
+  studentProfileAll,
+  studentCoursesummary,
+  studentdroppedcourses,
+  facultyList,
+  Faculty,
+  logReport,
+  notifications,
+  displayNotifs,
+  mailsend,
+  getAttendance,
+  Attendance,
+  displayStudentList,
 } = require("../controllers/adminController");
 
 adminRouter.post("/login", adminLogin);

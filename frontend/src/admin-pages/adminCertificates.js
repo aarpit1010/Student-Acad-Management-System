@@ -6,17 +6,24 @@ export default class AdminCertificates extends Component {
   constructor(props) {
     super(props);
     this.onEnrollmentChange = this.onEnrollmentChange.bind(this);
+    this.onTypeChange = this.onTypeChange.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       certpdf: "",
       enrollment: "",
+      type: "",
     };
   }
 
   onEnrollmentChange(e) {
     this.setState({ ...this.state, enrollment: e.target.value });
+    console.log(this.state);
+  }
+
+  onTypeChange(e) {
+    this.setState({ ...this.state, type: e.target.value });
     console.log(this.state);
   }
 
@@ -33,6 +40,7 @@ export default class AdminCertificates extends Component {
       "enrollment",
       this.state.enrollment.toString().toLowerCase()
     );
+    formData.append("type", this.state.type.toString().toLowerCase());
     console.log(formData);
 
     axios
@@ -54,21 +62,35 @@ export default class AdminCertificates extends Component {
             <h3>Issue Certificates to Students</h3>
 
             <form onSubmit={this.onSubmit}>
-              <div class=" mb-3">
-                <label for="enrollment" class="form-label">
+              <div className=" mb-3">
+                <label htmlFor="enrollment" className="form-label">
                   Enrollment number
                 </label>
                 <input
                   type="text"
                   value={this.state.enrollment}
                   name="enrollment"
-                  class="form-control"
+                  className="form-control"
                   id="enrollment"
                   placeholder="IIT2020001"
                   onChange={this.onEnrollmentChange}
                 />
               </div>
-              <div class="mb-3">
+              <div className=" mb-3">
+                <label htmlFor="type" className="form-label">
+                  Type of Certificate
+                </label>
+                <input
+                  type="text"
+                  value={this.state.type}
+                  name="type"
+                  className="form-control"
+                  id="type"
+                  placeholder="Bonafide"
+                  onChange={this.onTypeChange}
+                />
+              </div>
+              <div className="mb-3">
                 <input type="file" onChange={this.onFileChange} />
               </div>
               <button className="btn btn-primary" type="submit">
@@ -80,16 +102,4 @@ export default class AdminCertificates extends Component {
       </div>
     );
   }
-}
-
-{
-  /* <div className="row justify-content-md-center"> 
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group mx-auto">
-                <input type="file" onChange={this.onFileChange} />
-                <button className="btn btn-primary" type="submit">
-                  Upload
-                </button>
-              </div>
-            </div> */
 }

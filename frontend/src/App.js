@@ -14,6 +14,7 @@ import AdminNav from "./admin-pages/adminNav";
 import AcademicCalendar from "./admin-pages/academicCalendar";
 import Notifications from "./pages/notifications";
 import Calendar from "./pages/calendar";
+import BlankSem from "./pages/blankSem";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -23,6 +24,8 @@ import Logs from "./admin-pages/logs";
 import AdminFaculty from "./admin-pages/adminFaculty";
 import AdminEmail from "./admin-pages/adminEmail";
 import AdminCertificates from "./admin-pages/adminCertificates";
+import StudentList from "./admin-pages/studentList";
+import Attendance from "./admin-pages/attendance";
 
 import Navbar from "./components/navbar/navbar";
 import Auth from "./auth/Auth";
@@ -75,7 +78,17 @@ function App() {
             path="/admin/grantCertificates"
             component={AdminCertificates}
           />
+          <AdminProtectedRoute
+            exact
+            path="/admin/studentList"
+            component={StudentList}
+          />
           <AdminProtectedRoute exact path="/admin/logs" component={Logs} />
+          <AdminProtectedRoute
+            exact
+            path="/admin/attendance"
+            component={Attendance}
+          />
 
           <Route path="/admin/*">
             <Redirect to="/admin/adminDashboard" />
@@ -110,6 +123,11 @@ function App() {
                       />
                       <StudentProtectedRoute
                         exact
+                        path="/student/blankSem"
+                        component={BlankSem}
+                      />
+                      <StudentProtectedRoute
+                        exact
                         path="/student/certificates"
                         component={Certificates}
                       />
@@ -135,7 +153,7 @@ function App() {
                       />
                       <StudentProtectedRoute
                         exact
-                        path="/student/send"
+                        path="/student/email"
                         component={Message}
                       />
                       <StudentProtectedRoute
