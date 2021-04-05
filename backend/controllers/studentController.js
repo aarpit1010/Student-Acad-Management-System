@@ -525,6 +525,16 @@ const displaycourses = async (req, res) => {
     );    
 }
 
+const displayRegnCourses = async (req, res) => {
+    const id = req.student._id;
+    const student = await Student.findOne({ _id: id });
+    if (!student) return res.status(400).json("Student doesn't exist in Database");
+    else {
+        res.status(200).json(student.registered_course);
+    }
+
+}
+
 const displayattendance = async (req,res) => {
     const id = req.student._id;
     const student = await Student.findOne({ _id: id });
@@ -582,6 +592,7 @@ module.exports = {
     regcourses,
     // studentProfileAll,
     displaycourses,
+    displayRegnCourses,
     displayattendance,
     getFees,
     updateFees,

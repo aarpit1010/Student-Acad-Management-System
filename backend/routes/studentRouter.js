@@ -18,6 +18,7 @@ const {
     regcourses,
     // studentProfileAll,
     displaycourses,
+    displayRegnCourses,
     displayattendance,
     getFees,
     updateFees,
@@ -54,6 +55,8 @@ router.get("/courseregn", verify, courseReg);
 router.post("/courseregn/opted", verify, regcourses);
 
 router.get("/semwise_courses", verify, displaycourses);
+
+router.get("/courseregn/opted/list", verify, displayRegnCourses);
 
 router.get("/attendance", verify, displayattendance);
 
