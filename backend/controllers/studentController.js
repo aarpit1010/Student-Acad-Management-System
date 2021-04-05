@@ -42,8 +42,8 @@ const studentRegister = async (req, res) => {
         // check whether user already in database or not
         const emailExist = await Student.findOne({ email: givenEmail });
         // const contactExist = await Student.findOne{( contact: req.body.contact)};
-        if (emailExist) return res.status(400).json("Email already exists");
-
+        if (emailExist) 
+        return res.status(400).json("Email already exists");
         // hash password
         const salt = await bcrypt.genSalt(10);
         student.password = await bcrypt.hash(givenPassword, salt);
@@ -175,6 +175,23 @@ const studentProfile = async (req, res) => {
         if (!student) res.status(400).json("Student doesn't exist in Database");
 
         //    Student.findByIdAndUpdate(id, function(err,result){
+        const enrollmentExist =await course_summary.findOne({enrollment:student.username});
+      
+        var curr_sgpi=0.0,cgpi=0.0;
+        var sgpi=[];
+        for(var i=0;i<student.semester-1;i++)
+        {
+            sgpi.push(Math.random()*3+6);
+            cgpi+=sgpi[sgpi.length-1];
+        }   
+        for(var i=0;i<enrollmentExist.semester_marks.length;i++)
+        {
+            curr_sgpi+=(enrollmentExist.semester_marks[i].marks.gpa);
+        }
+        curr_sgpi=curr_sgpi/enrollmentExist.semester_marks.length;
+        sgpi.push(curr_sgpi);
+        cgpi+=curr_sgpi;
+        cgpi=cgpi/student.semester;
         Courses.findCourse(
             "courses",
             {
@@ -194,6 +211,8 @@ const studentProfile = async (req, res) => {
                     enrolled_course: docs[0].course_list.sort(
                         (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
                     ),
+                    sgpi:sgpi,
+                    cgpi:cgpi
                 });
             }
         );
