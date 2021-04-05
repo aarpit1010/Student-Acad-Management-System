@@ -63,7 +63,7 @@ export default function AdminFaculty() {
     return <div className="Course-Summary">Loading...</div>;
   }
   return (
-    <div>
+    <div className="admin-dashboard">
       <h4 className="mx-auto">Faculty</h4>
 
       <div className="card shadow-lg col-md-8 mx-auto p-3">

@@ -42,8 +42,8 @@ const studentRegister = async (req, res) => {
         // check whether user already in database or not
         const emailExist = await Student.findOne({ email: givenEmail });
         // const contactExist = await Student.findOne{( contact: req.body.contact)};
-        if (emailExist) 
-        return res.status(400).json("Email already exists");
+        if (emailExist) return res.status(400).json("Email already exists");
+
         // hash password
         const salt = await bcrypt.genSalt(10);
         student.password = await bcrypt.hash(givenPassword, salt);
@@ -176,22 +176,24 @@ const studentProfile = async (req, res) => {
 
         //    Student.findByIdAndUpdate(id, function(err,result){
         const enrollmentExist =await course_summary.findOne({enrollment:student.username});
-      
-        var curr_sgpi=0.0,cgpi=0.0;
-        var sgpi=[];
-        for(var i=0;i<student.semester-1;i++)
+
+        var curr_sgpi = 0.0;
+        var cgpi = 0.0;
+        var sgpi = [];
+        for(let i=0; i < student.semester - 1; i++)
         {
             sgpi.push(Math.random()*3+6);
-            cgpi+=sgpi[sgpi.length-1];
+            cgpi += sgpi[sgpi.length - 1];
         }   
-        for(var i=0;i<enrollmentExist.semester_marks.length;i++)
+        for(let i=0; i < enrollmentExist.semester_marks.length; i++)
         {
-            curr_sgpi+=(enrollmentExist.semester_marks[i].marks.gpa);
+            curr_sgpi += (enrollmentExist.semester_marks[i].marks.gpa);
         }
-        curr_sgpi=curr_sgpi/enrollmentExist.semester_marks.length;
+        curr_sgpi = curr_sgpi / enrollmentExist.semester_marks.length;
         sgpi.push(curr_sgpi);
-        cgpi+=curr_sgpi;
-        cgpi=cgpi/student.semester;
+        cgpi += curr_sgpi;
+        cgpi = cgpi/student.semester;
+        
         Courses.findCourse(
             "courses",
             {
@@ -211,8 +213,8 @@ const studentProfile = async (req, res) => {
                     enrolled_course: docs[0].course_list.sort(
                         (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
                     ),
-                    sgpi:sgpi,
-                    cgpi:cgpi
+                    sgpi: sgpi,
+                    cgpi: cgpi,
                 });
             }
         );
@@ -436,32 +438,35 @@ const courseReg = async (req, res) => {
     const id = req.student._id;
     const student = await Student.findOne({ _id: id });
     if (!student) res.status(400).json("Student doesn't exist in Database");
+    if(student.registered_course.length == 0) {
+        const currSem = student.semester;
+        const nextSem = currSem + 1;
+        if (currSem != 8) {
+            Courses.findCourse(
+                "courses",
+                {
+                    semester: nextSem,
+                    branch: student.branch,
+                },
+                function (err, docs2) {
+                    const add_course = docs2[0].course_list.sort(
+                        (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
+                    );
+                    // verify_course_name=docs2[0].course_name.sort();
+                    // console.log(add_course);
+                    res.status(200).json(add_course);
+                }
+            );
+        }
 
-    const currSem = student.semester;
-    const nextSem = currSem + 1;
-    if (currSem != 8) {
-        Courses.findCourse(
-            "courses",
-            {
-                semester: nextSem,
-                branch: student.branch,
-            },
-            function (err, docs2) {
-                const add_course = docs2[0].course_list.sort(
-                    (a, b) => (a.course_Name > b.course_Name) ? 1 : -1
-                );
-                // verify_course_name=docs2[0].course_name.sort();
-                // console.log(add_course);
-                res.status(200).json(add_course);
-            }
-        );
+        var action_string = "Student "+
+                            student.username +
+                            " views the" +
+                            " list of courses for the next semester";
+        addtoLog(action_string, "Student", currentTime);
+    } else {
+        return res.status(400).json("Already registered for the upcoming Semester");
     }
-
-    var action_string = "Student "+
-                        student.username +
-                        " views the" +
-                        " list of courses for the next semester";
-    addtoLog(action_string, "Student", currentTime);
 };
 
 const regcourses = async (req, res) => {
@@ -469,36 +474,40 @@ const regcourses = async (req, res) => {
     const student = await Student.findOne({ _id: id });
     if (!student) res.status(400).json("Student doesn't exist in Database");
 
-    const currSem = student.semester;
-    const nextSem = currSem + 1;
+    if(student.registered_course.length == 0) {
+        const currSem = student.semester;
+        const nextSem = currSem + 1;
 
-    const course_arr = req.body.course_opted;
-    const opted_course_arr = [];
-    var add_course;
-    var idx;
-    Courses.findCourse(
-        "courses",
-        {
-            semester: nextSem,
-            branch: student.branch,
-        },
-        function (err, docs2) {
-            // console.log(docs2[0]);
-            for (var i = 0; i < course_arr.length; i++) {
-                idx = course_arr[i];
-                add_course = docs2[0].course_list[idx];
-                student.registered_course.push(add_course);
-                opted_course_arr.push(add_course);
+        const course_arr = req.body.course_opted;
+        const opted_course_arr = [];
+        var add_course;
+        var idx;
+        Courses.findCourse(
+            "courses",
+            {
+                semester: nextSem,
+                branch: student.branch,
+            },
+            function (err, docs2) {
+                // console.log(docs2[0]);
+                for (var i = 0; i < course_arr.length; i++) {
+                    idx = course_arr[i];
+                    add_course = docs2[0].course_list[idx];
+                    student.registered_course.push(add_course);
+                    opted_course_arr.push(add_course);
+                }
+                res.status(200).json(opted_course_arr);
+                student.save();
             }
-            res.status(200).json(opted_course_arr);
-            student.save();
-        }
-    );
+        );
 
-    var action_string = "Student "+
-                        student.username +
-                        " has selected Courses for upcoming Semester.";
-    addtoLog(action_string, "Student", currentTime);
+        var action_string = "Student "+
+                            student.username +
+                            " has selected Courses for upcoming Semester.";
+        addtoLog(action_string, "Student", currentTime);
+    } else {
+        return res.status(400).json("Already registered for the upcoming Semester");
+    }
 };
 
 const displaycourses = async (req, res) => {

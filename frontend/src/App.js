@@ -14,7 +14,7 @@ import AdminNav from "./admin-pages/adminNav";
 import AcademicCalendar from "./admin-pages/academicCalendar";
 import Notifications from "./pages/notifications";
 import Calendar from "./pages/calendar";
-import BlankSem from "./pages/blankSem";
+// import BlankSem from "./pages/blankSem";
 import Fees from "./pages/fees";
 
 import SelectUser from "./pages/user-selection";
@@ -122,11 +122,11 @@ function App() {
                         path="/student/academicRegistration"
                         component={AcademicRegistration}
                       />
-                      <StudentProtectedRoute
+                      {/* <StudentProtectedRoute
                         exact
                         path="/student/blankSem"
                         component={BlankSem}
-                      />
+                      /> */}
                       <StudentProtectedRoute
                         exact
                         path="/student/certificates"
