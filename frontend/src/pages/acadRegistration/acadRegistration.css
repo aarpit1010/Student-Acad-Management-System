@@ -1,0 +1,16 @@
+.nextButton {
+  right: 0 !important;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.blank-sem-card {
+  padding: 15% 0 !important;
+  text-align: center;
+  position: relative;
+}
+
+.course-selection-page {
+  text-align: center;
+}

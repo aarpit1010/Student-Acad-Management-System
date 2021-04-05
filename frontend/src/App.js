@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Sidebar from "./components/sidebar/leftpane";
 
-import AcademicRegistration from "./pages/acadRegistration";
+import AcademicRegistration from "./pages/acadRegistration/acadRegistration";
 import Certificates from "./pages/certificates";
 import CourseSummary from "./pages/course-summary";
 import Dashboard from "./components/dashboard/dashboard";
@@ -14,8 +14,9 @@ import AdminNav from "./admin-pages/adminNav";
 import AcademicCalendar from "./admin-pages/academicCalendar";
 import Notifications from "./pages/notifications";
 import Calendar from "./pages/calendar";
-// import BlankSem from "./pages/blankSem";
+import BlankSem from "./pages/acadRegistration/blankSem";
 import Fees from "./pages/fees";
+import CourseSelection from "./pages/acadRegistration/courseSelection";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -36,6 +37,7 @@ import AdminProtectedRoute from "./auth/AdminProtectedRoute";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "./admin-pages/adminDashboard";
+import SubmitPage from "./pages/acadRegistration/submit";
 
 function App() {
   return (
@@ -122,11 +124,21 @@ function App() {
                         path="/student/academicRegistration"
                         component={AcademicRegistration}
                       />
-                      {/* <StudentProtectedRoute
+                      <StudentProtectedRoute
                         exact
                         path="/student/blankSem"
                         component={BlankSem}
-                      /> */}
+                      />
+                      <StudentProtectedRoute
+                        exact
+                        path="/student/submitPage"
+                        component={SubmitPage}
+                      />
+                      <StudentProtectedRoute
+                        exact
+                        path="/student/CourseSelection"
+                        component={CourseSelection}
+                      />
                       <StudentProtectedRoute
                         exact
                         path="/student/certificates"

@@ -8,7 +8,10 @@ import axios from "axios";
 function Leftpane(hasAuth) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({ profile: null, cal: null });
-  //   const [cal, setCal] = useState({});
+  const year = 2023;
+  let semester = "";
+  let years = [2024, 2023, 2022, 2021];
+  const semesters = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
   useEffect(() => {
     let isSubscribed = true;
@@ -32,6 +35,7 @@ function Leftpane(hasAuth) {
           profile: getProfileData.data,
           cal: getCalLink.data,
         });
+        semester = profile.semester;
         setLoading(false);
         //   console.log(cal);
       }
@@ -43,6 +47,12 @@ function Leftpane(hasAuth) {
 
   if (isLoading) {
     return <div className="Course-Summary">Loading...</div>;
+  }
+
+  for (let i = 0; i < semesters.length; i++) {
+    if (semester === semesters[i]) {
+      year = years[i % 2];
+    }
   }
 
   if (hasAuth)
@@ -62,7 +72,7 @@ function Leftpane(hasAuth) {
             <br />
             {data.profile.enrollment_no}
             <br />
-            2019-2023
+            {year - 4} - {year}
           </Link>
           <hr />
           <li className="nav-item pb-2 pl-1">

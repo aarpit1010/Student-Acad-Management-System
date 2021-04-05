@@ -35,7 +35,7 @@ const CourseSummary = () => {
     fetchAllData();
 
     return () => (isSubscribed = false);
-  }, []);
+  }, [isLoading]);
 
   console.log({ data });
 
@@ -58,7 +58,7 @@ const CourseSummary = () => {
         </thead>
         <tbody>
           {data.courses &&
-            data.courses.marks.map((c, courseKey) => {
+            data.courses.marks?.map((c, courseKey) => {
               return (
                 <tr key={courseKey}>
                   <td>{courseKey + 1}</td>

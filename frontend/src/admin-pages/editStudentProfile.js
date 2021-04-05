@@ -85,6 +85,7 @@ function EditStudentProfile() {
       ...foundStudent,
       name: data.name,
       contact: data.contact,
+      access: data.access,
     };
 
     const updatedEnrolledCourseData = enrolledCourseData;

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./certificates.css";
 
-import { useForm, value } from "react-hook-form";
-
 const Certificates = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState(null);
@@ -23,21 +21,20 @@ const Certificates = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // alert(`${docType}`);
     console.log(`${docType}`);
     const responseObject = { type: `${docType}` };
-    axios
-      .post("/student/reqDoc", responseObject, {
-        headers: {
-          "auth-token": localStorage.token,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
+    //     axios
+    //       .post("/student/reqDoc", responseObject, {
+    //         headers: {
+    //           "auth-token": localStorage.token,
+    //           "Content-Type": "application/json",
+    //         },
+    //       })
+    //       .then((res) => {
+    //         console.log(res);
+    //         setLoading(true);
+    //       })
+    //       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -81,7 +78,6 @@ const Certificates = () => {
                     id="flexRadioDefault1"
                     value="bonafide"
                     onChange={handleChange}
-                    checked="true"
                   />
                   <label
                     className="form-check-label"

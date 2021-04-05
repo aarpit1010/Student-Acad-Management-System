@@ -22,11 +22,6 @@ function Profile() {
   return (
     <div className="profile">
       <div className="card w-50 mx-auto profile-card">
-        {/* <img
-          className="card-img-top rounded mx-auto d-block .img-fluid. max-width: 50%"
-          src={studentImg}
-          alt="Card cap"
-        /> */}
         <div className="card-body mx-auto">
           <h5 className="card-title">Name: {data.name}</h5>
           <p className="card-text">

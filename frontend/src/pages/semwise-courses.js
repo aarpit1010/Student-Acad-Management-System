@@ -17,7 +17,6 @@ const SemwiseCourses = () => {
       .then((response) => {
         setSemwiseCourses(response.data);
         setLoading(false);
-        console.log(semwiseCourses);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -48,9 +47,8 @@ const SemwiseCourses = () => {
               </thead>
               <tbody>
                 {item.course_list.map((course, courseKey) => {
-                  console.log(course);
                   return (
-                    <tr key={key}>
+                    <tr key={key + courseKey}>
                       <th scope="row">{courseKey + 1}</th>
                       <td>{course.course_ID}</td>
                       <td>{course.course_Name}</td>
