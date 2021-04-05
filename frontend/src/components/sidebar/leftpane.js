@@ -68,7 +68,7 @@ function Leftpane(hasAuth) {
           <li className="nav-item pb-2 pl-1">
             <Link
               className="nav-link sidebar-link active"
-              to="/student/academic-registration"
+              to="/student/academicRegistration"
             >
               <i className="bi bi-person-lines-fill p-2"></i> Academic
               Registration
@@ -99,6 +99,11 @@ function Leftpane(hasAuth) {
               to="/student/semwise-courses"
             >
               <i className="bi bi-list-ul p-2"></i> Semwise Courses
+            </Link>
+          </li>
+          <li className="nav-item pb-2 pl-1">
+            <Link className="nav-link sidebar-link" to="/student/fees">
+              <i className="bi bi-list-ul p-2"></i> Fee Payment
             </Link>
           </li>
 

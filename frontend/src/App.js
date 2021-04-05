@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Sidebar from "./components/sidebar/leftpane";
 
-import AcademicRegistration from "./pages/acad-registration";
+import AcademicRegistration from "./pages/acadRegistration";
 import Certificates from "./pages/certificates";
 import CourseSummary from "./pages/course-summary";
 import Dashboard from "./components/dashboard/dashboard";
@@ -15,6 +15,7 @@ import AcademicCalendar from "./admin-pages/academicCalendar";
 import Notifications from "./pages/notifications";
 import Calendar from "./pages/calendar";
 import BlankSem from "./pages/blankSem";
+import Fees from "./pages/fees";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -118,7 +119,7 @@ function App() {
                       />
                       <StudentProtectedRoute
                         exact
-                        path="/student/academic-registration"
+                        path="/student/academicRegistration"
                         component={AcademicRegistration}
                       />
                       <StudentProtectedRoute
@@ -130,6 +131,11 @@ function App() {
                         exact
                         path="/student/certificates"
                         component={Certificates}
+                      />
+                      <StudentProtectedRoute
+                        exact
+                        path="/student/fees"
+                        component={Fees}
                       />
                       <StudentProtectedRoute
                         exact
