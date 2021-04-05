@@ -543,7 +543,8 @@ const displayattendance = async (req,res) => {
     {
         const enrollmentExist = await attend.findOne({enrollment:student.username});
 
-        res.status(200).json(enrollmentExist.subjects_attend);
+        if(enrollmentExist) return res.status(200).json(enrollmentExist.subjects_attend);
+        else return res.status(400).json("Attendance NOT yet entered by Admin");
     }    
 }
 
