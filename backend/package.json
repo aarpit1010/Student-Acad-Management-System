@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "jest --watchAll"
+    "dev":"env-cmd ./dev.env nodemon index.js",
+    "test": "env-cmd ./test.env/ jest --watchAll"
   },
   "author": "",
   "license": "ISC",

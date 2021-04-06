@@ -56,19 +56,16 @@ const invalidToken = function (id) {
 const loginStudent = async (studentData) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(studentData.password, salt);
-    let student = new Student({
-      _id: new mongoose.mongo.ObjectID(),
-      ...studentData,
-      password: passwordHash,
-    });
+    let student = await Student.find({});
+     
     // await student.save();
     const token = jwt.sign(
       {
-        id: student._id,
+        _id: student[0]._id,
       },
       process.env.TOKEN_SECRET
     );
-    return {student,token};
+    return token;
 };
 
   module.exports = {
