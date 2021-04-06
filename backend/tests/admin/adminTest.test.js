@@ -32,7 +32,6 @@ let student;
 //     //     () => console.log("Connected to Testing MongoDB")
 //     // ); 
 // }
-const faketoken=invalidToken("sadjkch_chvofuih043");
 
 it('Should save user to database', async () => {
   const res = await api.post('/student/register')
@@ -60,19 +59,7 @@ it('Should give 403 Invalid Password if password is Wrong', async() => {
   expect(403).toBeTruthy();
 });
 
-// it('Can view Notifs ?', async() => {
-//   const {user,usertoken} = await loginStudent(initialStudents[0]);
-//   api.get('/student/notifications')
-//   .set("auth-token", faketoken)
-//   .expect(200);
-// });
 
-// it('Can view Notifs ?', async() => {
-//   const student = await loginStudent(initialStudents[0]);
-//   const studentres = await api.get('/student/notifications', invalidToken("sadjkch_chvofuih043"))
-//   .set('auth-token', invalidToken("sadjkch_chvofuih043"))
-//       .expect(200);
-// });
 describe('Test API and mock NPM Modules', () => {
   it('It should verify the access token and respond with status 200', async () => {
     
@@ -89,8 +76,6 @@ describe('Test API and mock NPM Modules', () => {
 
 
   it('It should not verify the access token and respond with status 401', async () => {
- 
-
     const res = await api
         .get('/student/notifications')
         .set('auth-token', 'somerandomjwttoken')

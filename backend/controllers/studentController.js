@@ -373,6 +373,7 @@ const viewcert = async (req, res) => {
     const chkReq = await Request.findOne( {enrollment: stud.enrollment});
     var certArr = [];
     var firstcertArr = [];
+    var certPresent = [];
     
     if(!chkReq) 
         return res.status(200).json("No Request has been sent to Admin");
@@ -383,18 +384,23 @@ const viewcert = async (req, res) => {
                 if(chkReq.reqtype != null) {
                     if(pdfExists.certpdf[i].type == chkReq.reqtype) {
                         firstcertArr.push(pdfExists.certpdf[i]);
-                        res.status(200).json(firstcertArr);
                         chkReq.reqtype = null;
                         chkReq.save();
                         break;
+                    } 
+                    else {
+                        certPresent.push(pdfExists.certpdf[i]);
                     }
                 }
                 else {
                     certArr = pdfExists.certpdf;
-                    // certArr.push(pdfExists.certpdf);
                 }
             }
             if(certArr.length != 0) res.status(200).json(certArr);
+            else {
+                if(firstcertArr.length == 0) res.status(200).json(certPresent);
+                else res.status(200).json(firstcertArr);
+            }
         }
 
         else {
