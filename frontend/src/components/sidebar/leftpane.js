@@ -35,7 +35,7 @@ function Leftpane(hasAuth) {
           profile: getProfileData.data,
           cal: getCalLink.data,
         });
-        semester = profile.semester;
+
         setLoading(false);
         //   console.log(cal);
       }
@@ -50,6 +50,7 @@ function Leftpane(hasAuth) {
   }
 
   for (let i = 0; i < semesters.length; i++) {
+    semester = data.profile.semester;
     if (semester === semesters[i]) {
       year = years[i % 2];
     }

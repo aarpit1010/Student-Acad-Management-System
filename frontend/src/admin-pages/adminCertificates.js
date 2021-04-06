@@ -50,7 +50,11 @@ export default class AdminCertificates extends Component {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === (200 || 201)) {
+          alert("Certificate successfully uploaded!");
+        }
+      })
       .catch((err) => console.log(err));
   }
 

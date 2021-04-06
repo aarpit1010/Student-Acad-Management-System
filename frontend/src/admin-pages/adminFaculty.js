@@ -53,7 +53,9 @@ export default function AdminFaculty() {
         },
       })
       .then((res) => {
-        console.log(res);
+        if (res.status === (200 || 201)) {
+          alert("Faculty successfully added!");
+        }
         setLoading(true);
       })
       .catch((err) => console.log(err));

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const CourseSelection = () => {
-  const [isLoading, setLoading] = useState(true);
+  //   const [isLoading, setLoading] = useState(true);
   const [availableCourses, setAvailableCourses] = useState({});
   const { handleSubmit } = useForm();
 
@@ -45,14 +45,15 @@ const CourseSelection = () => {
       .get("/student/courseregn", headers)
       .then((response) => {
         setAvailableCourses(response.data);
-        setLoading(false);
+        console.log(response.data);
+        //   setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [setLoading]);
+  }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  //   if (isLoading) {
+  //     return <div>Loading...</div>;
+  //   }
 
   const onSubmit = () => {
     let course_opted = [];
@@ -90,7 +91,7 @@ const CourseSelection = () => {
           <h4>Select the courses you wish to opt below.</h4>
           <br />
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          {/* <form onSubmit={handleSubmit(onSubmit)}>
             <table className="table table-light mb-3 table-hover table-striped w-75 mx-auto">
               <thead className="table-dark">
                 <tr>
@@ -127,7 +128,7 @@ const CourseSelection = () => {
                 Next
               </button>
             </Link>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>

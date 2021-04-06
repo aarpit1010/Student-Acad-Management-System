@@ -31,7 +31,9 @@ export default class AcademicCalendar extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
+        if (res.status === (200 || 201)) {
+          alert("Academic Calendar successfully updated!");
+        }
       })
       .catch((err) => {
         console.log(err);

@@ -2,26 +2,26 @@ const router = require("express").Router();
 const verify = require("../controllers/verifyToken");
 
 const {
-    studentRegister,
-    studentLogin,
-    studentTimetable,
-    studentProfile,
-    studentMarks,
-    droppedCourses,
-    viewFaculty,
-    mailsend,
-    notifications,
-    viewcal,
-    viewcert,
-    requestCert,
-    courseReg,
-    regcourses,
-    // studentProfileAll,
-    displaycourses,
-    displayRegnCourses,
-    displayattendance,
-    getFees,
-    updateFees,
+  studentRegister,
+  studentLogin,
+  studentTimetable,
+  studentProfile,
+  studentMarks,
+  droppedCourses,
+  viewFaculty,
+  mailsend,
+  notifications,
+  viewcal,
+  viewcert,
+  requestCert,
+  courseReg,
+  regcourses,
+  // studentProfileAll,
+  displaycourses,
+  displayRegnCourses,
+  displayattendance,
+  getFees,
+  updateFees,
 } = require("../controllers/studentController");
 
 router.post("/register", studentRegister);
@@ -36,7 +36,7 @@ router.get("/profile", verify, studentProfile);
 
 router.get("/marks", verify, studentMarks);
 
-// router.get("/droppedcourses", verify, droppedCourses);
+router.get("/droppedcourses", verify, droppedCourses);
 
 router.get("/viewFacultyList", verify, viewFaculty);
 

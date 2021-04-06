@@ -50,10 +50,10 @@ export default function Attendance() {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
-        //   setData(response.data);
-        setLoading(false);
-        console.log(response.data);
+      .then((res) => {
+        if (res.status === (200 || 201)) {
+          alert("Attendance Record successfully Added!");
+        }
       })
       .catch((error) => {
         console.log({ error });

@@ -5,7 +5,11 @@ import axios from "axios";
 
 const CourseSummary = () => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState({ courses: null, droppedCourses: null });
+  const [data, setData] = useState({
+    courses: null,
+    droppedCourses: null,
+    attendance: null,
+  });
 
   useEffect(() => {
     let isSubscribed = true;
@@ -24,10 +28,21 @@ const CourseSummary = () => {
         },
       });
 
+      const getAttendance = await axios.get("/student/attendance", {
+        headers: {
+          "auth-token": localStorage.token,
+          "Content-Type": "application/json",
+        },
+      });
+
       if (isSubscribed) {
+        //   if (getEnrolledCourses.data === "Student doesn't exist in Database") {
+        //     return <div>Student doesn't exist in database</div>;
+        //   }
         setData({
           courses: getEnrolledCourses.data,
           droppedCourses: getDroppedCourses.data,
+          attendance: getAttendance.data,
         });
         setLoading(false);
       }
@@ -36,8 +51,6 @@ const CourseSummary = () => {
 
     return () => (isSubscribed = false);
   }, [isLoading]);
-
-  console.log({ data });
 
   if (isLoading) {
     return <div className="Course-Summary">Loading...</div>;
@@ -57,23 +70,28 @@ const CourseSummary = () => {
           </tr>
         </thead>
         <tbody>
-          {data.courses &&
-            data.courses.marks?.map((c, courseKey) => {
+          {data.attendance ? (
+            data.attendance?.map((item, key) => {
               return (
-                <tr key={courseKey}>
-                  <td>{courseKey + 1}</td>
-                  <td>{c.course_ID}</td>
-                  <td>{c.course_Name}</td>
-                  <td>{data.courses.attendance[courseKey].daysout0f90}</td>
+                <tr key={key}>
+                  <td>{key + 1}</td>
+                  <td>{item.course_ID}</td>
+                  <td>{item.course_Name}</td>
+                  <td>{item.daysoutof90}</td>
                 </tr>
               );
-            })}
+            })
+          ) : (
+            <div style={{ color: "red", fontSize: "20px" }}>
+              The attendance record hasn't been entered by Admin yet.
+            </div>
+          )}
         </tbody>
       </Table>
       <h3>Course Summary</h3>
       <Tabs
         id="course-summary-tabs"
-        defaultActiveKey="enrolled"
+        defaultActiveKey="completed"
         variant="tabs"
         style={{
           color: "white",
@@ -115,26 +133,30 @@ const CourseSummary = () => {
           </Table>
         </Tab>
         <Tab eventKey="dropped" title="DROPPED">
-          <Table striped bordered hover variant="dark">
-            <thead>
-              <tr>
-                <th>S. No.</th>
-                <th>Course Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.droppedCourses.dropped_courses &&
-                data.droppedCourses.dropped_courses.map((c, courseKey) => {
-                  return (
-                    <tr key={courseKey}>
-                      <td>{courseKey + 1}</td>
+          {data.droppedCourses ? (
+            <Table striped bordered hover variant="dark">
+              <thead>
+                <tr>
+                  <th>S. No.</th>
+                  <th>Course Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.droppedCourses &&
+                  data.droppedCourses.dropped_courses.map((c, courseKey) => {
+                    return (
+                      <tr key={courseKey}>
+                        <td>{courseKey + 1}</td>
 
-                      <td>{c}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
+                        <td>{c}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </Table>
+          ) : (
+            <div>No Dropped Courses for the ongoing Semester.</div>
+          )}
         </Tab>
       </Tabs>
     </div>

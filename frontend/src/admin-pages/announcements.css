@@ -17,3 +17,11 @@
   padding: 0 20px !important;
   margin: 0 0 !important;
 }
+
+.card-columns {
+  padding: 0 30px !important;
+}
+
+.announcements-heading {
+  text-align: center;
+}
