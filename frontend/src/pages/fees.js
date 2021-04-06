@@ -48,14 +48,18 @@ export default function Fees() {
   };
 
   return (
-    <div className="mx-auto">
-      <div className="card">
+    <div style={{ paddingTop: "200px", textAlign: "center" }}>
+      <div className="card w-75 mx-auto">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="card-body">
-            Fee status for the current semester
-            <h3>Status: {data === false ? "Not paid" : "Paid"}</h3>
-            <button type="submit" className="btn btn-primary" disabled={data}>
-              Submit
+            <h2>Fee status for the current semester</h2>
+            <h1>Status: {data === false ? "Not paid" : "Paid"}</h1>
+            <button
+              type="submit"
+              className="btn-lg btn-primary"
+              disabled={data}
+            >
+              Pay Fees
             </button>
           </div>
         </form>

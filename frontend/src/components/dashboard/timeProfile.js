@@ -9,10 +9,10 @@ function TimeProfile() {
 
     if (difference > 0) {
       timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        D: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        H: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        M: Math.floor((difference / 1000 / 60) % 60),
+        S: Math.floor((difference / 1000) % 60),
       };
     }
 
@@ -37,17 +37,17 @@ function TimeProfile() {
 
     timerComponents.push(
       <span>
-        {timeLeft[interval]} {interval}{" "}
+        {timeLeft[interval]} {interval}
+        {" : "}
       </span>
     );
   });
   return (
     <div>
-      <h1>Time left for the completion of Semester</h1>
       {/* <h2>With React Hooks!</h2> */}
-      <h1>
+      <h6>
         {timerComponents.length ? timerComponents : <span>Time's up!</span>}
-      </h1>
+      </h6>
     </div>
   );
 }

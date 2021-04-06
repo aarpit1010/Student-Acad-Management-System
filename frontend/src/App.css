@@ -38,6 +38,13 @@ body {
   /* background-color: #ecebeb; */
   min-height: 100vh;
   /* padding: 0 !important; */
+  background-image: linear-gradient(
+    #e5fcc2,
+    #9de0ad,
+    #45ada8,
+    #547980,
+    #2a363b
+  );
 }
 
 .sidebar {

@@ -57,6 +57,7 @@ function Leftpane(hasAuth) {
             fluid
             roundedCircle
           />
+
           <br />
           <Link to="/student/studentDashboard" className="profile-name mx-auto">
             {data.profile.name}

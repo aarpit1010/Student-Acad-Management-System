@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Sidebar from "./components/sidebar/leftpane";
+import Sidebar from "./components/sidebar/newSidebar";
 
 import AcademicRegistration from "./pages/acadRegistration/acadRegistration";
 import Certificates from "./pages/certificates";
@@ -103,17 +103,17 @@ function App() {
           <div className="App">
             <div className="container-fluid h-100">
               <div className="row h-100">
-                <div className="col-sm-2 sidebar p-0">
+                <div className="col-md-auto sidebar p-0">
                   <Sidebar hasAuth={Auth.isAuthenticatedStudent()} />
                 </div>
-                <div className="col-sm-10 p-0">
+                <div className="col p-0">
                   <div className="row m-0">
                     <div className="col p-0">
                       <Navbar hasAuth={Auth.isAuthenticatedStudent()} />
                     </div>
                   </div>
                   <div className="row m-0">
-                    <div className="col main-col">
+                    <div className="col main-col w-100 pl-3 pr-3">
                       <StudentProtectedRoute
                         exact
                         path="/student/studentDashboard"

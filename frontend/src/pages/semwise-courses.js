@@ -37,7 +37,7 @@ const SemwiseCourses = () => {
                 <span className="ml-3">Semester: {item.semester}</span>
               </div>
             </h5>
-            <table className="table table-light mb-5  table-hover">
+            <table className="table table-light mb-5 table-hover shadow ">
               <thead className="table-dark">
                 <tr>
                   <th scope="col">#</th>

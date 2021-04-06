@@ -28,10 +28,10 @@ export default class Demo extends React.PureComponent {
     const { data: chartData } = this.state;
 
     return (
-      <div className="dashboard-student">
+      <div className="pt-3">
         <Container fluid="md">
           <Row className="chart-row">
-            <Col md={4} className="cgpa">
+            <Col md={4} className="cgpa card shadow">
               <Chart data={chartData} className="chart">
                 <PieSeries
                   valueField="val"
@@ -41,18 +41,16 @@ export default class Demo extends React.PureComponent {
                 <Title text="CGPA" />
                 <Animation />
               </Chart>
-              <span>8.4</span>
+              <h2 style={{ textAlign: "center" }}>8.4</h2>
             </Col>
             <Col className="graph">
               <Sgpigraph />
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <TimeProfile />
-            </Col>
-          </Row>
-          <Row>
+          <Row className="mt-5">
+            <h2 style={{ textAlign: "center" }} className="pb-3">
+              Timetable for the current semester
+            </h2>
             <Col>
               <Timetable />
             </Col>

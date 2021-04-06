@@ -57,9 +57,9 @@ const CourseSummary = () => {
   }
 
   return (
-    <div>
+    <div className="course-summary-page">
       <br />
-      <h3>Attendance</h3>
+      <h3 className="attendance-title">Attendance</h3>
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>
@@ -88,7 +88,7 @@ const CourseSummary = () => {
           )}
         </tbody>
       </Table>
-      <h3>Course Summary</h3>
+      <h3 className="attendance-title">Course Summary</h3>
       <Tabs
         id="course-summary-tabs"
         defaultActiveKey="completed"

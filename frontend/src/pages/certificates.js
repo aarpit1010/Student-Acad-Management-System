@@ -5,7 +5,7 @@ import "./certificates.css";
 const Certificates = () => {
   const [data, setData] = useState(null);
   const [item, setItem] = useState({ docType: "" });
-  const [isAvailable, setAvailable] = useState(false);
+  const [isAvailable, setAvailable] = useState(true);
   const { docType } = item;
 
   const handleChange = (e) => {
@@ -47,7 +47,6 @@ const Certificates = () => {
       headers
     );
     setData(getCertificates.data);
-    console.log(typeof data === "string");
     if (typeof data === "string") {
       setAvailable(false);
     }
@@ -62,7 +61,7 @@ const Certificates = () => {
         <form onSubmit={handleSubmit}>
           <div className="card-body">
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-6 cert-options">
                 <div className="form-check mb-3">
                   <input
                     className="form-check-input"
@@ -112,7 +111,7 @@ const Certificates = () => {
                   </label>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 cert-options">
                 <div className="form-check mb-3">
                   <input
                     className="form-check-input"
@@ -163,13 +162,13 @@ const Certificates = () => {
         Below are the Links to certificates that have been uploaded previously.
       </h4>
       {isAvailable === false ? (
-        <div>No request sent to admin</div>
+        <div></div>
       ) : (
         <div>
           {data?.map((item, key) => {
             return (
               <div>
-                <button type="submit" className="btn-lg btn-primary m-2 w-25">
+                <button type="button" className="btn btn-danger m-2 w-25">
                   <a
                     key={key}
                     href={item.link}

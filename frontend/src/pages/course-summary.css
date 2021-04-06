@@ -1,7 +1,11 @@
 .nav-tabs {
-    background-color: #918ef4 !important;
+  background-color: #d0e0ee !important;
 }
 
 .nav {
-    padding: 5px !important;
+  padding: 5px !important;
+}
+
+.attendance-title {
+  text-align: center;
 }

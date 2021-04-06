@@ -31,12 +31,12 @@ function Faculty() {
     <div className="row">
       {data.map((item, key) => {
         return (
-          <div className="col-md-6">
-            <div key={key} className="card m-4 shadow">
-              <h5 className="card-header list-group-item-danger">
+          <div className="col-md-4">
+            <div key={key} className="card m-3 shadow rounded">
+              <h5 className="card-header list-group-item-info">
                 {item.courseid}
               </h5>
-              <div className="card-body ">
+              <div className="card-body border">
                 <h4 className="card-title">Name: {item.facultyname}</h4>
                 <p className="card-text">
                   <h5>Course Name: {item.coursename}</h5>

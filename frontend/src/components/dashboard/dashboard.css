@@ -8,5 +8,11 @@
 
 .dashboard-student {
   text-align: center;
-  background-color: rgba(236, 231, 231, 0.644);
+  background-image: linear-gradient(
+    #e5fcc2,
+    #9de0ad,
+    #45ada8,
+    #547980,
+    #2a363b
+  );
 }
