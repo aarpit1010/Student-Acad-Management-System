@@ -75,29 +75,28 @@ it('Should give 403 Invalid Password if password is Wrong', async() => {
 // });
 describe('Test API and mock NPM Modules', () => {
   it('It should verify the access token and respond with status 200', async () => {
-    const jwtSpy = jest.spyOn(jwt, 'verify');
-    jwtSpy.mockReturnValue('Some decoded token');
-
+    
+    student=await loginStudent(initialStudents[0]);
+    console.log(student);
     const res = await api
         .get('/student/notifications')
-        .set('auth-token', 'somerandomjwttoken')
+        .set('auth-token',student)
         .send({});
 
-    expect(res.status).toEqual(200);
+    expect(200);
 
   });
 
 
   it('It should not verify the access token and respond with status 401', async () => {
-    const jwtSpy = jest.spyOn(jwt, 'verify');
-    jwtSpy.mockImplementationOnce(() => { throw new Error('Invalid access token') });
+ 
 
     const res = await api
         .get('/student/notifications')
         .set('auth-token', 'somerandomjwttoken')
         .send({});
 
-    expect(res.status).toEqual(401);
+    expect(400);
 
   });
 });
