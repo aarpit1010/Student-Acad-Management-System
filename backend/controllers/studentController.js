@@ -361,10 +361,10 @@ const viewcal = async (req, res) => {
     const view = await calendar.findOne({ _id: link });
     if (view) return res.status(200).json(view.calpdf);
 
-    var action_string = "Student "+
-                        student.username +
-                        " has viewed the academic Calendar";
-    addtoLog(action_string, "Student", currentTime);
+    // var action_string = "Student "+
+    //                     student.enrollment +
+    //                     " has viewed the academic Calendar";
+    // addtoLog(action_string, "Student", currentTime);
 };
 
 const viewcert = async (req, res) => {
@@ -444,7 +444,8 @@ const courseReg = async (req, res) => {
     const id = req.student._id;
     const student = await Student.findOne({ _id: id });
     if (!student) res.status(400).json("Student doesn't exist in Database");
-    if(student.registered_course.length == 0) {
+    console.log(student.registered_course);
+    // if(student.registered_course.length == 0) {
         const currSem = student.semester;
         const nextSem = currSem + 1;
         if (currSem != 8) {
@@ -470,9 +471,9 @@ const courseReg = async (req, res) => {
                             " views the" +
                             " list of courses for the next semester";
         addtoLog(action_string, "Student", currentTime);
-    } else {
-        return res.status(400).json("Already registered for the upcoming Semester");
-    }
+    // } else {
+        // return res.status(400).json("Already registered for the upcoming Semester");
+    // }
 };
 
 const regcourses = async (req, res) => {
