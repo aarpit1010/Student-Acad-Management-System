@@ -5,7 +5,7 @@ import "./certificates.css";
 const Certificates = () => {
   const [data, setData] = useState(null);
   const [item, setItem] = useState({ docType: "" });
-  let isAvailable = true;
+  const [isAvailable, setAvailable] = useState(false);
   const { docType } = item;
 
   const handleChange = (e) => {
@@ -47,18 +47,10 @@ const Certificates = () => {
       headers
     );
     setData(getCertificates.data);
+    console.log(typeof data === "string");
     if (typeof data === "string") {
-      isAvailable = false;
+      setAvailable(false);
     }
-    // .then((response) => {
-    //   setData(response.data);
-    //   console.log(data);
-    //   if (typeof data === "string") {
-    //     isAvailable = false;
-    //   }
-    // }
-    // )
-    // .catch((error) => console.log(error));
   };
 
   fetchAllData();

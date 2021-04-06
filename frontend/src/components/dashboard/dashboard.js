@@ -8,6 +8,7 @@ import Sgpigraph from "./sgpigraph";
 import { Chart, PieSeries, Title } from "@devexpress/dx-react-chart-bootstrap4";
 import "@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css";
 import { Animation } from "@devexpress/dx-react-chart";
+import axios from "axios";
 
 const data = [
   { score: "score", val: 8.4 },

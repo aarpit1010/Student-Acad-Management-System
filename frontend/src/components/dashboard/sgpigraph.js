@@ -16,7 +16,7 @@ const data = [
   { Semester: "IV", SGPI: 0 },
   { Semester: "V", SGPI: 0 },
   { Semester: "VI", SGPI: 0 },
-  { Semester: "VII", SGPI: 10 },
+  { Semester: "VII", SGPI: 0 },
 ];
 
 export default class Sgpigraph extends React.PureComponent {

@@ -39,7 +39,7 @@ function Register() {
       .then((res) => {
         Auth.loginStudent(() => {
           localStorage.setItem("token", res.data.password);
-          history.push("/student/studentDashboard");
+          history.push("/student/selectUser");
         });
       })
       .catch((error) => {

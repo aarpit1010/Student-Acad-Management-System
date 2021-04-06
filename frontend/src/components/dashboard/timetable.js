@@ -5,7 +5,7 @@ import axios from "axios";
 
 function Timetable() {
   const [data, setData] = useState({});
-  const daysArray = [];
+  let daysArray = [];
 
   useEffect(() => {
     axios
@@ -18,20 +18,22 @@ function Timetable() {
       .then((response) => {
         console.log("DATA FETCHED", response.data.data[0]);
         setData(response.data.data[0]);
-
-        for (const key in data.day) {
-          const innerArray = [];
-          innerArray.push(key);
-          data.day[key].map((item) => {
-            innerArray.push(item);
-          });
-          daysArray.push(innerArray);
-        }
       })
       .catch((error) => console.log(error));
 
     //   console.log("THIS IS MY RESPONSE:: ", data.day);
   }, []);
+
+  if (data !== undefined) {
+    for (const key in data.day) {
+      const innerArray = [];
+      innerArray.push(key);
+      data.day[key].map((item) => {
+        innerArray.push(item);
+      });
+      daysArray.push(innerArray);
+    }
+  }
 
   return (
     <div>
@@ -51,6 +53,7 @@ function Timetable() {
             </tr>
           </thead>
           <tbody>
+            {console.log(daysArray)}
             {daysArray.map((outer, keyOuter) => {
               return (
                 <tr key={keyOuter} id={keyOuter}>

@@ -37,6 +37,7 @@ body {
 .main-col {
   /* background-color: #ecebeb; */
   min-height: 100vh;
+  /* padding: 0 !important; */
 }
 
 .sidebar {

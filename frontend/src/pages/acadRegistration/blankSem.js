@@ -4,6 +4,7 @@ import { propTypes } from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
 import "./acadRegistration.css";
 import SubmitPage from "./submit";
+import axios from "axios";
 
 const BlankSem = (props) => {
   const [item, setItem] = useState({ choice: "" });
@@ -17,9 +18,30 @@ const BlankSem = (props) => {
     }));
   };
 
+  const headers = {
+    headers: {
+      "auth-token": localStorage.token,
+      "Content-Type": "application/json",
+    },
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (choice === "YES") {
+      const course_opted = [];
+
+      axios
+        .post("/student/courseregn/opted", { course_opted }, headers)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            alert(
+              "You have successfully registered for the upcoming semester!"
+            );
+          }
+        })
+        .catch((err) => console.log(err));
+
       return <SubmitPage />;
     }
   };
