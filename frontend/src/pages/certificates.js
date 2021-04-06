@@ -3,7 +3,6 @@ import axios from "axios";
 import "./certificates.css";
 
 const Certificates = () => {
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [item, setItem] = useState({ docType: "" });
   let isAvailable = true;
@@ -23,60 +22,62 @@ const Certificates = () => {
     e.preventDefault();
     console.log(`${docType}`);
     const responseObject = { type: `${docType}` };
-    //     axios
-    //       .post("/student/reqDoc", responseObject, {
-    //         headers: {
-    //           "auth-token": localStorage.token,
-    //           "Content-Type": "application/json",
-    //         },
-    //       })
-    //       .then((res) => {
-    //         console.log(res);
-    //         setLoading(true);
-    //       })
-    //       .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
     axios
-      .get("/student/viewcertificate", {
+      .post("/student/reqDoc", responseObject, {
         headers: {
           "auth-token": localStorage.token,
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
-        setData(response.data);
-        setLoading(false);
-        console.log(data);
-        if (typeof data === "string") {
-          console.log("string");
-          isAvailable = false;
-        }
+      .then((res) => {
+        console.log(res);
       })
-      .catch((error) => console.log(error));
-    return () => setLoading(false);
-  }, [isLoading]);
+      .catch((err) => console.log(err));
+  };
 
-  if (isLoading) {
-    return <div className="Course-Summary">Loading...</div>;
-  }
+  const fetchAllData = async () => {
+    const headers = {
+      headers: {
+        "auth-token": localStorage.token,
+        "Content-Type": "application/json",
+      },
+    };
+    const getCertificates = await axios.get(
+      "/student/viewcertificate",
+      headers
+    );
+    setData(getCertificates.data);
+    if (typeof data === "string") {
+      isAvailable = false;
+    }
+    // .then((response) => {
+    //   setData(response.data);
+    //   console.log(data);
+    //   if (typeof data === "string") {
+    //     isAvailable = false;
+    //   }
+    // }
+    // )
+    // .catch((error) => console.log(error));
+  };
+
+  fetchAllData();
 
   return (
     <div className="certificates-student">
-      <h3>Send a request for the type of document you need.</h3>
-      <div className="card col-md-8 mx-auto p-3">
+      <h3 className="p-3">Send a request for the type of document you need.</h3>
+      <div className="card col-md-8 mx-auto p-3 shadow">
         <form onSubmit={handleSubmit}>
           <div className="card-body">
             <div className="row">
-              <div className="col-md-6 mr-0">
+              <div className="col-md-6">
                 <div className="form-check mb-3">
                   <input
                     className="form-check-input"
                     type="radio"
                     name="type"
                     id="flexRadioDefault1"
-                    value="bonafide"
+                    value="Bonafide"
                     onChange={handleChange}
                   />
                   <label
@@ -92,7 +93,7 @@ const Certificates = () => {
                     type="radio"
                     name="type"
                     id="flexRadioDefault2"
-                    value="lastSemGrade"
+                    value="Last Sem Grade Report"
                     onChange={handleChange}
                   />
                   <label
@@ -108,7 +109,7 @@ const Certificates = () => {
                     type="radio"
                     name="type"
                     id="flexRadioDefault2"
-                    value="feeReceipt"
+                    value="Fee Receipt"
                     onChange={handleChange}
                   />
                   <label
@@ -126,7 +127,7 @@ const Certificates = () => {
                     type="radio"
                     name="type"
                     id="flexRadioDefault1"
-                    value="migration"
+                    value="Migration Certificate"
                     onChange={handleChange}
                   />
                   <label
@@ -142,7 +143,7 @@ const Certificates = () => {
                     type="radio"
                     name="type"
                     id="flexRadioDefault2"
-                    value="courseReport"
+                    value="Course Report"
                     onChange={handleChange}
                   />
                   <label
@@ -161,32 +162,38 @@ const Certificates = () => {
           </button>
         </form>
       </div>
-      <h6>
+      <h6 className="certificate-note p-3">
         Note: If the view certificate button is not visible, the admin hasn't
-        uploaded the document that you requested for previously.
+        uploaded the document that you requested for previously, Or no request
+        has been sent to admin.
       </h6>
-      {data === Array &&
-        data.map((item, key) => {
-          console.log(data);
-          {
-            item.certpdf.map((typeOfDoc, docKey) => {
-              return (
-                <a
-                  key={docKey + key}
-                  href={typeOfDoc.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="btn btn-secondary disabled"
-                  tabindex="-1"
-                  role="button"
-                  aria-disabled="true"
-                >
-                  Link
-                </a>
-              );
-            });
-          }
-        })}
+      <h4>
+        Below are the Links to certificates that have been uploaded previously.
+      </h4>
+      {isAvailable === false ? (
+        <div>No request sent to admin</div>
+      ) : (
+        <div>
+          {data?.map((item, key) => {
+            return (
+              <div>
+                <button type="submit" className="btn-lg btn-primary m-2 w-25">
+                  <a
+                    key={key}
+                    href={item.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="certificate-links"
+                  >
+                    {item.type}
+                  </a>
+                </button>
+                <br />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

@@ -133,7 +133,7 @@ const CourseSummary = () => {
           </Table>
         </Tab>
         <Tab eventKey="dropped" title="DROPPED">
-          {data.droppedCourses ? (
+          {data.droppedCourses.dropped_courses.length !== 0 ? (
             <Table striped bordered hover variant="dark">
               <thead>
                 <tr>
@@ -155,7 +155,9 @@ const CourseSummary = () => {
               </tbody>
             </Table>
           ) : (
-            <div>No Dropped Courses for the ongoing Semester.</div>
+            <div style={{ color: "green", fontSize: "20px" }}>
+              No dropped courses for the ongoing Semester.
+            </div>
           )}
         </Tab>
       </Tabs>

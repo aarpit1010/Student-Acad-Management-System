@@ -4,19 +4,26 @@ const app = require("../../app");
 const mongoose = require("mongoose");
 const Student = require("../../model/Student");
 const Log = require("../../model/log");
-const { course_summary, droppedcourses, notifs, attend } = require("../../model/marks");
+const {
+  course_summary,
+  droppedcourses,
+  notifs,
+  attend,
+} = require("../../model/marks");
 const viewprof = require("../../model/facultyList");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { studentRegisterValid, studentLoginValid } = require("../../controllers/validation");
+const {
+  studentRegisterValid,
+  studentLoginValid,
+} = require("../../controllers/validation");
 
 const {
-    loginStudent,
-    initialStudents,
-    fakeToken,
-    invalidToken,
+  loginStudent,
+  initialStudents,
+  fakeToken,
+  invalidToken,
 } = require("../testHelper");
-
 
 const api = supertest(app);
 
@@ -25,84 +32,202 @@ let student;
 // beforeEach(async () => {
 //     // await mongoose.connect(
 //     //     process.env.DB_CONNECT,
-//     //     { useUnifiedTopology: true, 
+//     //     { useUnifiedTopology: true,
 //     //       useNewUrlParser: true,
 //     //       useFindAndModify: false,
 //     //       useCreateIndex: true },
 //     //     () => console.log("Connected to Testing MongoDB")
-//     // ); 
+//     // );
 // }
-const faketoken=invalidToken("sadjkch_chvofuih043");
 
-it('Should save user to database', async () => {
-  const res = await api.post('/student/register')
-    .send(initialStudents[0])
-    expect(201).toBeTruthy();
-});
+it("Should save user to database", async () => {
+  const res = await api.post("/student/register").send(initialStudents[0]);
+  expect(201).toBeTruthy();
+}, 9999);
 
-it('Should Login Student if details are correct', async() => {
+it("Should Login Student if details are correct", async () => {
   // student = await loginStudent(initialStudents[0]);
-  const studentres = await api.post('/student/login')
-  .send({
+  const studentres = await api.post("/student/login").send({
     email: initialStudents[0].email,
     password: "password",
-  })
+  });
   expect(200).toBeTruthy();
 });
 
-it('Should give 403 Invalid Password if password is Wrong', async() => {
+it("Should give 403 Invalid Password if password is Wrong", async () => {
   // student = await loginStudent(initialStudents[0]);
-  const studentres = await api.post('/student/login')
-  .send({
+  const studentres = await api.post("/student/login").send({
     email: initialStudents[0].email,
     password: "pswd",
-  })
+  });
   expect(403).toBeTruthy();
 });
 
-// it('Can view Notifs ?', async() => {
-//   const {user,usertoken} = await loginStudent(initialStudents[0]);
-//   api.get('/student/notifications')
-//   .set("auth-token", faketoken)
-//   .expect(200);
-// });
-
-// it('Can view Notifs ?', async() => {
-//   const student = await loginStudent(initialStudents[0]);
-//   const studentres = await api.get('/student/notifications', invalidToken("sadjkch_chvofuih043"))
-//   .set('auth-token', invalidToken("sadjkch_chvofuih043"))
-//       .expect(200);
-// });
-describe('Test API and mock NPM Modules', () => {
-  it('It should verify the access token and respond with status 200', async () => {
-    
-    student=await loginStudent(initialStudents[0]);
-    console.log(student);
+describe("Test API (GET Routes) ", () => {
+  it("Student views Notifications after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    // console.log(student);
     const res = await api
-        .get('/student/notifications')
-        .set('auth-token',student)
-        .send({});
+      .get("/student/notifications")
+      .set("auth-token", student)
+      .send({});
 
     expect(200);
-
   });
 
-
-  it('It should not verify the access token and respond with status 401', async () => {
- 
-
+  it("ERROR: Student tries to view Notifications after unsuccessful Login", async () => {
     const res = await api
-        .get('/student/notifications')
-        .set('auth-token', 'somerandomjwttoken')
-        .send({});
+      .get("/student/notifications")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
 
     expect(400);
+  });
+  // });
 
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student views Calendar after successful Login ", () => {
+    student = loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = api
+      .get("/student/viewcalendar")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  }, 9999);
+
+  it("ERROR: Student tries to view Calendar after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/viewcalendar")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
+  }, 9999);
+  // });
+
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student views Certificate after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = await api
+      .get("/student/viewcertificate")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  });
+
+  it("ERROR: Student tries to view Certificate after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/viewcertificate")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
+  });
+  // });
+
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student views Course List for next SEM after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = await api
+      .get("/student/courseregn")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  });
+
+  it("ERROR: Student tries to view Course List for next SEM after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/courseregn")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
+  });
+  // });
+
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student views Registered Course List for next SEM after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = await api
+      .get("/student/courseregn/opted/list")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  });
+
+  it("ERROR: Student tries to view Registered Course List for next SEM after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/courseregn/opted/list")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
+  });
+  // });
+
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student views their Attendance after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = await api
+      .get("/student/attendance")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  });
+
+  it("ERROR: Student tries to view Attendance after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/attendance")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
+  });
+  // });
+
+  // describe('Test API and mock NPM Modules', () => {
+  it("Student has paid fees after successful Login ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    console.log(student);
+    const res = await api
+      .get("/student/feestatus")
+      .set("auth-token", student)
+      .send({});
+
+    expect(200);
+  });
+
+  it("ERROR: Student tries to access fees page after unsuccessful Login ", async () => {
+    const res = await api
+      .get("/student/feestatus")
+      .set("auth-token", "somerandomjwttoken")
+      .send({});
+
+    expect(400);
   });
 });
 
+describe("Test API (POST Routes) ", () => {
+  it("ERROR: Student tries to access fees page after unsuccessful Login ", async () => {
+    const res = await api
+      .post("/student/send")
+      .set("auth-token", student)
+      .send({});
 
+    expect(400);
+  });
+});
 
-afterAll(() => { 
-  mongoose.connection.close()
-})
+afterAll(() => {
+  mongoose.connection.close();
+});

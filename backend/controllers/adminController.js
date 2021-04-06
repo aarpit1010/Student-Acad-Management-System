@@ -206,7 +206,6 @@ const logReport = async (req, res) => {
 };
 
 const notifications = async (req, res) => {
-    const Notification = new notifs(req.body);
     const enrollmentExist = await notifs.findOne({
         enrollment: req.body.enrollment.toLowerCase(),
     });

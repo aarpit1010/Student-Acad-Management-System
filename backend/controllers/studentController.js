@@ -352,9 +352,10 @@ const viewcal = async (req, res) => {
   const view = await calendar.findOne({ _id: link });
   if (view) return res.status(200).json(view.calpdf);
 
-  var action_string =
-    "Student " + student.username + " has viewed the academic Calendar";
-  addtoLog(action_string, "Student", currentTime);
+  // var action_string = "Student "+
+  //                     student.enrollment +
+  //                     " has viewed the academic Calendar";
+  // addtoLog(action_string, "Student", currentTime);
 };
 
 const viewcert = async (req, res) => {
@@ -363,6 +364,7 @@ const viewcert = async (req, res) => {
   const chkReq = await Request.findOne({ enrollment: stud.enrollment });
   var certArr = [];
   var firstcertArr = [];
+  var certPresent = [];
 
   if (!chkReq) return res.status(200).json("No Request has been sent to Admin");
   else {
@@ -374,17 +376,21 @@ const viewcert = async (req, res) => {
         if (chkReq.reqtype != null) {
           if (pdfExists.certpdf[i].type == chkReq.reqtype) {
             firstcertArr.push(pdfExists.certpdf[i]);
-            res.status(200).json(firstcertArr);
             chkReq.reqtype = null;
             chkReq.save();
             break;
+          } else {
+            certPresent.push(pdfExists.certpdf[i]);
           }
         } else {
           certArr = pdfExists.certpdf;
-          // certArr.push(pdfExists.certpdf);
         }
       }
       if (certArr.length != 0) res.status(200).json(certArr);
+      else {
+        if (firstcertArr.length == 0) res.status(200).json(certPresent);
+        else res.status(200).json(firstcertArr);
+      }
     } else {
       res.status(201).json("ADMIN has NOT yet uploaded doc");
     }
@@ -424,36 +430,37 @@ const courseReg = async (req, res) => {
   const id = req.student._id;
   const student = await Student.findOne({ _id: id });
   if (!student) res.status(400).json("Student doesn't exist in Database");
-  if (student.registered_course.length == 0) {
-    const currSem = student.semester;
-    const nextSem = currSem + 1;
-    if (currSem != 8) {
-      Courses.findCourse(
-        "courses",
-        {
-          semester: nextSem,
-          branch: student.branch,
-        },
-        function (err, docs2) {
-          const add_course = docs2[0].course_list.sort((a, b) =>
-            a.course_Name > b.course_Name ? 1 : -1
-          );
-          // verify_course_name=docs2[0].course_name.sort();
-          // console.log(add_course);
-          res.status(200).json(add_course);
-        }
-      );
-    }
-
-    var action_string =
-      "Student " +
-      student.username +
-      " views the" +
-      " list of courses for the next semester";
-    addtoLog(action_string, "Student", currentTime);
-  } else {
-    return res.status(400).json("Already registered for the upcoming Semester");
+  console.log(student.registered_course);
+  // if(student.registered_course.length == 0) {
+  const currSem = student.semester;
+  const nextSem = currSem + 1;
+  if (currSem != 8) {
+    Courses.findCourse(
+      "courses",
+      {
+        semester: nextSem,
+        branch: student.branch,
+      },
+      function (err, docs2) {
+        const add_course = docs2[0].course_list.sort((a, b) =>
+          a.course_Name > b.course_Name ? 1 : -1
+        );
+        // verify_course_name=docs2[0].course_name.sort();
+        // console.log(add_course);
+        res.status(200).json(add_course);
+      }
+    );
   }
+
+  var action_string =
+    "Student " +
+    student.username +
+    " views the" +
+    " list of courses for the next semester";
+  addtoLog(action_string, "Student", currentTime);
+  // } else {
+  // return res.status(400).json("Already registered for the upcoming Semester");
+  // }
 };
 
 const regcourses = async (req, res) => {
@@ -514,7 +521,7 @@ const displayRegnCourses = async (req, res) => {
   const id = req.student._id;
   const student = await Student.findOne({ _id: id });
   if (!student)
-    return res.status(400).json("Student hasn't opted for any courses");
+    return res.status(400).json("Student doesn't exist in Database");
   else {
     res.status(200).json(student.registered_course);
   }

@@ -68,6 +68,15 @@ const loginStudent = async (studentData) => {
     return token;
 };
 
+const sendMail = [
+  {
+    name: "Demo",
+    email: "iit2019888@iiita.ac.in",
+    subject: "Test Mail - 1",
+    message: "SOme random input outpur query",
+  }
+];
+
   module.exports = {
     loginStudent,
     initialStudents,
