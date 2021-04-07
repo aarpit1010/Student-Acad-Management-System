@@ -36,7 +36,7 @@ function Profile() {
             </div>
             <div className="col-md-6" style={{ textAlign: "right" }}>
               <div className="pb-3">Section: {data.section}</div>
-              <div className="pb-3">Enrollment No: {data.username}</div>
+              <div className="pb-3">Enrollment No: {data.enrollment_no}</div>
               <div className="pb-3">Contact: {data.contact}</div>
             </div>
             <Link to="/student/email">
