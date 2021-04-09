@@ -51,9 +51,7 @@ export default function Attendance() {
         },
       })
       .then((res) => {
-        if (res.status === (200 || 201)) {
-          alert("Attendance Record successfully Added!");
-        }
+        alert("Attendance Record successfully Added!");
       })
       .catch((error) => {
         console.log({ error });

@@ -155,7 +155,9 @@ const CourseSummary = () => {
               </tbody>
             </Table>
           ) : (
-            <div style={{ color: "green", fontSize: "20px" }}>
+            <div
+              style={{ color: "white", fontSize: "20px", textAlign: "center" }}
+            >
               No dropped courses for the ongoing Semester.
             </div>
           )}

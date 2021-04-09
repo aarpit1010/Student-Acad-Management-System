@@ -38,7 +38,7 @@ function Timetable() {
   return (
     <div>
       {data === undefined ? (
-        <div style={{ color: "red", fontSize: "20px" }}>
+        <div style={{ color: "white", fontSize: "20px", textAlign: "center" }}>
           TIMETABLE HASN'T BEEN UPLOADED YET.
         </div>
       ) : (

@@ -30,29 +30,27 @@ const Certificates = () => {
         },
       })
       .then((res) => {
+        alert("Request sent successfully!");
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
-  const fetchAllData = async () => {
+  useEffect(() => {
     const headers = {
       headers: {
         "auth-token": localStorage.token,
         "Content-Type": "application/json",
       },
     };
-    const getCertificates = await axios.get(
-      "/student/viewcertificate",
-      headers
-    );
-    setData(getCertificates.data);
+    axios.get("/student/viewcertificate", headers).then((res) => {
+      console.log("THIS IS RESPONSE", res);
+      setData(res.data);
+    });
     if (typeof data === "string") {
       setAvailable(false);
     }
-  };
-
-  fetchAllData();
+  }, []);
 
   return (
     <div className="certificates-student">
@@ -165,24 +163,24 @@ const Certificates = () => {
         <div></div>
       ) : (
         <div>
-          {data?.map((item, key) => {
-            return (
-              <div>
-                <button type="button" className="btn btn-danger m-2 w-25">
-                  <a
-                    key={key}
-                    href={item.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="certificate-links"
-                  >
-                    {item.type}
-                  </a>
-                </button>
-                <br />
-              </div>
-            );
-          })}
+          {isAvailable &&
+            data?.map((item, key) => {
+              return (
+                <div key={key}>
+                  <button type="button" className="btn btn-danger m-2 w-25">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="certificate-links"
+                    >
+                      {item.type}
+                    </a>
+                  </button>
+                  <br />
+                </div>
+              );
+            })}
         </div>
       )}
     </div>

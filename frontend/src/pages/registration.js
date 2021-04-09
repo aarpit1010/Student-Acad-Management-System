@@ -37,10 +37,8 @@ function Register() {
         branch,
       })
       .then((res) => {
-        Auth.loginStudent(() => {
-          localStorage.setItem("token", res.data.password);
-          history.push("/student/selectUser");
-        });
+        alert("Successfully registered!");
+        history.push("/student/selectUser");
       })
       .catch((error) => {
         if (error.response) {
