@@ -93,6 +93,7 @@ const studentRegister = async (req, res) => {
 
                 new_enroll.save();
                 new_enroll_attend.save();
+                console.log(new_enroll);
 
                 student.save();
                 res.status(201).json(student);

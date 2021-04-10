@@ -30,37 +30,41 @@ const api = supertest(app);
 let student;
 
 // beforeEach(async () => {
-//     // await mongoose.connect(
-//     //     process.env.DB_CONNECT,
-//     //     { useUnifiedTopology: true,
-//     //       useNewUrlParser: true,
-//     //       useFindAndModify: false,
-//     //       useCreateIndex: true },
-//     //     () => console.log("Connected to Testing MongoDB")
-//     // );
-// }
+//     await Student.deleteMany({});
+// });
 
-it("Should save user to database", async () => {
-  const res = await api.post("/student/register").send(initialStudents[0]);
-  expect(201).toBeTruthy();
-}, 9999);
+describe("Test Register / Login ", () => {
+  it("Should save user to database", async () => {
+    const res = await api
+      .post("/student/register")
+      .send(initialStudents[0]);
+      
+    expect(201).toBeTruthy();
+  }, 9999);
 
-it("Should Login Student if details are correct", async () => {
-  // student = await loginStudent(initialStudents[0]);
-  const studentres = await api.post("/student/login").send({
-    email: initialStudents[0].email,
-    password: "password",
+  it("Should Login Student if details are correct", async () => {
+    // student = await loginStudent(initialStudents[0]);
+    const studentres = await api
+      .post("/student/login")
+      .send({
+        email: initialStudents[0].email,
+        password: "password",
+      });
+
+    expect(200).toBeTruthy();
   });
-  expect(200).toBeTruthy();
-});
 
-it("Should give 403 Invalid Password if password is Wrong", async () => {
-  // student = await loginStudent(initialStudents[0]);
-  const studentres = await api.post("/student/login").send({
-    email: initialStudents[0].email,
-    password: "pswd",
+  it("Should give 403 Invalid Password if password is Wrong", async () => {
+    // student = await loginStudent(initialStudents[0]);
+    const studentres = await api
+      .post("/student/login")
+      .send({
+        email: initialStudents[0].email,
+        password: "pswd",
+      });
+    
+      expect(403).toBeTruthy();
   });
-  expect(403).toBeTruthy();
 });
 
 describe("Test API (GET Routes) ", () => {
@@ -88,7 +92,7 @@ describe("Test API (GET Routes) ", () => {
   // describe('Test API and mock NPM Modules', () => {
   it("Student views Calendar after successful Login ", () => {
     student = loginStudent(initialStudents[0]);
-    console.log(student);
+    // console.log(student);
     const res = api
       .get("/student/viewcalendar")
       .set("auth-token", student)
@@ -110,7 +114,7 @@ describe("Test API (GET Routes) ", () => {
   // describe('Test API and mock NPM Modules', () => {
   it("Student views Certificate after successful Login ", async () => {
     student = await loginStudent(initialStudents[0]);
-    console.log(student);
+    // console.log(student);
     const res = await api
       .get("/student/viewcertificate")
       .set("auth-token", student)
@@ -132,7 +136,7 @@ describe("Test API (GET Routes) ", () => {
   // describe('Test API and mock NPM Modules', () => {
   it("Student views Course List for next SEM after successful Login ", async () => {
     student = await loginStudent(initialStudents[0]);
-    console.log(student);
+    // console.log(student);
     const res = await api
       .get("/student/courseregn")
       .set("auth-token", student)
@@ -154,7 +158,7 @@ describe("Test API (GET Routes) ", () => {
   // describe('Test API and mock NPM Modules', () => {
   it("Student views Registered Course List for next SEM after successful Login ", async () => {
     student = await loginStudent(initialStudents[0]);
-    console.log(student);
+    // console.log(student);
     const res = await api
       .get("/student/courseregn/opted/list")
       .set("auth-token", student)
@@ -176,7 +180,7 @@ describe("Test API (GET Routes) ", () => {
   // describe('Test API and mock NPM Modules', () => {
   it("Student views their Attendance after successful Login ", async () => {
     student = await loginStudent(initialStudents[0]);
-    console.log(student);
+    // console.log(student);
     const res = await api
       .get("/student/attendance")
       .set("auth-token", student)
@@ -197,8 +201,6 @@ describe("Test API (GET Routes) ", () => {
 
   // describe('Test API and mock NPM Modules', () => {
   it("Student has paid fees after successful Login ", async () => {
-    student = await loginStudent(initialStudents[0]);
-    console.log(student);
     const res = await api
       .get("/student/feestatus")
       .set("auth-token", student)
@@ -218,14 +220,71 @@ describe("Test API (GET Routes) ", () => {
 });
 
 describe("Test API (POST Routes) ", () => {
-  it("ERROR: Student tries to access fees page after unsuccessful Login ", async () => {
-    const res = await api
-      .post("/student/send")
-      .set("auth-token", student)
-      .send({});
 
-    expect(400);
+  it("Student fees status : FALSE ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
+    var userId = decoded._id  
+    // console.log(userId) 
+    const exists = await Student.findOne({_id: userId});
+    const res = await api
+      .post("/student/feestatus/update")
+      .set("auth-token", student)
+      .send({fees_paid: false});
+      // .expect(200);
+      // console.log(exists.fees_paid);
+      expect(exists.fees_paid).toBe(false);
   });
+
+  it("ERROR: Student fees status WRONG ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
+    var userId = decoded._id  
+    // console.log(userId) 
+    const exists = await Student.findOne({_id: userId});
+    const res = await api
+      .post("/student/feestatus/update")
+      .set("auth-token", student)
+      .send({fees_paid: true});
+      // console.log(res.body);
+      
+      expect(exists.fees_paid).toBe(false);
+      // expect(200);
+  });
+
+  it("Student has opted subjects ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
+    var userId = decoded._id  
+    // console.log(userId) 
+    const exists = await Student.findOne({_id: userId});
+    const arr = ["1", "3"];
+    const res = await api
+      .post("/student/courseregn/opted")
+      .set("auth-token", student)
+      .send({course_opted: arr});
+      // .expect(200);
+      // console.log(exists.fees_paid);
+      expect(exists.registered_course).toHaveLength(2);
+  });
+
+  it("ERROR: Student Student has opted WRONG subjects ", async () => {
+    student = await loginStudent(initialStudents[0]);
+    const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
+    var userId = decoded._id  
+    // console.log(userId) 
+    const exists = await Student.findOne({_id: userId});
+    const arr = ["1", "3"];
+    const res = await api
+      .post("/student/courseregn/opted")
+      .set("auth-token", student)
+      .send({course_opted: arr});
+      // .expect(200);
+      // console.log(exists.fees_paid);
+      expect(exists.registered_course).toHaveLength(5);
+  });
+
+
 });
 
 afterAll(() => {
