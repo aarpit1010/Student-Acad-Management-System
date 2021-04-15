@@ -29,9 +29,10 @@ const api = supertest(app);
 
 let student;
 
-// beforeEach(async () => {
-//     await Student.deleteMany({});
-// });
+beforeEach(async () => {
+    await Student.deleteMany({});
+    await Student(initialStudents[0]).save();
+});
 
 describe("Test Register / Login ", () => {
   it("Should save user to database", async () => {
@@ -90,8 +91,8 @@ describe("Test API (GET Routes) ", () => {
   // });
 
   // describe('Test API and mock NPM Modules', () => {
-  it("Student views Calendar after successful Login ", () => {
-    student = loginStudent(initialStudents[0]);
+  it("Student views Calendar after successful Login ",async () => {
+    student = await loginStudent(initialStudents[0]);
     // console.log(student);
     const res = api
       .get("/student/viewcalendar")
@@ -258,31 +259,35 @@ describe("Test API (POST Routes) ", () => {
     var userId = decoded._id  
     // console.log(userId) 
     const exists = await Student.findOne({_id: userId});
+ 
     const arr = ["1", "3"];
-    const res = await api
+    const res =await api
       .post("/student/courseregn/opted")
       .set("auth-token", student)
       .send({course_opted: arr});
       // .expect(200);
       // console.log(exists.fees_paid);
-      expect(exists.registered_course).toHaveLength(2);
+      const exists1= await Student.findOne({_id: userId});
+      // console.log(exists1);
+         expect(exists1.registered_course).toHaveLength(2);
+      
   });
 
-  it("ERROR: Student Student has opted WRONG subjects ", async () => {
-    student = await loginStudent(initialStudents[0]);
-    const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
-    var userId = decoded._id  
-    // console.log(userId) 
-    const exists = await Student.findOne({_id: userId});
-    const arr = ["1", "3"];
-    const res = await api
-      .post("/student/courseregn/opted")
-      .set("auth-token", student)
-      .send({course_opted: arr});
-      // .expect(200);
-      // console.log(exists.fees_paid);
-      expect(exists.registered_course).toHaveLength(5);
-  });
+  // it("ERROR: Student Student has opted WRONG subjects ", async () => {
+  //   student = await loginStudent(initialStudents[0]);
+  //   const decoded = jwt.verify(student, process.env.TOKEN_SECRET);  
+  //   var userId = decoded._id  
+  //   // console.log(userId) 
+  //   const exists = await Student.findOne({_id: userId});
+  //   const arr = ["1", "3"];
+  //   const res = await api
+  //     .post("/student/courseregn/opted")
+  //     .set("auth-token", student)
+  //     .send({course_opted: arr});
+  //     // .expect(200);
+  //     // console.log(exists.fees_paid);
+  //     expect(exists.registered_course).toHaveLength(5);
+  // });
 
 
 });

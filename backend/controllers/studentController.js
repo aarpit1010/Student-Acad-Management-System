@@ -61,6 +61,18 @@ const studentRegister = async (req, res) => {
                     a.course_Name > b.course_Name ? 1 : -1
                 );
 
+                course_summary.deleteMany({enrollment: req.body.enrollment}, function (err, _) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+                
+                attend.deleteMany({enrollment: req.body.enrollment}, function (err, _) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+
                 var new_enroll = new course_summary();
                 var new_enroll_attend = new attend();
                 new_enroll.enrollment = req.body.enrollment;
@@ -93,7 +105,7 @@ const studentRegister = async (req, res) => {
 
                 new_enroll.save();
                 new_enroll_attend.save();
-                console.log(new_enroll);
+                // console.log(new_enroll);
 
                 student.save();
                 res.status(201).json(student);
@@ -123,9 +135,8 @@ const studentLogin = async (req, res) => {
 
     // check whether email exists
     const student = await Student.findOne({ email });
+    if (!student) return res.status(400).json("Email doesn't exists!");
     if (student.access == true) {
-        if (!student) return res.status(400).json("Email doesn't exists!");
-
         // check password
         const validPass = await bcrypt.compare(password, student.password);
         if (!validPass) return res.status(403).json("Invalid Password!");
@@ -278,29 +289,33 @@ const viewFaculty = async (req, res) => {
             if (err) {
                 return res.status(404).json("NOT FOUND");
             }
-            var verify_course;
-            // var verify_course_name = [];
-            Courses.findCourse(
-                "courses",
-                {
-                    semester: student.semester,
-                    branch: student.branch,
-                },
-                function (err, docs2) {
-                    verify_course = docs2[0].course_list.sort((a, b) =>
-                        a.course_Name > b.course_Name ? 1 : -1
-                    );
-                    // verify_course_name=docs2[0].course_name.sort();
+            // console.log(docs);
+            if(docs.length == 0) res.status(201).json("Faculty NOT Available");
+            else {
+                var verify_course;
+                // var verify_course_name = [];
+                Courses.findCourse(
+                    "courses",
+                    {
+                        semester: student.semester,
+                        branch: student.branch,
+                    },
+                    function (err, docs2) {
+                        verify_course = docs2[0].course_list.sort((a, b) =>
+                            a.course_Name > b.course_Name ? 1 : -1
+                        );
+                        // verify_course_name=docs2[0].course_name.sort();
 
-                    res.status(200).json({
-                        // course_id: verify_course_id,
-                        // course_name: verify_course_name,
-                        faculty: docs[0].faculty.sort((a, b) =>
-                            a.coursename > b.coursename ? 1 : -1
-                        ),
-                    });
-                }
-            );
+                        res.status(200).json({
+                            // course_id: verify_course_id,
+                            // course_name: verify_course_name,
+                            faculty: docs[0].faculty.sort((a, b) =>
+                                a.coursename > b.coursename ? 1 : -1
+                            ),
+                        });
+                    }
+                );
+            }
         }
     );
 };
@@ -498,9 +513,11 @@ const regcourses = async (req, res) => {
                     student.registered_course.push(add_course);
                     opted_course_arr.push(add_course);
                 }
-                student.has_opted = true;
-                res.status(200).json(opted_course_arr);
+                if(student.registered_course.length != 0) 
+                    student.has_opted = true; 
                 student.save();
+                res.status(200).json(opted_course_arr);
+                // student.save();
             }
         );
 
