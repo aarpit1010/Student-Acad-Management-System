@@ -159,7 +159,7 @@ const Certificates = () => {
       <h4>
         Below are the Links to certificates that have been uploaded previously.
       </h4>
-      {isAvailable === false ? (
+      {isAvailable === false || typeof data === "string" ? (
         <div></div>
       ) : (
         <div>

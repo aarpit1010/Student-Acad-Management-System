@@ -22,10 +22,11 @@ function MyVerticallyCenteredModal(props) {
       })
       .then((response) => {
         setNotifs(response.data);
+        console.log(notifs);
         setLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [notifs]);
+  }, []);
 
   if (isLoading) {
     return <div className="Course-Summary">Loading...</div>;

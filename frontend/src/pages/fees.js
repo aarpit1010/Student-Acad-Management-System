@@ -53,7 +53,7 @@ export default function Fees() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="card-body">
             <h2>Fee status for the current semester</h2>
-            <h1>Status: {data === false ? "Not paid" : "Paid"}</h1>
+            <h2>Status: {data === false ? "Not paid" : "Paid"}</h2>
             <button
               type="submit"
               className="btn-lg btn-primary"

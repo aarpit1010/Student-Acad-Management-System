@@ -8,16 +8,24 @@ import {
 } from "@devexpress/dx-react-chart-bootstrap4";
 import "@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css";
 import { Animation } from "@devexpress/dx-react-chart";
+import axios from "axios";
 
-const data = [
-  { Semester: "I", SGPI: 7.9 },
-  { Semester: "II", SGPI: 8.3 },
-  { Semester: "III", SGPI: 8.8 },
+let data = [
+  { Semester: "I", SGPI: 0 },
+  { Semester: "II", SGPI: 0 },
+  { Semester: "III", SGPI: 0 },
   { Semester: "IV", SGPI: 0 },
   { Semester: "V", SGPI: 0 },
   { Semester: "VI", SGPI: 0 },
   { Semester: "VII", SGPI: 0 },
 ];
+
+function setSGPI(...arr) {
+  for (let i = 0; i < arr[0].length; i++) {
+    data[i].SGPI = arr[0][i];
+  }
+  console.log(data);
+}
 
 export default class Sgpigraph extends React.PureComponent {
   constructor(props) {
@@ -28,6 +36,22 @@ export default class Sgpigraph extends React.PureComponent {
     };
   }
 
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = async () => {
+    let res = await axios.get("/student/profile", {
+      headers: {
+        "auth-token": localStorage.token,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const profile = res.data;
+    setSGPI(profile.sgpi);
+  };
+
   render() {
     const { data: chartData } = this.state;
 
@@ -35,7 +59,7 @@ export default class Sgpigraph extends React.PureComponent {
       <div className="card p-0">
         <Chart data={chartData}>
           <ArgumentAxis />
-          <ValueAxis max={7} />
+          <ValueAxis max={8} />
 
           <BarSeries valueField="SGPI" argumentField="Semester" />
           <Title text="SGPI Graph" />

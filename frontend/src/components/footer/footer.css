@@ -1,0 +1,20 @@
+/*FOOTER*/
+
+footer {
+  background-color: #191c22;
+  /* background: -webkit-linear-gradient(59deg, #3a6073, #16222a);
+  background: linear-gradient(59deg, #3a6073, #16222a); */
+  color: white;
+  margin-top: 100px;
+}
+
+.copy {
+  font-size: 12px;
+  padding: 10px;
+  border-top: 1px solid #ffffff;
+}
+
+.footer-middle {
+  padding-top: 2em;
+  color: white;
+}

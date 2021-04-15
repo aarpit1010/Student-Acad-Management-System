@@ -16,12 +16,9 @@ function Timetable() {
         },
       })
       .then((response) => {
-        console.log("DATA FETCHED", response.data.data[0]);
         setData(response.data.data[0]);
       })
       .catch((error) => console.log(error));
-
-    //   console.log("THIS IS MY RESPONSE:: ", data.day);
   }, []);
 
   if (data !== undefined) {
@@ -53,7 +50,6 @@ function Timetable() {
             </tr>
           </thead>
           <tbody>
-            {console.log(daysArray)}
             {daysArray.map((outer, keyOuter) => {
               return (
                 <tr key={keyOuter} id={keyOuter}>

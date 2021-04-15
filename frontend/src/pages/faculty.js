@@ -14,9 +14,8 @@ function Faculty() {
         },
       })
       .then((response) => {
-        setData(response.data.faculty);
+        setData(response.data);
         setLoading(false);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -27,37 +26,37 @@ function Faculty() {
     return <div className="Faculty">Loading...</div>;
   }
 
-  console.log(data);
-
-  {
-    data === {} ? (
-      <div>The list of faculty for your section hasn't been uploaded yet.</div>
-    ) : (
-      <div className="row">
-        {data.map((item, key) => {
-          return (
-            <div className="col-md-4">
-              <div key={key} className="card m-3 shadow rounded">
-                <h5 className="card-header list-group-item-info">
-                  {item.courseid}
-                </h5>
-                <div className="card-body border">
-                  <h4 className="card-title">Name: {item.facultyname}</h4>
-                  <p className="card-text">
-                    <h5>Course Name: {item.coursename}</h5>
-                  </p>
-                  <button type="button" className="btn btn-primary">
-                    Send Message
-                  </button>
+  return (
+    <div>
+      {typeof data === "string" ? (
+        <h3 className="text-center pt-3">Faculty has not been assigned yet.</h3>
+      ) : (
+        <div className="row">
+          {data.faculty.map((item, key) => {
+            return (
+              <div className="col-md-4">
+                <div key={key} className="card m-3 shadow rounded">
+                  <h5 className="card-header list-group-item-info">
+                    {item.courseid}
+                  </h5>
+                  <div className="card-body border">
+                    <h4 className="card-title">Name: {item.facultyname}</h4>
+                    <p className="card-text">
+                      <h5>Course Name: {item.coursename}</h5>
+                    </p>
+                    <button type="button" className="btn btn-primary">
+                      Send Message
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-        ;
-      </div>
-    );
-  }
+            );
+          })}
+          ;
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Faculty;

@@ -121,10 +121,11 @@ function EditStudentProfile() {
           },
         }
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        alert("Marks Successfully Updated!");
+      })
       .catch((err) => console.log(err));
-
-    console.log("FORM SUBMITTED");
   };
 
   if (isLoading) {

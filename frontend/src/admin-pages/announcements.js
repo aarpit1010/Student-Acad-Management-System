@@ -28,7 +28,10 @@ function Announcements() {
   }, [isLoading]);
 
   const onSubmit = ({ enrollment, message }) => {
-    const responseObject = { enrollment, notifs_arr: [{ message }] };
+    const responseObject = {
+      enrollment: enrollment.toLowerCase(),
+      notifs_arr: [{ message }],
+    };
 
     axios
       .post("/admin/notifications", responseObject, {

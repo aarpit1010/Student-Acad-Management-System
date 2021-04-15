@@ -17,6 +17,7 @@ import Calendar from "./pages/calendar";
 import BlankSem from "./pages/acadRegistration/blankSem";
 import Fees from "./pages/fees";
 import CourseSelection from "./pages/acadRegistration/courseSelection";
+import Footer from "./components/footer/footer";
 
 import SelectUser from "./pages/user-selection";
 import EditStudentProfile from "./admin-pages/editStudentProfile";
@@ -188,6 +189,9 @@ function App() {
                         <Redirect to="/student/studentDashboard" />
                       </Route>
                     </div>
+                  </div>
+                  <div className="row m-0 p-0">
+                    <Footer />
                   </div>
                 </div>
               </div>

@@ -68,7 +68,7 @@ Send Message
 </div>
 </div>*/
     <div className="pt-5">
-      <div className="card col-md-8 mx-auto">
+      <div className="card col-md-8 mx-auto mt-4">
         <div className="card-body">
           <div className="card-title">
             <h4>Send a message to Admin</h4>
