@@ -1,24 +1,29 @@
 .Login {
-  background-image: linear-gradient(
-    #355c7d,
-    #6c5b7b,
-    #c06c84,
-    #f67280,
-    #f8b195
-  );
-  height: 100vh;
-  width: 100vw;
-  background-size: cover;
-  padding: 200px;
-  /* margin: 0 0 !important; */
+    background-image: url("../images/bg_1.jpg");
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    padding: 100px;
+    justify-content: center !important;
+    text-align: center;
+    /* margin: 0 0 !important; */
 }
 
-/* .card {
-  width: 400px !important;
-  padding: 60px 20px;
-  max-height: 500px;
-} */
+.login-card-student {
+    margin: 0 auto !important;
+    min-height: 70vh !important;
+    min-width: 80vh !important;
+}
 
-/* .form {
-  margin: 20vh auto !important;
-} */
+.logo-login {
+    margin: 0 auto !important;
+    max-height: 100px;
+}
+
+.register-text {
+    color: #14385c;
+}
+
+.student-login-form {
+    margin: 0 70px;
+}

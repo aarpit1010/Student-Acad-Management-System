@@ -1,0 +1,25 @@
+.logo-login-admin {
+    margin: 10px 0 30px auto !important;
+    max-height: 100px;
+}
+
+.admin-card-student {
+    margin: 0 auto !important;
+    min-height: 70vh !important;
+    min-width: 70vh !important;
+}
+
+.adminLogin {
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    padding: 100px;
+    justify-content: center !important;
+    text-align: center;
+    background-image: url("../images/bg_2.png");
+    background-color: beige;
+}
+
+.admin-login-form {
+    margin: 0 70px;
+}

@@ -1,20 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
 .selectUser {
-  /* background-image: linear-gradient(#f8b195 #f67280, #6c5b7b, #c06c84, #355c7d); */
-  background-image: linear-gradient(
-    #f8b195,
-    #f67280,
-    #c06c84,
-    #6c5b7b,
-    #355c7d
-  );
-  /* background-color: aqua; */
-  background-size: cover;
-  min-height: 100vh;
-  min-width: 100vw;
-  font-family: Poppins, sans-serif;
+    background-color: #fff;
+    background-size: cover;
+    min-height: 100vh;
+    min-width: 100vw;
+    font-family: Poppins, sans-serif;
+    color: #506b9e;
+    padding: 0 0 !important;
 }
 
 .welcome {
-  color: white;
-  text-align: center;
+    color: #233863;
+    text-align: right;
+    font-size: 55px;
+    font-family: "Lato", sans-serif;
+}
+
+.welcome-text {
+    font-size: 17px;
+}
+
+.homepage-navbar {
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 200;
+    margin: 0 !important;
+}
+
+.homepage-link {
+    color: #ffffff !important;
+}
+
+.homepage-link-pill {
+    background-color: #506b9e !important;
+    color: #ffffff !important;
+}
+
+.homepage-student-login {
+    background-color: #d7385e !important;
+    color: #ffffff !important;
+    font-size: 17px;
+}
+
+.homepage-img {
+    min-height: 35vw;
+}
+
+.whiteContent {
+    height: 200px;
+    background: #233863;
+    overflow: hidden;
+}
+
+.skew-c {
+    max-width: 100%;
+    min-width: 100%;
+    margin: 0;
+    height: 100px;
+    position: absolute;
+    left: 0px;
+    background: linear-gradient(to left bottom, #fff 49%, #fa9746 50%);
 }
