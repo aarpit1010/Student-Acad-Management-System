@@ -1,0 +1,22 @@
+{
+  "name": "student-acad-management-system",
+  "version": "1.0.0",
+  "description": "- Arpit Agarwal (IIT2019139)\r - Mrinal Bhave (IIT2019152)\r - Ayush Tiwari (IIT2019151)\r - Tamoghno Bhattacharya (IIT2019103)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd backend && node index.js",
+    "heroku-postbuild": "npm install --prefix ./backend && npm install --prefix ./frontend && npm run build --prefix ./frontend",
+    "dev": "cd backend && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarpit1010/Student-Acad-Management-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aarpit1010/Student-Acad-Management-System/issues"
+  },
+  "homepage": "https://github.com/aarpit1010/Student-Acad-Management-System#readme"
+}

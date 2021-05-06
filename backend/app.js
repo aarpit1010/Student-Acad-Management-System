@@ -12,6 +12,8 @@ const  admin_verify = require("./controllers/admin_verifyToken");
 const nodemailer =require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 const fs = require("fs-extra");
+const path = require("path");
+
 
 dotenv.config();
 
@@ -24,6 +26,10 @@ mongoose.connect(
     () => console.log("Connected to MongoDB")
 ); 
 
+if(process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+}
+
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -35,5 +41,11 @@ app.use("/public", express.static("public"));
 app.use("/cal", admin_verify, addAcadCal);
 
 app.use("/cert", admin_verify, addStuCert);
+
+if(process.env.NODE_ENV === "production") {
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  });
+}
 
 module.exports = app;
