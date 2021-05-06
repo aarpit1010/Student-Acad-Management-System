@@ -1,3 +1,3 @@
 const app = require("./app");
 
-app.listen(3001 || process.env.PORT, () => console.log("Server Up and Running"));
+app.listen(process.env.PORT || 3001, () => console.log("Server Up and Running"));
