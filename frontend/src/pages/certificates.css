@@ -1,11 +1,15 @@
 .certificates-student {
-  text-align: center;
+    text-align: center;
 }
 
 .certificate-links {
-  color: aliceblue !important;
+    color: aliceblue !important;
 }
 
 .certificate-note {
-  font-style: italic;
+    font-style: italic;
+}
+
+.cert-options {
+    text-align: left !important;
 }

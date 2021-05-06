@@ -1,13 +1,21 @@
 import React from "react";
 import "./user-selection.css";
 import Students from "../images/5853.jpg";
+import Logo from "../images/logo.png";
 import { Link } from "react-router-dom";
 
 function UserSelection() {
     return (
         <div className="selectUser container p-0">
             <nav class="navbar navbar-expand-lg homepage-navbar p-0">
-                <a class="navbar-brand ml-3">SAMP</a>
+                <a class="navbar-brand ml-0">
+                    <img
+                        src={Logo}
+                        style={{ width: "60px" }}
+                        className="m-0 p-0"
+                    />
+                    SAMP
+                </a>
                 <button
                     class="navbar-toggler"
                     type="button"

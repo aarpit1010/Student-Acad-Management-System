@@ -3,7 +3,6 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 export default function Attendance() {
-    //     const [isLoading, setLoading] = useState(true);
     const [attendanceData, setAttendanceData] = useState(null);
 
     const { register, handleSubmit, watch } = useForm();
@@ -20,7 +19,6 @@ export default function Attendance() {
             })
             .then((response) => {
                 setAttendanceData(response.data);
-                setLoading(false);
             })
             .catch((error) => {
                 console.log({ error });
@@ -51,9 +49,9 @@ export default function Attendance() {
             });
     };
 
-    //   if (isLoading) {
-    //     return <div className="Course-Summary">Loading...</div>;
-    //   }
+    //     if (isLoading) {
+    //         return <div className="Course-Summary">Loading...</div>;
+    //     }
 
     return (
         <div className="admin-certificates-page pt-5">
@@ -74,7 +72,7 @@ export default function Attendance() {
                         </div>
                         <button
                             type="button"
-                            className="btn btn-warning mx-auto"
+                            className="btn btn-warning mx-auto m-2"
                             onClick={() => fetchStudentDetails()}
                         >
                             Fetch Student's Attendance
@@ -113,7 +111,7 @@ export default function Attendance() {
                                 </div>
                             );
                         })}
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-primary m-2">
                             Submit
                         </button>
                     </form>

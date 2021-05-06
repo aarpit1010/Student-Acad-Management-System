@@ -53,7 +53,7 @@ const Certificates = () => {
             <h3 className="p-3">
                 Send a request for the type of document you need.
             </h3>
-            <div className="card col-md-8 mx-auto p-3 shadow">
+            <div className="card col-md-6 mx-auto p-3 shadow">
                 <form onSubmit={handleSubmit}>
                     <div className="card-body">
                         <div className="row">
@@ -146,21 +146,20 @@ const Certificates = () => {
 
                     <button
                         type="submit"
-                        className="btn btn-primary w-50 mx-auto"
+                        className="btn btn-primary w-25 mx-auto"
                     >
                         Send Request
                     </button>
                 </form>
             </div>
-            <h6 className="certificate-note p-3">
-                Note: If the view certificate button is not visible, the admin
-                hasn't uploaded the document that you requested for previously,
-                Or no request has been sent to admin.
-            </h6>
-            <h4>
-                Below are the Links to certificates that have been uploaded
-                previously.
-            </h4>
+            <div style={{ color: "white" }}>
+                <h6 className="certificate-note p-3">
+                    Note: If no documents are visible, then admin hasn't
+                    uploaded the document(s) that you requested for.
+                </h6>
+                <hr />
+                <h4>Your requested documents</h4>
+            </div>
             {isAvailable === false || typeof data === "string" ? (
                 <div></div>
             ) : (

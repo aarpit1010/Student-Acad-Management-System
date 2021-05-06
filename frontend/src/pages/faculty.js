@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Faculty() {
     const [isLoading, setLoading] = useState(true);
@@ -59,7 +60,7 @@ function Faculty() {
                                                 Course Name: {item.coursename}
                                             </h5>
                                         </p>
-                                        <Link to="/student/faculty">
+                                        <Link to="/student/email">
                                             <button
                                                 type="button"
                                                 className="btn btn-primary"
