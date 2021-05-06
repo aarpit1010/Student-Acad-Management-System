@@ -1,23 +1,17 @@
 .register {
-  margin: 0 !important;
-  height: 100vh;
-  background-image: linear-gradient(
-    #355c7d,
-    #6c5b7b,
-    #c06c84,
-    #f67280,
-    #f8b195
-  );
-  padding-top: 75px;
+    margin: 0 !important;
+    height: 100vh;
+    background-image: url("../images/bg_1.jpg");
+    padding-top: 75px;
 }
 
 .card-img-register {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .register-card-row {
-  margin-left: auto !important;
-  margin-right: auto !important;
-  border-radius: 10px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 10px !important;
 }
