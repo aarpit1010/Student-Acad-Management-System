@@ -19,7 +19,71 @@ const fakeToken = async () => {
         student: fakeStudentToken,
       };
 };
-
+var marksdata={
+  profileData: {
+      access: false,
+      username: "iitiitiit",
+      email: "iit2019777@iiita.ac.in",
+      semester: "4",
+      branch: "IT",
+      enrollment: "iiitiitiit"
+  },
+  enrolledCourseData: [{
+      course_ID: "CN",
+      course_Name: "Computer Networks",
+      marks: {
+          c1: 0,
+          c2: 0,
+          c3: 0,
+          total: 0,
+          gpa: 0
+      }
+      
+  }, {
+      course_ID: "DBMS",
+      course_Name: "Database & Management System",
+      marks: {
+          c1: 0,
+          c2: 0,
+          c3: 0,
+          total: 0,
+          gpa: 0
+      }
+     
+  }, {
+      
+      course_ID: "DAA",
+      course_Name: "Design & Analysis of Algorithms",
+      marks: {
+          c1: 0,
+          c2: 0,
+          c3: 0,
+          total: 0,
+          gpa: 0
+      }
+  }, {
+      course_ID: "PPL",
+      course_Name: "Principles of Programming Language",
+      
+      marks: {
+          c1: 0,
+          c2: 0,
+          c3: 0,
+          total: 0,
+          gpa: 0
+      }
+  }, {
+      course_ID: "SE",
+      course_Name: "Software Engineering",
+      marks: {
+          c1: 0,
+          c2: 0,
+          c3: 0,
+          total: 0,
+          gpa: 0
+      }
+  }]
+}
 const initialStudents = [
     {
       name: "Default",
@@ -41,7 +105,17 @@ const initialStudents = [
       branch: "IT",
     },
   ];
-
+const facultyData ={
+  section:"B",
+  branch:"IT",
+  semester:"2",
+  faculty:[{
+    
+    courseid: "DST",
+    coursename: "Data Structure",
+    facultyname: "Dr. Javed"
+}]
+}
 const invalidToken = function (id) {
   const token = jwt.sign(
     {
@@ -68,6 +142,7 @@ const loginStudent = async (studentData) => {
     return token;
 };
 
+
 const sendMail = [
   {
     name: "Demo",
@@ -82,4 +157,6 @@ const sendMail = [
     initialStudents,
     fakeToken,
     invalidToken,
+    marksdata,
+    facultyData
   };
