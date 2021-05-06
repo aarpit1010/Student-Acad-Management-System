@@ -8,7 +8,7 @@ import "@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css
 import { BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3001";
+// axios.defaults.baseURL = "http://localhost:3001";
 // axios.defaults.headers.common["Authorization"] =
 //     "Bearer " + localStorage.getItem("token");
 
