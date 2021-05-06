@@ -1,7 +1,5 @@
 import React from "react";
 import "./user-selection.css";
-import Login from "./login";
-import AdminLogin from "../admin-pages/adminLogin";
 import Students from "../images/5853.jpg";
 import { Link } from "react-router-dom";
 
@@ -85,12 +83,14 @@ function UserSelection() {
                         academic records and request for modifications if
                         required.
                     </div>
-                    <button
-                        type="button"
-                        class="btn rounded-pill homepage-student-login m-3"
-                    >
-                        Login as Student
-                    </button>
+                    <Link class="nav-link homepage-link " to="/studentLogin">
+                        <button
+                            type="button"
+                            class="btn rounded-pill homepage-student-login m-3"
+                        >
+                            Login as Student
+                        </button>
+                    </Link>
                 </div>
             </div>
             <div class="skew-c"></div>

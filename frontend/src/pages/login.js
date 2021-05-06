@@ -23,7 +23,6 @@ const Login = () => {
             .then((res) => {
                 Auth.loginStudent(() => {
                     localStorage.setItem("token", res.data);
-                    // console.log(res);
                     history.push("/student/studentDashboard");
                 });
             })
