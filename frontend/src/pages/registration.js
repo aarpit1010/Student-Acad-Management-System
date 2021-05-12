@@ -1,7 +1,9 @@
 import React from "react";
 import "./registration.css";
-import reg from "../images/reg.jfif";
+import reg from "../images/reg-page.png";
 import { useForm } from "react-hook-form";
+
+import Logo from "../images/logo.png";
 
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -51,16 +53,84 @@ function Register() {
 
     return (
         <div className="register">
+            <nav className="navbar navbar-expand-lg p-0">
+                <a className="navbar-brand ml-0">
+                    <img
+                        src={Logo}
+                        style={{ width: "60px" }}
+                        className="m-0 p-0"
+                    />
+                    SAMP
+                </a>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+
+                <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item mr-1">
+                            <Link
+                                className="nav-link active homepage-link"
+                                to="/"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Home
+                                </button>
+                            </Link>
+                        </li>
+                        <li className="nav-item mr-1">
+                            <Link
+                                className="nav-link homepage-link"
+                                to="/adminLogin"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Admin
+                                </button>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                className="nav-link homepage-link "
+                                to="/studentLogin"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Student
+                                </button>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
             <div className="card col-md-9 register-card-row p-0 shadow-lg ">
                 <div className="row no-gutters justify-content-md-center rounded">
-                    <div className="col-md-4 p-1">
+                    <div className="col-md-6 p-1">
                         <img
                             src={reg}
                             className="card-img-register rounded"
                             alt="..."
                         />
                     </div>
-                    <div className="col-md-8">
+                    <div className="col-md-6">
                         <div className="card-body">
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="form-row">
@@ -153,23 +223,35 @@ function Register() {
                                         />
                                     </div>
                                 </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="branch">Branch</label>
-                                    <br />
-                                    <input
-                                        name="branch"
-                                        list="branch"
-                                        ref={register}
-                                    />
-                                    <datalist id="branch">
-                                        {" "}
-                                        <option>IT</option> <option>ECE</option>
-                                    </datalist>
+                                <div className="form-row">
+                                    <div className="form-group col-md-6">
+                                        <label htmlFor="branch">Branch</label>
+                                        <br />
+                                        {/* <select
+                                            className="form-control"
+                                            id="exampleFormControlSelect1"
+                                            name="branch"
+                                            list="branch"
+                                            ref={register}
+                                        >
+                                            <option>IT</option>
+                                            <option>ECE</option>
+                                        </select> */}
+                                        <input
+                                            name="branch"
+                                            list="branch"
+                                            ref={register}
+                                        />
+                                        <datalist id="branch">
+                                            {" "}
+                                            <option>IT</option>{" "}
+                                            <option>ECE</option>
+                                        </datalist>
+                                    </div>
                                 </div>
                                 <p className="forgot-password text-left">
                                     <Link to="/selectUser">
-                                        Already having an account? Try Logging
-                                        in!
+                                        Already have an account? Try Logging in!
                                     </Link>
                                 </p>
                                 <button type="submit" className="btn btn-dark">

@@ -3,11 +3,12 @@
 .selectUser {
     background-color: #fff;
     background-size: cover;
-    min-height: 100vh;
+    min-height: 100vh !important;
     min-width: 100vw;
     font-family: Poppins, sans-serif;
     color: #506b9e;
     padding: 0 0 !important;
+    position: relative;
 }
 
 .welcome {
@@ -60,5 +61,6 @@
     height: 100px;
     position: absolute;
     left: 0px;
+    bottom: 0px;
     background: linear-gradient(to left bottom, #fff 49%, #fa9746 50%);
 }

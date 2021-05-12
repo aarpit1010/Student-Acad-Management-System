@@ -4,6 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import Auth from "../auth/Auth";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import Logo from "../images/logo2.png";
 import "./adminLogin.css";
 
@@ -29,7 +30,75 @@ const AdminLogin = () => {
 
     return (
         <div className="adminLogin">
-            <div className="card pt-0 shadow rounded">
+            <nav className="navbar navbar-expand-lg p-0">
+                <a className="navbar-brand ml-0">
+                    <img
+                        src={Logo}
+                        style={{ width: "60px" }}
+                        className="m-0 p-0"
+                    />
+                    SAMP
+                </a>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+
+                <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item mr-1">
+                            <Link
+                                className="nav-link active homepage-link"
+                                to="/"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Home
+                                </button>
+                            </Link>
+                        </li>
+                        <li className="nav-item mr-1">
+                            <Link
+                                className="nav-link homepage-link"
+                                to="/adminLogin"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Admin
+                                </button>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                className="nav-link homepage-link "
+                                to="/studentLogin"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn rounded-pill homepage-link-pill m-0"
+                                >
+                                    Student
+                                </button>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div className="card pt-0 shadow rounded admin-login-card">
                 <div className="row m-0 p-0 justify-content-md-center">
                     <div className="col-md-6 p-0">
                         <img

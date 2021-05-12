@@ -3,15 +3,15 @@
     height: 100vh;
     width: 100vw;
     background-size: cover;
-    padding: 100px;
+    /* padding: 100px; */
     justify-content: center !important;
     text-align: center;
     /* margin: 0 0 !important; */
 }
 
 .login-card-student {
-    margin: 0 auto !important;
-    min-height: 70vh !important;
+    margin: 50px 100px !important;
+    /* max-height: 70vh !important; */
     min-width: 80vh !important;
 }
 

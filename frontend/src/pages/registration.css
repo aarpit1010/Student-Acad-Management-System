@@ -2,16 +2,19 @@
     margin: 0 !important;
     height: 100vh;
     background-image: url("../images/bg_1.jpg");
-    padding-top: 75px;
+    background-size: cover;
+    padding-top: 10px;
 }
 
 .card-img-register {
     height: 100%;
     width: 100%;
+    padding: 0 20px;
 }
 
 .register-card-row {
     margin-left: auto !important;
     margin-right: auto !important;
     border-radius: 10px !important;
+    margin-top: 35px !important;
 }
